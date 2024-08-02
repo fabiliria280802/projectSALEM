@@ -15,7 +15,6 @@ on:
 jobs:
   setup:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,7 +29,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,7 +46,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -67,7 +64,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [setup, lint, test]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -93,7 +89,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/Production'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -106,7 +101,6 @@ jobs:
 
   security:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -126,5 +120,5 @@ jobs:
             -Dsonar.organization=your-organization
             -Dsonar.projectKey=your-project-key
             -Dsonar.sources=./src
-          env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
