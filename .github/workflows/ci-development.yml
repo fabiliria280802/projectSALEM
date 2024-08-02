@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create Pull Request to QA
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: QA
