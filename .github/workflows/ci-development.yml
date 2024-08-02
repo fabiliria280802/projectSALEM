@@ -1,0 +1,23 @@
+name: CI Development
+
+on:
+  push:
+    branches:
+      - Development
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request to QA
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: QA
+          head: Development
+          title: "Automated PR from Development to QA"
+          body: "This is an automated pull request created from the Development branch to QA."
+
