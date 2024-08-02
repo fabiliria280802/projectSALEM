@@ -17,6 +17,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: QA
+          branch: QA
           title: "Automated PR from QA to Main"
           body: "This is an automated pull request created from the QA branch to Main."
