@@ -12,7 +12,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create Pull Request to Main
+      - name: Set Node.js deprecation warning flag
+        run: |
+          echo 'NODE_OPTIONS=--no-deprecation' >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create Pull Request to QA
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
