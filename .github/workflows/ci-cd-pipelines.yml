@@ -143,8 +143,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.organization=fabiliria280802
-            -Dsonar.projectKey=fabiliria280802_projectSALEM
-            -Dsonar.sources=./src
