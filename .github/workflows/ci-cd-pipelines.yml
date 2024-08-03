@@ -120,6 +120,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.organization=your-organization
-            -Dsonar.projectKey=your-project-key
+            -Dsonar.organization=fabiliria280802
+            -Dsonar.projectKey=fabiliria280802_projectSALEM
             -Dsonar.sources=./src
