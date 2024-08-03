@@ -6,8 +6,27 @@ on:
       - Development
 
 jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+    outputs:
+      should_create_pr: ${{ steps.check.outputs.should_create_pr }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check commit message
+        id: check
+        run: |
+          if git log -1 --pretty=%B | grep -q "QA transition"; then
+            echo "should_create_pr=true" >> $GITHUB_ENV
+          else
+            echo "should_create_pr=false" >> $GITHUB_ENV
+          fi
+
   create-pull-request:
     runs-on: ubuntu-latest
+    needs: check-commit-message
+    if: ${{ needs.check-commit-message.outputs.should_create_pr == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
