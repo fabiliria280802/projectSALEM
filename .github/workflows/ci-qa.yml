@@ -36,7 +36,7 @@ jobs:
       - name: Create Pull Request to Production
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           base: Production
           branch: QA
           title: "Automated PR from QA to Production"
