@@ -21,8 +21,10 @@ jobs:
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           echo "Last commit message: $COMMIT_MESSAGE"
           if echo "$COMMIT_MESSAGE" | grep -q "QA transition:"; then
+            echo "should_create_pr=true" >> $GITHUB_ENV
             echo "::set-output name=should_create_pr::true"
           else
+            echo "should_create_pr=false" >> $GITHUB_ENV
             echo "::set-output name=should_create_pr::false"
           fi
 
