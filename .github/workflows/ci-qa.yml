@@ -1,3 +1,4 @@
+# Author: Fabi Liria
 name: CI QA
 
 on:
@@ -6,8 +7,29 @@ on:
       - QA
 
 jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+    outputs:
+      should_create_pr: ${{ steps.check.outputs.should_create_pr }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check commit message
+        id: check
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "Last commit message: $COMMIT_MESSAGE"
+          if echo "$COMMIT_MESSAGE" | grep -q "Production transition:"; then
+            echo "::set-output name=should_create_pr::true"
+          else
+            echo "::set-output name=should_create_pr::false"
+          fi
+
   create-pull-request:
     runs-on: ubuntu-latest
+    needs: check-commit-message
+    if: needs.check-commit-message.outputs.should_create_pr == 'true'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -15,7 +37,7 @@ jobs:
       - name: Create Pull Request to Production
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           base: Production
           branch: QA
           title: "Automated PR from QA to Production"
