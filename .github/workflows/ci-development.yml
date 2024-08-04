@@ -36,11 +36,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh
+
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
       - name: Create Pull Request to QA
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: QA
-          branch: Development
-          title: "Automated PR from Development to QA"
-          body: "This is an automated pull request created from the Development branch to QA."
+        run: gh pr create -B QA -H Development --title 'Automated PR from Development to QA' --body 'This is an automated pull request created from the Development branch to QA.'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
