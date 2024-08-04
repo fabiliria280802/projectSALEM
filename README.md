@@ -1,2 +1,6 @@
-# projectSALEM
-This is web application with a module of IA
+# project SALEM
+This is web application with a module of IA.
+
+By:
+Fabiana Liria
+Mateo Avila
