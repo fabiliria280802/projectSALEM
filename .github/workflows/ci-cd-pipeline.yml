@@ -88,7 +88,7 @@ jobs:
       - name: Run linter for frontend
         run: |
           cd frontend
-          npm run lint
+          ./node_modules/.bin/eslint .
 
   lint-backend:
     runs-on: ubuntu-latest
@@ -101,7 +101,7 @@ jobs:
       - name: Run linter for backend
         run: |
           cd backend
-          npm run lint
+          ./node_modules/.bin/eslint .
 
   test-frontend:
     runs-on: ubuntu-latest
