@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import { CssBaseline } from '@material-ui/core';
 
-ReactDOM.render(
+ReactDOM.createRoot(
   <React.StrictMode>
     <CssBaseline />
     <App />
