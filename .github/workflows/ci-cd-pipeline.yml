@@ -79,21 +79,11 @@ jobs:
 
   lint-frontend:
     runs-on: ubuntu-latest
-    needs: check-package-json
+    needs: setup-frontend
     if: ${{ needs.check-package-json.outputs.has_package_json_frontend == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js for frontend
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install frontend dependencies
-        run: |
-          cd frontend
-          npm install
 
       - name: Run linter for frontend
         run: |
@@ -102,21 +92,11 @@ jobs:
 
   lint-backend:
     runs-on: ubuntu-latest
-    needs: check-package-json
+    needs: setup-backend
     if: ${{ needs.check-package-json.outputs.has_package_json_backend == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js for backend
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
 
       - name: Run linter for backend
         run: |
@@ -125,21 +105,11 @@ jobs:
 
   test-frontend:
     runs-on: ubuntu-latest
-    needs: check-package-json
+    needs: setup-frontend
     if: ${{ needs.check-package-json.outputs.has_package_json_frontend == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js for frontend
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install frontend dependencies
-        run: |
-          cd frontend
-          npm install
 
       - name: Run tests for frontend
         run: |
@@ -148,21 +118,11 @@ jobs:
 
   test-backend:
     runs-on: ubuntu-latest
-    needs: check-package-json
+    needs: setup-backend
     if: ${{ needs.check-package-json.outputs.has_package_json_backend == 'true' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js for backend
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
 
       - name: Run tests for backend
         run: |
@@ -176,16 +136,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js for frontend
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install frontend dependencies
-        run: |
-          cd frontend
-          npm install
 
       - name: Build the frontend application
         run: |
@@ -205,16 +155,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Node.js for backend
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
 
       - name: Build the backend application
         run: |

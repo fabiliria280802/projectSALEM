@@ -8,4 +8,4 @@ import '@testing-library/jest-dom';
 */
 
 // segun chat
-import '@testing-library/jest-dom/extend-expect';
+import '@testing-library/jest-dom';
