@@ -1,16 +1,18 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'Outlook365',
+  host: 'smtp.outlook.com', // Cambia el host según el proveedor de correo que utilices.
+  port: 465, // Puerto seguro para SSL/TLS.
+  secure: true, // Utiliza SSL/TLS.
   auth: {
-    user: 'tu-email@outlook.com',
-    pass: 'tu-contraseña'
+    user: process.env.EMAIL_USER, // Utiliza variables de entorno para mayor seguridad.
+    pass: process.env.EMAIL_PASS,
   }
 });
 
 const sendEmail = (to, subject, text) => {
   const mailOptions = {
-    from: 'tu-email@outlook.com',
+    from: process.env.EMAIL_USER, // Utiliza el mismo email configurado en el transporter.
     to,
     subject,
     text
