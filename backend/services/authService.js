@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 const API_URL = 'http://localhost:5000/api/auth/';
 
@@ -16,7 +16,7 @@ const logout = () => {
   localStorage.removeItem('user');
 };
 
-export default {
+module.exports = {
   login,
   logout
 };
