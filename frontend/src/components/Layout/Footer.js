@@ -1,14 +1,15 @@
-import React from 'react';
-import { Typography, Container } from '@material-ui/core';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 const Footer = () => {
-	return (
-		<Container style={{ textAlign: 'center', padding: '1em 0' }}>
-			<Typography variant="body2" color="textSecondary">
-				&copy; 2024 ENAP Ecuador. Todos los derechos reservados.
-			</Typography>
-		</Container>
-	);
+  return (
+    <Panel className="custom-footer" style={{ textAlign: 'center', padding: '1em 0' }}>
+      <p style={{ margin: 0, color: 'var(--text-secondary-color)' }}>
+        &copy; 2024 ENAP Ecuador. Todos los derechos reservados.
+      </p>
+    </Panel>
+  );
 };
 
 export default Footer;

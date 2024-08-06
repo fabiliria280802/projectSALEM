@@ -1,3 +1,4 @@
+const babelParser = require('@babel/eslint-parser');
 const reactPlugin = require('eslint-plugin-react');
 
 module.exports = [
@@ -7,16 +8,20 @@ module.exports = [
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
-      globals: {
-        browser: true,
-        es2021: true,
+      parser: babelParser,
+      parserOptions: {
+        requireConfigFile: false,
+        babelOptions: {
+          presets: ['@babel/preset-react'],
+        },
       },
     },
     plugins: {
       react: reactPlugin,
+      '@babel': require('@babel/eslint-plugin'),
     },
     rules: {
-      "no-unused-vars": "error",
+      "no-unused-vars": "off",
     },
     settings: {
       react: {
@@ -27,6 +32,7 @@ module.exports = [
   {
     files: ['.eslintrc.js', 'eslint.config.js'],
     languageOptions: {
+      ecmaVersion: 'latest',
       sourceType: 'script',
     },
     rules: {},

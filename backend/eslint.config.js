@@ -1,24 +1,26 @@
-module.exports = [
-  {
-    files: ["**/*.js"],
-    ignores: ["node_modules/**", "dist/**"],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: {
-        node: true,
-        es2021: true,
-      },
-    },
-    rules: {
-      "no-unused-vars": "error",
+module.exports = {
+  parser: '@babel/eslint-parser',
+  parserOptions: {
+    requireConfigFile: false,
+    babelOptions: {
+      presets: ['@babel/preset-react'],
     },
   },
-  {
-    files: ['.eslintrc.js', 'eslint.config.js'],
-    languageOptions: {
-      sourceType: 'script',
-    },
-    rules: {},
+  plugins: ['react', '@babel'],
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended'
+  ],
+  env: {
+    browser: true,
+    es2021: true,
   },
-];
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  rules: {
+    'no-unused-vars': 'error',
+  },
+};

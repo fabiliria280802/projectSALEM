@@ -1,8 +1,4 @@
-import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
-import { Card } from 'primereact/card';
 import { authService } from '../services/authService';
 
 const Login = () => {

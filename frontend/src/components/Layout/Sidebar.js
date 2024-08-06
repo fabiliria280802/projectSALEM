@@ -1,29 +1,41 @@
-import React from 'react';
-import { Drawer, List, ListItem, ListItemText } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import 'primereact/resources/themes/saga-blue/theme.css';  // Importa el tema que prefieras
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 
 const Sidebar = () => {
-	return (
-		<Drawer variant="permanent">
-			<List>
-				<ListItem button component={Link} to="/dashboard">
-					<ListItemText primary="Dashboard" />
-				</ListItem>
-				<ListItem button component={Link} to="/upload-invoices">
-					<ListItemText primary="Subir Facturas" />
-				</ListItem>
-				<ListItem button component={Link} to="/upload-hes">
-					<ListItemText primary="Subir HES" />
-				</ListItem>
-				<ListItem button component={Link} to="/upload-migo">
-					<ListItemText primary="Subir MIGO" />
-				</ListItem>
-				<ListItem button component={Link} to="/user-management">
-					<ListItemText primary="Gestión de Usuarios" />
-				</ListItem>
-			</List>
-		</Drawer>
-	);
+  const items = [
+    {
+      label: 'Dashboard',
+      icon: 'pi pi-fw pi-home',
+      command: () => { window.location.href = '/dashboard'; }
+    },
+    {
+      label: 'Subir Facturas',
+      icon: 'pi pi-fw pi-upload',
+      command: () => { window.location.href = '/upload-invoices'; }
+    },
+    {
+      label: 'Subir HES',
+      icon: 'pi pi-fw pi-upload',
+      command: () => { window.location.href = '/upload-hes'; }
+    },
+    {
+      label: 'Subir MIGO',
+      icon: 'pi pi-fw pi-upload',
+      command: () => { window.location.href = '/upload-migo'; }
+    },
+    {
+      label: 'Gestión de Usuarios',
+      icon: 'pi pi-fw pi-users',
+      command: () => { window.location.href = '/user-management'; }
+    }
+  ];
+
+  return (
+    <div className="p-sidebar p-component" style={{ width: '250px' }}>
+      <PanelMenu model={items} style={{ width: '100%' }} />
+    </div>
+  );
 };
 
 export default Sidebar;
