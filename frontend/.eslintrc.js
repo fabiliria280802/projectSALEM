@@ -10,6 +10,7 @@ module.exports = {
 				node: true,
 			},
 			files: ['.eslintrc.{js,cjs}'],
+            ignores: ["node_modules/**", "dist/**"],
 			parserOptions: {
 				sourceType: 'script',
 			},
