@@ -11,7 +11,7 @@ module.exports = [
       },
     },
     plugins: {
-      react: require('eslint-plugin-react'),
+      react: 'eslint-plugin-react',
     },
     rules: {
       "no-unused-vars": "error",
