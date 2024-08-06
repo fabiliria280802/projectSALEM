@@ -1,4 +1,8 @@
 import documentService from '../services/documentService';
+import React, { useState } from 'react';
+import { Panel } from 'primereact/panel';
+import { FileUpload } from 'primereact';
+import { Button } from 'primereact/button';
 
 const UploadHES = () => {
   const [file, setFile] = useState(null);

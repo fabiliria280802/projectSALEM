@@ -2,6 +2,8 @@ import 'primereact/resources/themes/saga-blue/theme.css';  // Importa el tema qu
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
+import { PanelMenu } from "primereact";
+
 const Sidebar = () => {
   const items = [
     {

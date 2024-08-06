@@ -4,9 +4,11 @@
 	"private": true,
 	"dependencies": {
 		"axios": "^1.7.3",
+		"chart.js": "^4.4.3",
 		"primeicons": "^7.0.0",
 		"primereact": "^10.8.2",
 		"prop-types": "^15.8.1",
+		"quill": "^2.0.2",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-router-dom": "^5.3.4",
@@ -22,7 +24,8 @@
 		"test-react": "react-scripts test",
 		"test": "jest",
 		"coverage": "jest --coverage",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"e2e": "cypress open"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -49,6 +52,7 @@
 		"@testing-library/jest-dom": "^6.4.8",
 		"@testing-library/react": "^16.0.0",
 		"@testing-library/user-event": "^14.5.2",
+		"cypress": "^13.13.2",
 		"eslint": "^8.57.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-config-prettier": "^9.1.0",

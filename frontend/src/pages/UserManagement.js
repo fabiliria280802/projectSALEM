@@ -1,3 +1,4 @@
+import { Panel } from 'primereact/panel';
 
 const UserManagement = () => {
   return (

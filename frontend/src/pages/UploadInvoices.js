@@ -1,4 +1,8 @@
 import documentService from '../services/documentService';
+import { Panel } from 'primereact/panel';
+import React, { useState } from 'react';
+import { FileUpload } from 'primereact';
+import { Button } from 'primereact/button';
 
 const UploadInvoices = () => {
   const [file, setFile] = useState(null);
