@@ -88,7 +88,7 @@ jobs:
       - name: Run prettier for frontend
         run: |
           cd frontend
-          npm format
+          npm run format
 
   prettier-backend:
     runs-on: ubuntu-latest
@@ -101,7 +101,7 @@ jobs:
       - name: Run prettier for backend
         run: |
           cd backend
-          npm format
+          npm run format
 
   lint-frontend:
     runs-on: ubuntu-latest
@@ -140,7 +140,7 @@ jobs:
       - name: Run tests for frontend
         run: |
           cd frontend
-          npm test
+          npm run test
 
   test-backend:
     runs-on: ubuntu-latest
@@ -153,7 +153,7 @@ jobs:
       - name: Run tests for backend
         run: |
           cd backend
-          npm test
+          npm run test
 
   build-frontend:
     runs-on: ubuntu-latest
