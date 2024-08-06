@@ -1,30 +1,29 @@
-module.exports = {
-    "env": {
-        "es2021": true,
-        "node": true
+// backend/eslint.config.js
+const { FlatCompat } = require('@eslint/eslintrc');
+const compat = new FlatCompat();
+
+module.exports = [
+  {
+    files: ["**/*.js", "**/*.jsx"],
+    ignores: ["node_modules/**", "dist/**"],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        node: true,
+        es2021: true,
+      },
     },
-    "extends": [
-        "standard",
-        "eslint-config-prettier"
-    ],
-    "overrides": [
-        {
-            "env": {
-                "node": true
-            },
-            "files": [
-                ".eslintrc.{js,cjs}"
-            ],
-            "ignores": ["node_modules/**", "dist/**"],
-            "parserOptions": {
-                "sourceType": "script"
-            }
-        }
-    ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
+    rules: {
+      "no-unused-vars": "error",
     },
-    "rules": {
-    }
-}
+  },
+  {
+    files: ['.eslintrc.{js,cjs}'],
+    languageOptions: {
+      sourceType: 'script',
+    },
+    rules: {},
+  },
+  ...compat.extends('standard', 'eslint-config-prettier'),
+];
