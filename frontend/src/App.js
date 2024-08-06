@@ -10,7 +10,7 @@ import UserManagement from './pages/UserManagement';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import Footer from './components/Layout/Footer';
-import { Container } from '@material-ui/core';
+import { PrimeReactProvider } from 'primereact/api';
 
 const App = () => {
   return (
@@ -18,7 +18,7 @@ const App = () => {
       <Router>
         <Header />
         <Sidebar />
-        <Container>
+        <PrimeReactProvider>
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/dashboard" component={Dashboard} />
@@ -28,7 +28,7 @@ const App = () => {
             <Route path="/user-management" component={UserManagement} />
             <Route path="/" component={Login} />
           </Switch>
-        </Container>
+        </PrimeReactProvider>
         <Footer />
       </Router>
     </AuthProvider>

@@ -1,5 +1,5 @@
-const authController = require('../controllers/authController');
-const User = require('../models/User');
+const authController = require('../../controllers/authController');
+const User = require('../../models/User');
 
 jest.mock('../models/User');
 

@@ -77,6 +77,32 @@ jobs:
           cd backend
           npm install
 
+  prettier-frontend:
+    runs-on: ubuntu-latest
+    needs: setup-frontend
+    if: ${{ needs.check-package-json.outputs.has_package_json_frontend == 'true' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run prettier for frontend
+        run: |
+          cd frontend
+          npm format
+
+  prettier-backend:
+    runs-on: ubuntu-latest
+    needs: setup-backend
+    if: ${{ needs.check-package-json.outputs.has_package_json_backend == 'true' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run prettier for backend
+        run: |
+          cd backend
+          npm format
+
   lint-frontend:
     runs-on: ubuntu-latest
     needs: setup-frontend
@@ -88,7 +114,7 @@ jobs:
       - name: Run linter for frontend
         run: |
           cd frontend
-          ./node_modules/.bin/eslint .
+          npm lint
 
   lint-backend:
     runs-on: ubuntu-latest
@@ -101,7 +127,7 @@ jobs:
       - name: Run linter for backend
         run: |
           cd backend
-          ./node_modules/.bin/eslint .
+          npm lint
 
   test-frontend:
     runs-on: ubuntu-latest
@@ -131,7 +157,7 @@ jobs:
 
   build-frontend:
     runs-on: ubuntu-latest
-    needs: [setup-frontend, lint-frontend, test-frontend]
+    needs: [setup-frontend, lint-frontend, test-frontend, prettier-frontend]
     if: ${{ needs.check-package-json.outputs.has_package_json_frontend == 'true' }}
     steps:
       - name: Checkout repository
@@ -150,7 +176,7 @@ jobs:
 
   build-backend:
     runs-on: ubuntu-latest
-    needs: [setup-backend, lint-backend, test-backend]
+    needs: [setup-backend, lint-backend, test-backend, prettier-backend]
     if: ${{ needs.check-package-json.outputs.has_package_json_backend == 'true' }}
     steps:
       - name: Checkout repository
@@ -169,7 +195,7 @@ jobs:
 
   sonarcloud:
     runs-on: ubuntu-latest
-    needs: [setup-frontend, lint-frontend, test-frontend, build-frontend, setup-backend, lint-backend, test-backend, build-backend]
+    needs: [setup-frontend, lint-frontend, test-frontend,prettier-frontend, build-frontend, setup-backend, lint-backend, test-backend,prettier-backend, build-backend]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

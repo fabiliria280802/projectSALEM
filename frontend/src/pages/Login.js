@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { TextField, Button, Container, Typography } from '@material-ui/core';
-import authService from '../services/authService';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import { Card } from 'primereact/card';
+import { authService } from '../services/authService';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -19,14 +21,21 @@ const Login = () => {
   };
 
   return (
-    <Container>
-      <Typography variant="h4">Iniciar Sesión</Typography>
-      <form onSubmit={handleSubmit}>
-        <TextField label="Usuario" fullWidth margin="normal" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <TextField label="Contraseña" type="password" fullWidth margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Button variant="contained" color="primary" type="submit">Ingresar</Button>
-      </form>
-    </Container>
+    <div className="flex justify-content-center align-items-center min-h-screen">
+      <Card title="Iniciar Sesión" className="p-fluid">
+        <form onSubmit={handleSubmit}>
+          <div className="p-field">
+            <label htmlFor="username">Usuario</label>
+            <InputText id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+          </div>
+          <div className="p-field">
+            <label htmlFor="password">Contraseña</label>
+            <InputText id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <Button label="Ingresar" icon="pi pi-check" type="submit" className="p-mt-2" />
+        </form>
+      </Card>
+    </div>
   );
 };
 
