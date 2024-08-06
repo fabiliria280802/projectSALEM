@@ -1,10 +1,6 @@
-// backend/eslint.config.js
-const { FlatCompat } = require('@eslint/eslintrc');
-const compat = new FlatCompat();
-
 module.exports = [
   {
-    files: ["**/*.js", "**/*.jsx"],
+    files: ["**/*.js"],
     ignores: ["node_modules/**", "dist/**"],
     languageOptions: {
       ecmaVersion: 'latest',
@@ -19,11 +15,10 @@ module.exports = [
     },
   },
   {
-    files: ['.eslintrc.{js,cjs}'],
+    files: ['.eslintrc.js', 'eslint.config.js'],
     languageOptions: {
       sourceType: 'script',
     },
     rules: {},
   },
-  ...compat.extends('standard', 'eslint-config-prettier'),
 ];

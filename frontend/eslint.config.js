@@ -1,7 +1,3 @@
-// eslint.config.js
-const { FlatCompat } = require('@eslint/eslintrc');
-const compat = new FlatCompat();
-
 module.exports = [
   {
     files: ["**/*.js", "**/*.jsx"],
@@ -27,11 +23,10 @@ module.exports = [
     },
   },
   {
-    files: ['.eslintrc.{js,cjs}'],
+    files: ['.eslintrc.js', 'eslint.config.js'],
     languageOptions: {
       sourceType: 'script',
     },
     rules: {},
   },
-  ...compat.extends('standard', 'plugin:react/recommended', 'eslint-config-prettier'),
 ];
