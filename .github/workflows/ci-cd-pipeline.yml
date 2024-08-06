@@ -142,6 +142,7 @@ jobs:
       - name: Run tests for frontend
         run: |
           cd frontend
+          npm jest-environment-jsdom@29.7.0
           npx jest
 
   test-backend:
@@ -155,6 +156,7 @@ jobs:
       - name: Run tests for backend
         run: |
           cd backend
+          npm jest-environment-jsdom@29.7.0
           npx jest
 
   build-frontend:
