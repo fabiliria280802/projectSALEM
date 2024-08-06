@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint --fix . --ext .js,.jsx",
+    "lint": "eslint --fix . --ext .js",
     "format":"prettier --write ."
   },
   "keywords": [],
