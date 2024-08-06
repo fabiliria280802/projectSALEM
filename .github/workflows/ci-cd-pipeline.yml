@@ -201,6 +201,7 @@ jobs:
 
   sonarcloud:
     runs-on: ubuntu-latest
+    environment: secrets
     needs: [setup-frontend, lint-frontend, test-frontend, prettier-frontend, build-frontend, setup-backend, lint-backend, test-backend, prettier-backend, build-backend]
     steps:
       - name: Checkout repository
