@@ -1,26 +1,42 @@
-module.exports = {
-  parser: '@babel/eslint-parser',
-  parserOptions: {
-    requireConfigFile: false,
-    babelOptions: {
-      presets: ['@babel/preset-react'],
+const babelParser = require('@babel/eslint-parser');
+
+module.exports = [
+  {
+    files: ["**/*.js"],
+    ignores: ["node_modules/**", "dist/**"],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parser: babelParser,
+      parserOptions: {
+        requireConfigFile: false,
+        babelOptions: {
+          presets: ['@babel/preset-env'],
+        },
+      },
+      globals: {
+        require: 'readonly',
+        module: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+        console: 'readonly',
+        Buffer: 'readonly',
+      },
     },
-  },
-  plugins: ['react', '@babel'],
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended'
-  ],
-  env: {
-    browser: true,
-    es2021: true,
-  },
-  settings: {
-    react: {
-      version: 'detect',
+    plugins: {
+      '@babel': require('@babel/eslint-plugin'),
     },
+    rules: {
+      "no-unused-vars": "off",
+    },
+    settings: {},
   },
-  rules: {
-    'no-unused-vars': 'error',
+  {
+    files: ['.eslintrc.js', 'eslint.config.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'script',
+    },
+    rules: {},
   },
-};
+];
