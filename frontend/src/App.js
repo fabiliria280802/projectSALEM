@@ -13,31 +13,29 @@ import Footer from './components/Layout/Footer';
 import { PrimeReactProvider } from 'primereact/api';
 
 const App = () => {
-  return (
-    <AuthProvider>
-      <Router>
-        <Header />
-        <Sidebar />
-        <PrimeReactProvider>
-          <Switch>
-            <Route path="/login" component={Login} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route path="/upload-invoices" component={UploadInvoices} />
-            <Route path="/upload-hes" component={UploadHES} />
-            <Route path="/upload-migo" component={UploadMIGO} />
-            <Route path="/user-management" component={UserManagement} />
-            <Route path="/" component={Login} />
-          </Switch>
-        </PrimeReactProvider>
-        <Footer />
-      </Router>
-    </AuthProvider>
-  );
+	return (
+		<AuthProvider>
+			<Router>
+				<Header />
+				<Sidebar />
+				<PrimeReactProvider>
+					<Switch>
+						<Route path="/login" component={Login} />
+						<Route path="/dashboard" component={Dashboard} />
+						<Route path="/upload-invoices" component={UploadInvoices} />
+						<Route path="/upload-hes" component={UploadHES} />
+						<Route path="/upload-migo" component={UploadMIGO} />
+						<Route path="/user-management" component={UserManagement} />
+						<Route path="/" component={Login} />
+					</Switch>
+				</PrimeReactProvider>
+				<Footer />
+			</Router>
+		</AuthProvider>
+	);
 };
 
 export default App;
-
-
 
 /*TODO: Original code
 

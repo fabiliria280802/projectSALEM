@@ -4,13 +4,12 @@ import App from './App';
 import { CssBaseline } from '@material-ui/core';
 
 ReactDOM.createRoot(
-  <React.StrictMode>
-    <CssBaseline />
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+	<React.StrictMode>
+		<CssBaseline />
+		<App />
+	</React.StrictMode>,
+	document.getElementById('root'),
 );
-
 
 /*TODO: Original code
 import React from 'react';
