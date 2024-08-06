@@ -1,3 +1,5 @@
+const reactPlugin = require('eslint-plugin-react');
+
 module.exports = [
   {
     files: ["**/*.js", "**/*.jsx"],
@@ -11,7 +13,7 @@ module.exports = [
       },
     },
     plugins: {
-      react: 'eslint-plugin-react',
+      react: reactPlugin,
     },
     rules: {
       "no-unused-vars": "error",
