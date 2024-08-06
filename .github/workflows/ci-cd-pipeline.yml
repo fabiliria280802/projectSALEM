@@ -114,7 +114,7 @@ jobs:
       - name: Run linter for frontend
         run: |
           cd frontend
-          npm run lint
+          npx run lint
 
   lint-backend:
     runs-on: ubuntu-latest
@@ -127,7 +127,7 @@ jobs:
       - name: Run linter for backend
         run: |
           cd backend
-          npm run lint
+          npx run lint
 
   test-frontend:
     runs-on: ubuntu-latest
