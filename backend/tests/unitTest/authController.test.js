@@ -1,7 +1,7 @@
 const authController = require('../../controllers/authController');
 const User = require('../../models/User');
 
-jest.mock('../models/User');
+jest.mock('../../models/User');
 
 describe('AuthController', () => {
   it('should return a token and user on successful login', async () => {
@@ -13,6 +13,7 @@ describe('AuthController', () => {
     };
     const res = {
       json: jest.fn(),
+      status: jest.fn().mockReturnThis(), // Añadir status aquí para mantener la consistencia
     };
 
     User.findOne.mockResolvedValue({
