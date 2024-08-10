@@ -1,53 +1,93 @@
 const authController = require('../../controllers/authController');
-const User = require('../../models/User');
+const { getSharePointData } = require('../../services/sharePointService');
 
-jest.mock('../../models/User');
+jest.mock('../../services/sharePointService');
 
 describe('AuthController', () => {
-  it('should return a token and user on successful login', async () => {
-    const req = {
-      body: {
-        username: 'testuser',
-        password: 'testpassword',
-      },
-    };
-    const res = {
-      json: jest.fn(),
-      status: jest.fn().mockReturnThis(), // Añadir status aquí para mantener la consistencia
-    };
+	beforeEach(() => {
+		jest.resetAllMocks();
+	});
 
-    User.findOne.mockResolvedValue({
-      comparePassword: jest.fn().mockReturnValue(true),
-      _id: '12345',
-      username: 'testuser',
-      role: 'user',
-    });
+	it('should return a token and user on successful login', async () => {
+		const req = {
+			body: {
+				username: 'testuser',
+				password: 'testpassword',
+			},
+		};
+		const res = {
+			json: jest.fn(),
+			status: jest.fn().mockReturnThis(),
+		};
 
-    await authController.login(req, res);
+		const hashedPassword = require('bcryptjs').hashSync('testpassword', 8);
 
-    expect(res.json).toHaveBeenCalledWith({
-      token: expect.any(String),
-      user: { id: '12345', username: 'testuser', role: 'user' },
-    });
-  });
+		getSharePointData.mockResolvedValue([
+			{
+				username: 'testuser',
+				password: hashedPassword,
+				id: '12345',
+			},
+		]);
 
-  it('should return 401 if credentials are incorrect', async () => {
-    const req = {
-      body: {
-        username: 'wronguser',
-        password: 'wrongpassword',
-      },
-    };
-    const res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
+		await authController.login(req, res);
 
-    User.findOne.mockResolvedValue(null);
+		expect(res.json).toHaveBeenCalledWith({
+			token: expect.any(String),
+			user: { id: '12345', username: 'testuser' },
+		});
+	});
 
-    await authController.login(req, res);
+	it('should return 401 if credentials are incorrect', async () => {
+		const req = {
+			body: {
+				username: 'wronguser',
+				password: 'wrongpassword',
+			},
+		};
+		const res = {
+			status: jest.fn().mockReturnThis(),
+			json: jest.fn(),
+		};
 
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Credenciales incorrectas' });
-  });
+		getSharePointData.mockResolvedValue([
+			{
+				username: 'testuser',
+				password: 'hashedpassword',
+				id: '12345',
+			},
+		]);
+
+		await authController.login(req, res);
+
+		expect(res.status).toHaveBeenCalledWith(401);
+		expect(res.json).toHaveBeenCalledWith({
+			message: 'Credenciales incorrectas',
+		});
+	});
+
+	it('should return 500 if there is an error during authentication', async () => {
+		const req = {
+			body: {
+				username: 'testuser',
+				password: 'testpassword',
+			},
+		};
+		const res = {
+			status: jest.fn().mockReturnThis(),
+			json: jest.fn(),
+		};
+
+		getSharePointData.mockRejectedValue(
+			new Error('Error fetching data from SharePoint'),
+		);
+
+		await authController.login(req, res);
+
+		expect(res.status).toHaveBeenCalledWith(500);
+		expect(res.json).toHaveBeenCalledWith({
+			message: 'Error al autenticar',
+			error: 'Error fetching data from SharePoint',
+		});
+	});
 });

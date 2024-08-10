@@ -7,21 +7,21 @@ const keyRingId = 'tu-key-ring-id';
 const keyId = 'tu-key-id';
 
 async function encryptText(plainText) {
-  const [result] = await client.encrypt({
-    name: client.cryptoKeyPath(projectId, locationId, keyRingId, keyId),
-    plaintext: Buffer.from(plainText)
-  });
+	const [result] = await client.encrypt({
+		name: client.cryptoKeyPath(projectId, locationId, keyRingId, keyId),
+		plaintext: Buffer.from(plainText),
+	});
 
-  return result.ciphertext.toString('base64');
+	return result.ciphertext.toString('base64');
 }
 
 async function decryptText(cipherText) {
-  const [result] = await client.decrypt({
-    name: client.cryptoKeyPath(projectId, locationId, keyRingId, keyId),
-    ciphertext: Buffer.from(cipherText, 'base64')
-  });
+	const [result] = await client.decrypt({
+		name: client.cryptoKeyPath(projectId, locationId, keyRingId, keyId),
+		ciphertext: Buffer.from(cipherText, 'base64'),
+	});
 
-  return result.plaintext.toString();
+	return result.plaintext.toString();
 }
 
 module.exports = { encryptText, decryptText };

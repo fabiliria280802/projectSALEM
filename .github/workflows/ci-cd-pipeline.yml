@@ -156,7 +156,7 @@ jobs:
       - name: Run tests for backend
         run: |
           cd backend
-          npm i jest-environment-jsdom@29.7.0
+          npm i jest-environment-jsdom@29.7.0 node-fetch@2.7.0
           npx jest
 
   build-frontend:
