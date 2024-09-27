@@ -26,7 +26,7 @@ Fabiana Liria & Mateo Ávila
 2. **Open two terminals:**
 
     - **Terminal 1 (Backend setup):**
-      Navigate to the backend directory:
+      Navigate to the backend directory (adjust the path accordingly if needed):
       ```bash
       cd /c:/Users/PC/Desktop/Tesis/projectSALEM/backend
       ```
