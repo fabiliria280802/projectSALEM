@@ -8,7 +8,6 @@ import UploadHES from './pages/UploadHES';
 import UploadMIGO from './pages/UploadMIGO';
 import UserManagement from './pages/UserManagement';
 import Header from './components/Layout/Header';
-import Sidebar from './components/Layout/Sidebar';
 import Footer from './components/Layout/Footer';
 
 const App = () => {
@@ -16,7 +15,6 @@ const App = () => {
 		<AuthProvider>
 			<Router>
 				<Header />
-				<Sidebar />
 				<Switch>
 					<Route path="/login" component={Login} />
 					<Route path="/dashboard" component={Dashboard} />

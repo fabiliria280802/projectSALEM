@@ -1,53 +1,61 @@
-import 'primereact/resources/themes/saga-blue/theme.css'; // Importa el tema que prefieras
+import React, { useState } from 'react';
+import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
-import { PanelMenu } from 'primereact';
+import { Sidebar as PrimeSidebar } from 'primereact/sidebar';
+import { Button } from 'primereact/button';
+import { PanelMenu } from 'primereact/panelmenu';
 
 const Sidebar = () => {
-	const items = [
-		{
-			label: 'Dashboard',
-			icon: 'pi pi-fw pi-home',
-			command: () => {
-				window.location.href = '/dashboard';
-			},
-		},
-		{
-			label: 'Subir Facturas',
-			icon: 'pi pi-fw pi-upload',
-			command: () => {
-				window.location.href = '/upload-invoices';
-			},
-		},
-		{
-			label: 'Subir HES',
-			icon: 'pi pi-fw pi-upload',
-			command: () => {
-				window.location.href = '/upload-hes';
-			},
-		},
-		{
-			label: 'Subir MIGO',
-			icon: 'pi pi-fw pi-upload',
-			command: () => {
-				window.location.href = '/upload-migo';
-			},
-		},
-		{
-			label: 'Gestión de Usuarios',
-			icon: 'pi pi-fw pi-users',
-			command: () => {
-				window.location.href = '/user-management';
-			},
-		},
-	];
+    const [visible, setVisible] = useState(false);
 
-	return (
-		<div className="p-sidebar p-component" style={{ width: '250px' }}>
-			<PanelMenu model={items} style={{ width: '100%' }} />
-		</div>
-	);
+    const items = [
+        {
+            label: 'Dashboard',
+            icon: 'pi pi-fw pi-home',
+            command: () => {
+                window.location.href = '/dashboard';
+            },
+        },
+        {
+            label: 'Subir Facturas',
+            icon: 'pi pi-fw pi-upload',
+            command: () => {
+                window.location.href = '/upload-invoices';
+            },
+        },
+        {
+            label: 'Subir HES',
+            icon: 'pi pi-fw pi-upload',
+            command: () => {
+                window.location.href = '/upload-hes';
+            },
+        },
+        {
+            label: 'Subir MIGO',
+            icon: 'pi pi-fw pi-upload',
+            command: () => {
+                window.location.href = '/upload-migo';
+            },
+        },
+        {
+            label: 'Gestión de Usuarios',
+            icon: 'pi pi-fw pi-users',
+            command: () => {
+                window.location.href = '/user-management';
+            },
+        },
+    ];
+
+    return (
+        <div>
+            <Button icon="pi pi-bars" onClick={() => setVisible(true)} className="p-mr-2" />
+            <PrimeSidebar visible={visible} onHide={() => setVisible(false)}>
+                <PanelMenu model={items} style={{ width: '100%' }} />
+            </PrimeSidebar>
+        </div>
+    );
 };
 
 export default Sidebar;
