@@ -20,7 +20,7 @@ Fabiana Liria & Mateo Ávila
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/projectSALEM.git
+    git clone https://github.com/fabiliria280802/projectSALEM.git
     ```
 
 2. **Open two terminals:**
