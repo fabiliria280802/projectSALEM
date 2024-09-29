@@ -20,13 +20,13 @@ Fabiana Liria & Mateo Ávila
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/projectSALEM.git
+    git clone https://github.com/fabiliria280802/projectSALEM.git
     ```
 
 2. **Open two terminals:**
 
     - **Terminal 1 (Backend setup):**
-      Navigate to the backend directory:
+      Navigate to the backend directory (adjust the path accordingly if needed):
       ```bash
       cd /c:/Users/PC/Desktop/Tesis/projectSALEM/backend
       ```
