@@ -1,34 +1,53 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { getSharePointData } = require('../services/sharePointService');
+const User = require('../models/User');
 
-exports.login = async (req, res) => {
-	const { username, password } = req.body;
+exports.login = async (req, res, next) => {
+    const { username, password } = req.body;
 
-	// Suponiendo que tienes una lista en SharePoint llamada "Users" con campos "username" y "password"
-	const siteUrl = process.env.SHAREPOINT_SITE_URL;
-	const listName = 'Users';
-	const accessToken = process.env.SHAREPOINT_ACCESS_TOKEN;
+    try {
+        const user = await User.findOne({ username });
 
-	try {
-		const users = await getSharePointData(siteUrl, listName, accessToken);
-		const user = users.find(user => user.username === username);
+        if (!user) {
+            const error = new Error('Usuario no encontrado');
+            error.statusCode = 401;
+            return next(error);
+        }
 
-		if (!user || !bcrypt.compareSync(password, user.password)) {
-			return res.status(401).json({ message: 'Credenciales incorrectas' });
-		}
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            const error = new Error('Contraseña incorrecta');
+            error.statusCode = 401;
+            return next(error);
+        }
 
-		const token = jwt.sign(
-			{ id: user.id, username: user.username },
-			process.env.JWT_SECRET,
-			{ expiresIn: '1h' },
-		);
+        const token = jwt.sign(
+            { id: user._id, username: user.username, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
 
-		res.json({ token, user: { id: user.id, username: user.username } });
-	} catch (error) {
-		res
-			.status(500)
-			.json({ message: 'Error al autenticar', error: error.message });
-	}
+        res.json({
+            token,
+            user: { id: user._id, username: user.username, role: user.role }
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.getUserProfile = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) {
+            const error = new Error('Usuario no encontrado');
+            error.statusCode = 404;
+            return next(error);
+        }
+        res.json(user);
+    } catch (error) {
+        next(error);
+    }
 };

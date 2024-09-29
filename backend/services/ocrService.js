@@ -1,11 +1,18 @@
-const vision = require('@google-cloud/vision');
+const { spawn } = require('child_process');
 
-const client = new vision.ImageAnnotatorClient();
+const runOCR = (filePath) => {
+    return new Promise((resolve, reject) => {
+        const pythonProcess = spawn('python3', ['controllers/analyzeController.py', filePath]);
 
-async function extractTextFromImage(imagePath) {
-	const [result] = await client.textDetection(imagePath);
-	const detections = result.textAnnotations;
-	return detections.map(text => text.description).join(' ');
-}
+        pythonProcess.stdout.on('data', (data) => {
+            resolve(data.toString());
+        });
 
-module.exports = { extractTextFromImage };
+        pythonProcess.stderr.on('data', (data) => {
+            reject(`Error: ${data}`);
+        });
+    });
+};
+
+module.exports = { runOCR };
+
