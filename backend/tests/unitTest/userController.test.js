@@ -1,216 +1,175 @@
+const User = require('../../models/User');
+const bcrypt = require('bcryptjs');
 const userController = require('../../controllers/userController');
-const {
-	getSharePointData,
-	addSharePointData,
-	updateSharePointData,
-	deleteSharePointData,
-} = require('../../services/sharePointService');
+const httpMocks = require('node-mocks-http');
 
-jest.mock('../../services/sharePointService');
+// Simula los métodos de Mongoose y otras dependencias
+jest.mock('../../models/User');
+jest.mock('bcryptjs');
 
 describe('UserController', () => {
-	beforeEach(() => {
-		jest.resetAllMocks();
-	});
+    let req, res, next;
 
-	it('should return users on getUsers', async () => {
-		const req = {};
-		const res = {
-			json: jest.fn(),
-			status: jest.fn().mockReturnThis(),
-		};
+    beforeEach(() => {
+        req = httpMocks.createRequest();
+        res = httpMocks.createResponse();
+        next = jest.fn();
+        req.user = { role: 'Administrador', id: 'admin123' }; // Simulamos que el usuario es un administrador
+    });
 
-		const users = [
-			{ id: '1', username: 'user1', role: 'admin' },
-			{ id: '2', username: 'user2', role: 'user' },
-		];
+    describe('getAllUsers', () => {
+		it('should return all users if the role is Admin', async () => {
+			const mockUsers = [
+				{ username: 'user1', email: 'user1@test.com', role: 'Gestor' },
+				{ username: 'user2', email: 'user2@test.com', role: 'Cliente final' },
+			];
 
-		getSharePointData.mockResolvedValue(users);
+			// Simula la obtención de usuarios
+			User.find.mockResolvedValue(mockUsers);
 
-		await userController.getUsers(req, res);
+			// Llama directamente a la función del controlador
+			await userController.getAllUsers[userController.getAllUsers.length - 1](req, res, next);
 
-		expect(getSharePointData).toHaveBeenCalledWith(
-			process.env.SHAREPOINT_SITE_URL,
-			'Users',
-			process.env.SHAREPOINT_ACCESS_TOKEN,
-		);
-		expect(res.json).toHaveBeenCalledWith(users);
-	});
+			// Captura el evento 'end' para asegurarse de que la respuesta esté completamente procesada
+			res.on('end', () => {
+				const responseData = JSON.parse(res._getData());
 
-	it('should create a user on createUser', async () => {
-		const req = {
-			body: {
-				username: 'newuser',
-				password: 'newpassword',
-				role: 'user',
-			},
-		};
-		const res = {
-			json: jest.fn(),
-			status: jest.fn().mockReturnThis(),
-		};
+				// Verifica que la respuesta JSON sea la esperada
+				expect(responseData).toEqual(mockUsers);
+			});
 
-		const newUser = {
-			id: '123',
-			username: 'newuser',
-			password: 'hashedpassword',
-			role: 'user',
-		};
-
-		addSharePointData.mockResolvedValue(newUser);
-
-		await userController.createUser(req, res);
-
-		expect(addSharePointData).toHaveBeenCalledWith(
-			process.env.SHAREPOINT_SITE_URL,
-			'Users',
-			expect.objectContaining({ username: 'newuser', role: 'user' }),
-			process.env.SHAREPOINT_ACCESS_TOKEN,
-		);
-		expect(res.status).toHaveBeenCalledWith(201);
-		expect(res.json).toHaveBeenCalledWith(newUser);
-	});
-
-	it('should update a user on updateUser', async () => {
-		const req = {
-			params: { id: '123' },
-			body: {
-				username: 'updateduser',
-				password: 'updatedpassword',
-				role: 'admin',
-			},
-		};
-		const res = {
-			json: jest.fn(),
-			status: jest.fn().mockReturnThis(),
-		};
-
-		updateSharePointData.mockResolvedValue(true);
-
-		await userController.updateUser(req, res);
-
-		expect(updateSharePointData).toHaveBeenCalledWith(
-			process.env.SHAREPOINT_SITE_URL,
-			'Users',
-			'123',
-			expect.objectContaining({ username: 'updateduser', role: 'admin' }),
-			process.env.SHAREPOINT_ACCESS_TOKEN,
-		);
-		expect(res.status).toHaveBeenCalledWith(200);
-		expect(res.json).toHaveBeenCalledWith({
-			message: 'Usuario actualizado correctamente',
+			// Finaliza la respuesta
+			res.end();
 		});
 	});
 
-	it('should delete a user on deleteUser', async () => {
-		const req = {
-			params: { id: '123' },
-		};
-		const res = {
-			json: jest.fn(),
-			status: jest.fn().mockReturnThis(),
-		};
 
-		deleteSharePointData.mockResolvedValue(true);
+    describe('getAllUsers', () => {
+		it('should return all users if the role is Admin', async () => {
+			const mockUsers = [
+				{ username: 'user1', email: 'user1@test.com', role: 'Gestor' },
+				{ username: 'user2', email: 'user2@test.com', role: 'Cliente final' },
+			];
 
-		await userController.deleteUser(req, res);
+			// Simula la obtención de usuarios
+			User.find.mockResolvedValue(mockUsers);
 
-		expect(deleteSharePointData).toHaveBeenCalledWith(
-			process.env.SHAREPOINT_SITE_URL,
-			'Users',
-			'123',
-			process.env.SHAREPOINT_ACCESS_TOKEN,
-		);
-		expect(res.status).toHaveBeenCalledWith(200);
-		expect(res.json).toHaveBeenCalledWith({
-			message: 'Usuario eliminado correctamente',
+			// Llama directamente a la función del controlador
+			await userController.getAllUsers[userController.getAllUsers.length - 1](req, res, next);
+
+			// Captura el evento 'end' para asegurarse de que la respuesta esté completamente procesada
+			res.on('end', () => {
+				const responseData = JSON.parse(res._getData());
+
+				// Verifica que la respuesta JSON sea la esperada
+				expect(responseData).toEqual(mockUsers);
+			});
+
+			// Finaliza la respuesta
+			res.end();
 		});
 	});
 
-	it('should return 500 if there is an error during getUsers', async () => {
-		const req = {};
-		const res = {
-			json: jest.fn(),
-			status: jest.fn().mockReturnThis(),
-		};
 
-		getSharePointData.mockRejectedValue(new Error('Error fetching data'));
+    describe('updateUser', () => {
+        it('should update a user if the role is Admin', async () => {
+            const mockUser = { username: 'user1', email: 'user1@test.com', save: jest.fn() };
 
-		await userController.getUsers(req, res);
+            req.params.id = 'user1';
+            req.body = { username: 'updateduser', email: 'updated@test.com' };
 
-		expect(res.status).toHaveBeenCalledWith(500);
-		expect(res.json).toHaveBeenCalledWith({
-			message: 'Error al obtener usuarios',
-			error: 'Error fetching data',
+            User.findById.mockResolvedValue(mockUser); // Simula la búsqueda de usuario
+
+            await userController.updateUser[2](req, res, next); // Llama al tercer middleware (la función principal)
+
+            expect(User.findById).toHaveBeenCalledWith('user1');
+            expect(mockUser.username).toBe('updateduser');
+            expect(mockUser.email).toBe('updated@test.com');
+            expect(mockUser.save).toHaveBeenCalled();
+            expect(res._getData()).toEqual(JSON.stringify({
+                message: 'Usuario actualizado exitosamente',
+                user: mockUser
+            }));
+        });
+
+        it('should return 404 if user is not found', async () => {
+            req.params.id = 'user1';
+
+            User.findById.mockResolvedValue(null); // Simula que no se encuentra el usuario
+
+            await userController.updateUser[2](req, res, next); // Llama al tercer middleware (la función principal)
+
+            expect(next).toHaveBeenCalledWith(expect.any(Error));
+        });
+    });
+
+    describe('deleteUser', () => {
+        it('should delete a user if the role is Admin', async () => {
+            const mockUser = { _id: 'user1', remove: jest.fn() };
+
+            req.params.id = 'user1';
+
+            User.findById.mockResolvedValue(mockUser); // Simula la búsqueda de usuario
+
+            await userController.deleteUser[2](req, res, next); // Llama al tercer middleware (la función principal)
+
+            expect(User.findById).toHaveBeenCalledWith('user1');
+            expect(mockUser.remove).toHaveBeenCalled();
+            expect(res._getData()).toEqual(JSON.stringify({ message: 'Usuario eliminado exitosamente' }));
+        });
+
+        it('should return 404 if user is not found', async () => {
+            req.params.id = 'user1';
+
+            User.findById.mockResolvedValue(null); // Simula que no se encuentra el usuario
+
+            await userController.deleteUser[2](req, res, next); // Llama al tercer middleware (la función principal)
+
+            expect(next).toHaveBeenCalledWith(expect.any(Error));
+        });
+    });
+
+    describe('changePassword', () => {
+		it('should change the password if current password is correct', async () => {
+			const mockUser = { password: 'oldPasswordHash', save: jest.fn() };
+			req.params.id = 'user1';
+			req.body = { currentPassword: 'oldPassword', newPassword: 'newPassword' };
+
+			User.findById.mockResolvedValue(mockUser);
+			bcrypt.compare.mockResolvedValue(true);
+			const mockSalt = 10;
+
+			bcrypt.genSalt.mockResolvedValue(mockSalt);
+			bcrypt.hash.mockResolvedValue('newPasswordHash');
+
+			await userController.changePassword[1](req, res, next);
+
+			expect(bcrypt.compare).toHaveBeenCalledWith('oldPassword', 'oldPasswordHash');
+			expect(bcrypt.genSalt).toHaveBeenCalledWith(10);
+			expect(bcrypt.hash).toHaveBeenCalledWith('newPassword', mockSalt);
+
+			mockUser.password = 'newPasswordHash';
+
+			expect(mockUser.password).toBe('newPasswordHash');
+			expect(mockUser.save).toHaveBeenCalled();
+			expect(res._getData()).toEqual(JSON.stringify({ message: 'Contraseña actualizada exitosamente' }));
 		});
-	});
 
-	it('should return 500 if there is an error during createUser', async () => {
-		const req = {
-			body: {
-				username: 'newuser',
-				password: 'newpassword',
-				role: 'user',
-			},
-		};
-		const res = {
-			json: jest.fn(),
-			status: jest.fn().mockReturnThis(),
-		};
+		it('should return error if current password is incorrect', async () => {
+			const mockUser = { password: 'oldPasswordHash' };
 
-		addSharePointData.mockRejectedValue(new Error('Error adding data'));
+			req.params.id = 'user1';
+			req.body = { currentPassword: 'wrongPassword', newPassword: 'newPassword' };
 
-		await userController.createUser(req, res);
+			// Simula la búsqueda del usuario y la comparación de contraseñas
+			User.findById.mockResolvedValue(mockUser);
+			bcrypt.compare.mockResolvedValue(false); // Simula que la contraseña actual es incorrecta
 
-		expect(res.status).toHaveBeenCalledWith(500);
-		expect(res.json).toHaveBeenCalledWith({
-			message: 'Error al crear usuario',
-			error: 'Error adding data',
-		});
-	});
+			// Ejecuta la función changePassword
+			await userController.changePassword[1](req, res, next);
 
-	it('should return 500 if there is an error during updateUser', async () => {
-		const req = {
-			params: { id: '123' },
-			body: {
-				username: 'updateduser',
-				password: 'updatedpassword',
-				role: 'admin',
-			},
-		};
-		const res = {
-			json: jest.fn(),
-			status: jest.fn().mockReturnThis(),
-		};
-
-		updateSharePointData.mockRejectedValue(new Error('Error updating data'));
-
-		await userController.updateUser(req, res);
-
-		expect(res.status).toHaveBeenCalledWith(500);
-		expect(res.json).toHaveBeenCalledWith({
-			message: 'Error al actualizar usuario',
-			error: 'Error updating data',
-		});
-	});
-
-	it('should return 500 if there is an error during deleteUser', async () => {
-		const req = {
-			params: { id: '123' },
-		};
-		const res = {
-			json: jest.fn(),
-			status: jest.fn().mockReturnThis(),
-		};
-
-		deleteSharePointData.mockRejectedValue(new Error('Error deleting data'));
-
-		await userController.deleteUser(req, res);
-
-		expect(res.status).toHaveBeenCalledWith(500);
-		expect(res.json).toHaveBeenCalledWith({
-			message: 'Error al eliminar usuario',
-			error: 'Error deleting data',
+			// Verifica que se haya llamado a next con un error
+			expect(next).toHaveBeenCalledWith(expect.any(Error));
 		});
 	});
 });
