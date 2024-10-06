@@ -1,8 +1,12 @@
+/*
+    Description: Authentication logic for login and get user profile
+    By: Fabiana Liria
+    version: 1.5
+*/
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/authMiddleware');
-// Middleware para verificar si el usuario es administrador
 const isAdmin = (req, res, next) => {
     if (req.user.role !== 'Administrador') {
         return res.status(403).json({ message: 'No autorizado, debes ser Administrador' });
@@ -10,10 +14,9 @@ const isAdmin = (req, res, next) => {
     next();
 };
 
-// Crear un nuevo usuario (solo Administrador)
 exports.createUser = [
-    authMiddleware, // Verifica que el usuario esté autenticado
-    isAdmin,        // Verifica que el usuario sea administrador
+    authMiddleware,
+    isAdmin,
     async (req, res, next) => {
         const { username, password, email, role } = req.body;
 

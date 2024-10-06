@@ -1,3 +1,9 @@
+"""
+    Description: IA for clasification of bills
+    By: Fabiana Liria
+    version: 1.0
+"""
+
 import tensorflow as tf
 from tensorflow.keras import layers, models
 from tensorflow.keras.optimizers import SGD
