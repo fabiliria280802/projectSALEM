@@ -1,0 +1,173 @@
+.loginPage {
+    background-color: #fff;
+    display: flex;
+    padding-top: 24px;
+    flex-direction: column;
+    overflow: hidden;
+    color: #afafaf;
+    font: 600 20px Inter, sans-serif;
+  }
+  
+  .contentWrapper {
+    display: flex;
+    margin-left: 224px;
+    width: 672px;
+    max-width: 100%;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .logo {
+    aspect-ratio: 3.6;
+    object-fit: contain;
+    object-position: center;
+    width: 227px;
+    align-self: flex-start;
+    max-width: 100%;
+  }
+  
+  .title {
+    color: #000;
+    align-self: center;
+    margin: 225px 0 0 43px;
+  }
+  
+  @media (max-width: 991px) {
+    .title {
+      margin-top: 40px;
+    }
+  }
+  
+  .subtitle {
+    margin: 8px 142px 0 0;
+  }
+  
+  @media (max-width: 991px) {
+    .subtitle {
+      margin-right: 10px;
+    }
+  }
+  
+  .description {
+    margin-right: 103px;
+  }
+  
+  @media (max-width: 991px) {
+    .description {
+      margin-right: 10px;
+    }
+  }
+  
+  .microsoftButton {
+    border-radius: 10px;
+    display: flex;
+    margin-top: 29px;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    color: #000;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #a7a7a7;
+  }
+  
+  .microsoftIcon {
+    aspect-ratio: 1.05;
+    object-fit: contain;
+    object-position: center;
+    width: 20px;
+    align-self: stretch;
+    margin: auto 0;
+  }
+  
+  .microsoftButtonText {
+    align-self: stretch;
+    margin: auto 0;
+  }
+  
+  .microsoftLoginInfo {
+    font-size: 10px;
+    font-weight: 500;
+    text-align: center;
+    margin: 12px 27px 0 0;
+  }
+  
+  @media (max-width: 991px) {
+    .microsoftLoginInfo {
+      margin-right: 10px;
+    }
+  }
+  
+  .divider {
+    margin-top: 15px;
+    width: 352px;
+    max-width: 100%;
+    height: 0;
+    border: 1px solid #dbdbdb;
+  }
+  
+  .inputLabel {
+    color: #878787;
+    font-size: 10px;
+    font-weight: 500;
+    align-self: center;
+    margin: 24px 0 0 28px;
+  }
+  
+  .inputField {
+    border-radius: 10px;
+    display: flex;
+    margin-top: 12px;
+    width: 352px;
+    max-width: 100%;
+    height: 39px;
+    gap: 10px;
+    padding: 10px 0;
+    border: 1px solid #a7a7a7;
+  }
+  
+  .continueButton {
+    align-self: stretch;
+    border-radius: 10px;
+    background-color: #0095ff;
+    margin-top: 32px;
+    gap: 10px;
+    font-size: 16px;
+    color: #fff;
+    white-space: nowrap;
+    padding: 10px;
+    border: 1px solid #0095ff;
+  }
+  
+  @media (max-width: 991px) {
+    .continueButton {
+      white-space: initial;
+    }
+  }
+  
+  .footerImage {
+    aspect-ratio: 76.92;
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+    margin-top: 288px;
+  }
+  
+  @media (max-width: 991px) {
+    .footerImage {
+      max-width: 100%;
+      margin-top: 40px;
+    }
+  }
+  
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
