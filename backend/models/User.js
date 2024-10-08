@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    password: { type: String },
+    email: { type: String, required: true }, //para prod agregar:, unique: true
     role: {
         type: String,
         enum: ['Administrador', 'Gestor', 'Cliente final', 'Sin Asignar'],

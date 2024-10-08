@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const validationSchema = new Schema({
+const validationSchema = new mongoose.Schema({
     document_id: { type: Schema.Types.ObjectId, required: true },
     document_type: {
         type: String,

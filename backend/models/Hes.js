@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const hesSchema = new Schema({
+const hesSchema = new mongoose.Schema({
     service_code: { type: String, required: true },
     service_description: { type: String, required: true },
     provider_ruc: { type: String, required: true },

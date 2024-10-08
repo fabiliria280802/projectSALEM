@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const migoSchema = new Schema({
+const migoSchema = new mongoose.Schema({
     movement_number: { type: String, required: true, unique: true },
     movement_type: {
         type: String,

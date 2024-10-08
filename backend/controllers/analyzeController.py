@@ -40,11 +40,6 @@ def preprocess_images(images):
     return images / 255.0
 
 if __name__ == "__main__":
-    # Cargar datos de entrenamiento de OCR (por ejemplo, imágenes de texto y etiquetas de caracteres)
-    # Aquí deberías cargar las imágenes y etiquetas de entrenamiento
-    # train_images, train_labels = ...
-
-    # Definir el tamaño de entrada y la cantidad de clases (número de caracteres reconocidos)
     input_shape = (32, 32, 1)
     num_classes = 36
 

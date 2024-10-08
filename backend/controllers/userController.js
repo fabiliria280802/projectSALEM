@@ -7,6 +7,9 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/authMiddleware');
+const { sendPasswordCreationEmail } = require('../controllers/notificationController');
+const mongoose = require('mongoose');
+
 const isAdmin = (req, res, next) => {
     if (req.user.role !== 'Administrador') {
         return res.status(403).json({ message: 'No autorizado, debes ser Administrador' });
@@ -18,7 +21,7 @@ exports.createUser = [
     authMiddleware,
     isAdmin,
     async (req, res, next) => {
-        const { username, password, email, role } = req.body;
+        const { username, email, role } = req.body;
 
         try {
             const existingUser = await User.findOne({ username });
@@ -31,21 +34,24 @@ exports.createUser = [
 
             const newUser = new User({
                 username,
-                password,
                 email,
                 role
             });
 
             await newUser.save();
 
-            // Excluir la contraseña del usuario en la respuesta
+            await sendPasswordCreationEmail(newUser);
+
             const userResponse = {
                 username: newUser.username,
                 email: newUser.email,
                 role: newUser.role,
             };
 
-            res.status(201).json({ message: 'Usuario creado exitosamente', user: userResponse });
+            res.status(201).json({
+                message: 'Usuario creado exitosamente. Se ha enviado un correo para la creación de la contraseña.',
+                user: userResponse
+            });
         } catch (error) {
             next(error);
         }
@@ -65,8 +71,26 @@ exports.getAllUsers = [
     }
 ];
 
+exports.getAUser = [
+    authMiddleware,
+    async (req, res, next) => {
+        try {
 
-// Actualizar un usuario (solo Administrador)
+            const { id } = req.params;
+            const user = await User.findById(id);
+
+            if (!user) {
+                return res.status(404).json({ message: 'Usuario no encontrado' });
+            }
+            return res.status(200).json(user);
+
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Error al obtener el usuario' });
+        }
+    }
+];
+
 exports.updateUser = [
     authMiddleware,
     isAdmin,
@@ -97,7 +121,6 @@ exports.updateUser = [
     }
 ];
 
-// Eliminar un usuario (solo Administrador)
 exports.deleteUser = [
     authMiddleware,
     isAdmin,
@@ -105,15 +128,13 @@ exports.deleteUser = [
         const { id } = req.params;
 
         try {
-            const user = await User.findById(id);
+            const user = await User.findByIdAndDelete(id);
 
             if (!user) {
                 const error = new Error('Usuario no encontrado');
                 error.statusCode = 404;
                 return next(error);
             }
-
-            await user.remove();
 
             res.json({ message: 'Usuario eliminado exitosamente' });
         } catch (error) {
@@ -122,42 +143,51 @@ exports.deleteUser = [
     }
 ];
 
-// Cambiar contraseña de un usuario (solo Administrador o usuario propietario)
 exports.changePassword = [
     authMiddleware,
     async (req, res, next) => {
-        const { id } = req.params;
+        const { currentUserId, userIdToModify } = req.params;
         const { currentPassword, newPassword } = req.body;
 
         try {
-            // Permitir que el propio usuario cambie su contraseña o un administrador
-            if (req.user.role !== 'Administrador' && req.user.id !== id) {
-                return res.status(403).json({ message: 'No autorizado' });
+            if (!mongoose.Types.ObjectId.isValid(currentUserId) || !mongoose.Types.ObjectId.isValid(userIdToModify)) {
+                return res.status(400).json({ message: 'ID inválido' });
             }
 
-            const user = await User.findById(id);
+            const userToModify = await User.findById(userIdToModify);
 
-            if (!user) {
-                const error = new Error('Usuario no encontrado');
-                error.statusCode = 404;
-                return next(error);
+            if (!userToModify) {
+                return res.status(404).json({ message: 'Usuario no encontrado' });
             }
 
-            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            console.log("Usuario encontrado:", userToModify);
 
-            if (!isMatch) {
-                const error = new Error('La contraseña actual es incorrecta');
-                error.statusCode = 401;
-                return next(error);
+            // Caso 1: El usuario loggeado está cambiando su propia contraseña
+            if (currentUserId === userIdToModify) {
+                const isMatch = await bcrypt.compare(currentPassword, userToModify.password);
+
+                if (!isMatch) {
+                    return res.status(401).json({ message: 'La contraseña actual es incorrecta' });
+                }
+
+                const salt = await bcrypt.genSalt(10);
+                userToModify.password = await bcrypt.hash(newPassword, salt);
+                await userToModify.save();
+
+                return res.json({ message: 'Contraseña actualizada exitosamente' });
             }
 
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(newPassword, salt);
+            // Caso 2: El usuario loggeado es administrador y está intentando cambiar la contraseña de otro usuario
+            if (req.user.role === 'Administrador' && currentUserId !== userIdToModify) {
+                await sendPasswordCreationEmail(userToModify);
+                return res.json({ message: 'Correo enviado para que el usuario cree una nueva contraseña.' });
+            }
 
-            await user.save();
+            // Caso 3: No es ni administrador ni el mismo usuario
+            return res.status(403).json({ message: 'No autorizado' });
 
-            res.json({ message: 'Contraseña actualizada exitosamente' });
         } catch (error) {
+            console.error("Error en changePassword:", error);
             next(error);
         }
     }

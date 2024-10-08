@@ -1,31 +1,30 @@
-const nodemailer = require('nodemailer');
+
 const jwt = require('jsonwebtoken');
+const transporter = require('../helpers/mailer'); // Importa el transporter desde el mailer.js
 
-// Función para enviar correo de creación de contraseña
+// notificationController.js
 exports.sendPasswordCreationEmail = async (user) => {
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  const resetLink = `http://localhost:3000/create-password/${token}`;
+  try {
+    const resetLink = `http://localhost:5000/api/create-password/${user._id}`; // Ahora usa el ID del usuario
 
-  const transporter = nodemailer.createTransport({
-    service: 'Outlook',
-    auth: {
-      user: process.env.OUTLOOK_USER,
-      pass: process.env.OUTLOOK_PASS,
-    },
-  });
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Crea tu contraseña',
+      text: `Hola ${user.username}, por favor crea tu contraseña en el siguiente enlace: ${resetLink}`,
+    };
 
-  const mailOptions = {
-    from: process.env.OUTLOOK_USER,
-    to: user.email,
-    subject: 'Crea tu contraseña',
-    text: `Hola ${user.username}, por favor crea tu contraseña en el siguiente enlace: ${resetLink}`,
-  };
-
-  await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions);
+    console.log('Correo enviado con éxito.');
+  } catch (error) {
+    console.error('Error al enviar el correo:', error);
+    throw new Error('No se pudo enviar el correo de creación de contraseña');
+  }
 };
 
-// Función para enviar correo cuando faltan campos en un documento
-exports.sendMissingFieldsEmail = async (analysisResult, fileName) => {
+
+//TODO> CREAR ESTA FUNCIONALIDAD. Función para enviar correo cuando faltan campos en un documento
+/*exports.sendMissingFieldsEmail = async (analysisResult, fileName) => {
   const subject = `Campos faltantes en el documento: ${fileName}`;
   const missingFields = analysisResult.missing_fields.join(', ');
   const text = `
@@ -42,20 +41,13 @@ exports.sendMissingFieldsEmail = async (analysisResult, fileName) => {
     El equipo de validación de ENAP
   `;
 
-  const transporter = nodemailer.createTransport({
-    service: 'Outlook',
-    auth: {
-      user: process.env.OUTLOOK_USER,
-      pass: process.env.OUTLOOK_PASS,
-    },
-  });
 
   const mailOptions = {
     from: process.env.OUTLOOK_USER,
-    to: 'admin@empresa.com', // Cambia esto al correo del destinatario correcto
+    to: user.email,
     subject: subject,
     text: text,
   };
 
   await transporter.sendMail(mailOptions);
-};
+};*/

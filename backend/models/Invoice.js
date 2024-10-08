@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const invoiceSchema = new Schema({
+const invoiceSchema = new mongoose.Schema({
     invoice_number: { type: String, required: true, unique: true },
     provider_ruc: { type: String, required: true },
     provider_name: { type: String, required: true },

@@ -1,4 +1,4 @@
-const passport = require('passport');
+/*const passport = require('passport');
 const OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 const User = require('./models/User');
 
@@ -15,14 +15,13 @@ passport.use(new OIDCStrategy({
   },
   async (iss, sub, profile, accessToken, refreshToken, done) => {
     try {
-      // Buscar o crear usuario en MongoDB
       let user = await User.findOne({ email: profile._json.email });
       if (!user) {
         user = new User({
           username: profile.displayName,
           email: profile._json.email,
-          password: '', // No tiene contraseña aún
-          role: 'Sin Asignar', // Se asignará después por un administrador
+          password: '',
+          role: 'Sin Asignar',
         });
         await user.save();
 
@@ -35,12 +34,10 @@ passport.use(new OIDCStrategy({
   }
 ));
 
-// Serializar el usuario para la sesión
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// Deserializar el usuario de la sesión
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
@@ -51,3 +48,4 @@ passport.deserializeUser(async (id, done) => {
 });
 
 module.exports = passport;
+*/

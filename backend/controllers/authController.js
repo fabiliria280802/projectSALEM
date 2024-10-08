@@ -1,7 +1,7 @@
 /*
-    Description: Authentication logic for login and get user profile
+    Description: Authentication logic for login and get user profile.
     By: Fabiana Liria
-    version: 1.5
+    version: 1.6
 */
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
@@ -30,7 +30,7 @@ exports.login = async (req, res, next) => {
         const token = jwt.sign(
             { id: user._id, username: user.username, role: user.role },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '10h' }
         );
 
         res.json({

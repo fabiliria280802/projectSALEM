@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const reportSchema = new Schema({
+const reportSchema = new mongoose.Schema({
     document_type: {
         type: String,
         enum: ['Invoice', 'HES', 'MIGO'],
