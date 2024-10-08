@@ -1,7 +1,7 @@
 /*
     Description: Authentication logic for login and get user profile
     By: Fabiana Liria
-    version: 1.5
+    version: 1.6
 */
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
@@ -162,7 +162,6 @@ exports.changePassword = [
 
             console.log("Usuario encontrado:", userToModify);
 
-            // Caso 1: El usuario loggeado está cambiando su propia contraseña
             if (currentUserId === userIdToModify) {
                 const isMatch = await bcrypt.compare(currentPassword, userToModify.password);
 
@@ -177,13 +176,11 @@ exports.changePassword = [
                 return res.json({ message: 'Contraseña actualizada exitosamente' });
             }
 
-            // Caso 2: El usuario loggeado es administrador y está intentando cambiar la contraseña de otro usuario
             if (req.user.role === 'Administrador' && currentUserId !== userIdToModify) {
                 await sendPasswordCreationEmail(userToModify);
                 return res.json({ message: 'Correo enviado para que el usuario cree una nueva contraseña.' });
             }
 
-            // Caso 3: No es ni administrador ni el mismo usuario
             return res.status(403).json({ message: 'No autorizado' });
 
         } catch (error) {
