@@ -9,6 +9,16 @@ import UploadMIGO from './pages/UploadMIGO';
 import UserManagement from './pages/UserManagement';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
+import React from 'react';
+import LoginPage from './components/LoginPage';
+
+function App() {
+  return (
+    <div className="App">
+      <LoginPage />
+    </div>
+  );
+}
 
 const App = () => {
 	return (
