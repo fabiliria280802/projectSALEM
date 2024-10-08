@@ -5,18 +5,15 @@ const { sendMissingFieldsEmail } = require('../controllers/notificationControlle
 
 router.get('/documents', async (req, res) => {
   try {
-    // Obtener documentos de algún servicio como SharePoint
     const files = await getSharePointFiles(siteUrl, listName, accessToken);
 
     const ocrResults = [];
     for (const file of files) {
       const analysisResult = await processDocument(file);
 
-      // Enviar correo si faltan campos
       if (!analysisResult.valid) {
         await sendMissingFieldsEmail(analysisResult, file.fileName);
       }
-
       ocrResults.push({ file: file.fileName, content: analysisResult });
     }
 

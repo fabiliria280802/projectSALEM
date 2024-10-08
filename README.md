@@ -32,6 +32,8 @@ Fabiana Liria & Mateo Ávila
       ```
         Server will run on port 5000
 
+      if you are using POSTMAN, you should copy and paste this url [http://localhost:5000/api/auth/login](http://localhost:5000/api/auth/login)
+
     - **Terminal 2 (Frontend setup):**
       In the second terminal, navigate to the frontend directory (adjust the path accordingly if needed):
       ```bash

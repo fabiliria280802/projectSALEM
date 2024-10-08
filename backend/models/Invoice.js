@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const invoiceSchema = new mongoose.Schema({
+    user_id: { type: Schema.Types.ObjectId, ref: 'User' },
     invoice_number: { type: String, required: true, unique: true },
     provider_ruc: { type: String, required: true },
     provider_name: { type: String, required: true },
@@ -13,14 +14,12 @@ const invoiceSchema = new mongoose.Schema({
         subtotal: { type: Number, required: true }
     }],
     total: { type: Number, required: true },
-    validation_status: {
-        type: String,
-        enum: ['Pending', 'Approved', 'Rejected'],
-        default: 'Pending'
-    },
-    user_id: { type: Schema.Types.ObjectId, ref: 'User' },
     upload_date: { type: Date, default: Date.now },
-    validation_errors: { type: String }
+    invoice_documents: {
+        service_invoice: { type: String, required: true },
+        accounting_invoice: { type: String, required: true },
+        service_contract: { type: String, required: true }
+    }
 });
 
 module.exports = mongoose.model('Invoice', invoiceSchema);

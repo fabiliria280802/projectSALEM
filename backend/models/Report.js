@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
-    document_type: {
-        type: String,
-        enum: ['Invoice', 'HES', 'MIGO'],
-        required: true
-    },
+    document_type: { type: String, enum: ['Invoice', 'HES', 'MIGO'], required: true },
     document_count: { type: Number, required: true },
     approved_documents: { type: Number, required: true },
     rejected_documents: { type: Number, required: true },
