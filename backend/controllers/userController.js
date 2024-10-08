@@ -3,19 +3,14 @@
     By: Fabiana Liria
     version: 1.6
 */
+
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/authMiddleware');
 const { sendPasswordCreationEmail } = require('../controllers/notificationController');
 const mongoose = require('mongoose');
-
-const isAdmin = (req, res, next) => {
-    if (req.user.role !== 'Administrador') {
-        return res.status(403).json({ message: 'No autorizado, debes ser Administrador' });
-    }
-    next();
-};
+const { isAdmin } = require('../helpers/roleHelper');
 
 exports.createUser = [
     authMiddleware,
@@ -41,7 +36,6 @@ exports.createUser = [
             await newUser.save();
 
             await sendPasswordCreationEmail(newUser);
-
             const userResponse = {
                 username: newUser.username,
                 email: newUser.email,

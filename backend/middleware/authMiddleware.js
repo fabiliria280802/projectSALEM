@@ -9,8 +9,6 @@ const authMiddleware = (req, res, next) => {
     }
 
     try {
-        //console.log('Token:', token);
-
         const decoded = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
         req.user = decoded;
         next();
@@ -18,6 +16,5 @@ const authMiddleware = (req, res, next) => {
         res.status(400).json({ message: 'Token no válido.' });
     }
 };
-
 
 module.exports = authMiddleware;

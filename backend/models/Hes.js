@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const hesSchema = new mongoose.Schema({
-    user_id: { type: Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     service_code: { type: String, required: true },
     service_description: { type: String, required: true },
     provider_ruc: { type: String, required: true },
@@ -12,4 +12,4 @@ const hesSchema = new mongoose.Schema({
     upload_date: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('HES', hesSchema);
+module.exports = mongoose.model('Hes', hesSchema);

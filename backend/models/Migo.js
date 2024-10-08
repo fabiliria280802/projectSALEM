@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const migoSchema = new mongoose.Schema({
-    user_id: { type: Schema.Types.ObjectId, ref: 'User' },
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     movement_number: { type: String, required: true, unique: true },
     movement_type: { type: String, enum: ['Entry', 'Exit', 'Transfer'], required: true },
     material_description: { type: String, required: true },
@@ -15,4 +15,4 @@ const migoSchema = new mongoose.Schema({
     upload_date: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('MIGO', migoSchema);
+module.exports = mongoose.model('Migo', migoSchema);

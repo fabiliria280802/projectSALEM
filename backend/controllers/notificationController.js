@@ -1,11 +1,14 @@
-
+/*
+    Description: Notification
+    By: Fabiana Liria
+    version: 1.5
+*/
 const jwt = require('jsonwebtoken');
-const transporter = require('../helpers/mailer'); // Importa el transporter desde el mailer.js
+const transporter = require('../helpers/mailerHelper');
 
-// notificationController.js
 exports.sendPasswordCreationEmail = async (user) => {
   try {
-    const resetLink = `http://localhost:5000/api/create-password/${user._id}`; // Ahora usa el ID del usuario
+    const resetLink = `http://localhost:5000/api/create-password/${user._id}`;
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
