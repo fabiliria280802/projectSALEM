@@ -1,0 +1,25 @@
+{
+    "Invoice": {
+      "fields": {
+        "invoice_number": "Número de factura",
+        "provider_ruc": "RUC",
+        "provider_name": "Nombre del proveedor",
+        "issue_date": "Fecha de emisión",
+        "total": "Total"
+      }
+    },
+    "HES": {
+      "fields": {
+        "service_code": "Código del servicio",
+        "service_description": "Descripción del servicio",
+        "total": "Total a pagar"
+      }
+    },
+    "MIGO": {
+      "fields": {
+        "movement_number": "Número de documento del movimiento",
+        "material_code": "Código del material",
+        "total": "Total a pagar"
+      }
+    }
+  }

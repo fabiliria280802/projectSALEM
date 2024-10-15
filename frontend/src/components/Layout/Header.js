@@ -5,6 +5,8 @@ import 'primeicons/primeicons.css';
 import Sidebar from '../Layout/Sidebar';
 import { Button, Menubar } from 'primereact';
 import authService from '../../services/authService';
+import logo from '../../assets/logo.png';
+import styles from './Header.module.css'
 
 const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,10 +25,9 @@ const Header = () => {
 
     const start = (
         <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={logo} alt="Logo" style={{ height: '40px' }} />
             {isLoggedIn && <Sidebar />}
-            <h1 style={{ margin: 0, color: 'white', paddingLeft: 10 }}>
-                Welcome to SALEM
-            </h1>
+
         </div>
     );
 
@@ -37,13 +38,19 @@ const Header = () => {
             className="p-button-secondary"
             onClick={handleLogout}
         />
-    ) : null;
+    ) : (
+        <Button
+            label="Iniciar sesión"
+            className={styles.buttons}
+            onClick={() => window.location.href = '/login'}
+        />
+    );
 
     return (
         <Menubar
+            className={styles.header}
             start={start}
             end={end}
-            style={{ backgroundColor: '#1976d2', border: 'none' }}
         />
     );
 };

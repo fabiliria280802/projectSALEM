@@ -1,0 +1,39 @@
+.homePage{
+    background-color: #F5F8FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 55vh;
+}
+
+.outerSquare {
+    border-radius: 2.5cap;
+    width: calc(100% - 10%);
+    height: calc(100% - 10%);
+    background-color: #FAECF5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons{
+	background-color: black;
+    border-color: black;
+	border-radius: 10cap;
+}
+.homePageInfo{
+    margin: 3%;
+}
+.homePageTittle{
+    /*font-family: Arial, Helvetica, sans-serif;*/
+    font-family: Arial;
+    font-size: 12px;
+}
+.homePageParagraph{
+    font-size: 32px;
+}
+.homePageImage{
+    margin: 3%;
+    width: calc(100% - 10%);
+    height: calc(100% - 10%);
+}
