@@ -1,0 +1,27 @@
+
+.buttons{
+	background-color: black;
+    border-color: black;
+	border-radius: 10cap;
+}
+
+.header{
+    background-color: #FFFFFF;
+    border: none;
+    position: relative;
+    box-shadow: 0 0 0 2px #cccccc;
+    height: 70px;
+}
+
+.menuItem {
+    font-size: 18px;
+    font-weight: normal;
+    padding: 10px;
+}
+
+
+@media (max-width: 768px) {
+    .header {
+        justify-content: space-between;
+    }
+}

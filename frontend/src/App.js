@@ -1,62 +1,48 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
-import Dashboard from './pages/Dashboard';
-import UploadInvoices from './pages/UploadInvoices';
-import UploadHES from './pages/UploadHES';
-import UploadMIGO from './pages/UploadMIGO';
-import UserManagement from './pages/UserManagement';
+import DashboardPage from './pages/DashboardPage';
+import UploadDocumentsPage from './pages/UploadDocumentsPage';
+import UserManagementPage from './pages/UserManagementPage';
+import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
+import './App.css';
+
+const AppContent = () => {
+  const location = useLocation();
+
+  return (
+    <div className="App">
+      <Header />
+      <div className="content">
+        <Switch>
+          <Route path="/login" component={LoginPage} />
+
+          {/* Rutas protegidas con los roles correspondientes */}
+          <PrivateRoute path="/dashboard" component={DashboardPage} roles={['Administrador', 'Gestor']} />
+          <PrivateRoute path="/upload-documents" component={UploadDocumentsPage} roles={['Administrador', 'Gestor', 'Cliente final']} />
+          <PrivateRoute path="/user-management" component={UserManagementPage} roles={['Administrador']} />
+
+          {/* Rutas públicas */}
+          <Route path="/" component={HomePage} />
+        </Switch>
+      </div>
+      <Footer currentPath={location.pathname} />
+    </div>
+  );
+};
 
 const App = () => {
-	return (
-		<AuthProvider>
-			<Router>
-				<Header />
-				<Switch>
-					<Route path="/login" component={LoginPage} />
-					<Route path="/dashboard" component={Dashboard} />
-					<Route path="/upload-invoices" component={UploadInvoices} />
-					<Route path="/upload-hes" component={UploadHES} />
-					<Route path="/upload-migo" component={UploadMIGO} />
-					<Route path="/user-management" component={UserManagement} />
-					<Route path="/" component={HomePage} />
-				</Switch>
-				<Footer />
-			</Router>
-		</AuthProvider>
-	);
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
+  );
 };
 
 export default App;
-
-/*TODO: Original code
-
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-	<div className="App">
-	  <header className="App-header">
-		<img src={logo} className="App-logo" alt="logo" />
-		<p>
-		  Edit <code>src/App.js</code> and save to reload.
-		</p>
-		<a
-		  className="App-link"
-		  href="https://reactjs.org"
-		  target="_blank"
-		  rel="noopener noreferrer"
-		>
-		  Learn React
-		</a>
-	  </header>
-	</div>
-  );
-}
-
-export default App;*/

@@ -1,6 +1,6 @@
 import { Panel } from 'primereact/panel';
 
-const UserManagement = () => {
+const UserManagementPage = () => {
 	return (
 		<div className="p-container" style={{ padding: '2em' }}>
 			<Panel header="Gestión de Usuarios">
@@ -10,4 +10,4 @@ const UserManagement = () => {
 	);
 };
 
-export default UserManagement;
+export default UserManagementPage;

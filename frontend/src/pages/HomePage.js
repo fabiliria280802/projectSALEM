@@ -1,22 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from 'primereact/button';
-import styles from './HomePage.module.css';
+import styles from '../styles/HomePage.module.css';
 import homePage from '../assets/homePage.png';
 
 const HomePage = () => {
+    useEffect(() => {
+        document.body.style.backgroundColor = '#F5F8FF';
+        return () => {
+            document.body.style.backgroundColor = '';
+        };
+    }, []);
+
     return (
-        <div className={styles.homePage}>
+        <div className={styles.homePageContainer}>
             <div className={styles.outerSquare}>
                 <div className={styles.homePageInfo}>
-                    <h1 className={styles.homePageTittle}>TE ESPERAMOS</h1>
-                    <p className={styles.homePageParagraph}>Automatización inteligente para la gestión de documentos</p>
+                    <h1 className={styles.homePageTitle}>TE ESPERAMOS</h1>
+                    <p className={styles.homePageParagraph}>
+                        <b>Automatización inteligente para la gestión de documentos</b>
+                    </p>
                     <Button
                         label="Iniciar sesión"
                         className={styles.buttons}
-                        onClick={() => window.location.href = '/login'}/>
+                        onClick={() => window.location.href = '/login'}
+                    />
                 </div>
                 <div className={styles.homePageImage}>
-                    <img src={homePage} alt="Home Page" style={{ height: '100%' }}/>
+                    <img src={homePage} alt="Home Page" />
                 </div>
             </div>
         </div>

@@ -4,7 +4,7 @@ import { Panel } from 'primereact/panel';
 import { FileUpload } from 'primereact';
 import { Button } from 'primereact/button';
 
-const UploadHES = () => {
+const UploadDocumentsPage = () => {
 	const [file, setFile] = useState(null);
 
 	const handleFileChange = e => {
@@ -44,4 +44,4 @@ const UploadHES = () => {
 	);
 };
 
-export default UploadHES;
+export default UploadDocumentsPage;

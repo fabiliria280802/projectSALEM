@@ -1,5 +1,11 @@
 .App {
-	text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que la página ocupe al menos toda la altura de la ventana */
+}
+
+.content {
+    flex: 1;
 }
 
 .App-logo {
@@ -27,14 +33,12 @@
 	align-items: center;
 	justify-content: center;
 	font-size: calc(10px + 2vmin);
-	color: white;
+	color: #F5F8FF;
 }
 
 .App-link {
 	color: #61dafb;
 }
-
-
 
 @keyframes App-logo-spin {
 	from {
@@ -44,3 +48,4 @@
 		transform: rotate(360deg);
 	}
 }
+

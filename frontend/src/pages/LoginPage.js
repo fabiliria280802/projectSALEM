@@ -4,7 +4,7 @@ import authService from '../services/authService';
 import { Card } from 'primereact/card';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import styles from './LoginPage.module.css';
+import styles from '../styles/LoginPage.module.css';
 
 const LoginPage = () => {
     const [username, setUsername] = useState('');

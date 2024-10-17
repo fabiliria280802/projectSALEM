@@ -4,7 +4,7 @@ import 'primeicons/primeicons.css';
 
 import { Card } from 'primereact';
 
-const Dashboard = () => {
+const DashboardPage = () => {
 	return (
 		<div className="p-container" style={{ padding: '2em' }}>
 			<Card title="Dashboard">
@@ -14,4 +14,4 @@ const Dashboard = () => {
 	);
 };
 
-export default Dashboard;
+export default DashboardPage;
