@@ -4,10 +4,12 @@ import { Button, Menubar } from 'primereact';
 import authService from '../../services/authService';
 import logo from '../../assets/logo.png';
 import styles from '../../styles/Header.module.css';
+import { useHistory } from 'react-router-dom';
 
 const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+	const history = useHistory();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -28,30 +30,32 @@ const Header = () => {
     const handleLogout = () => {
         authService.logout();
         setIsLoggedIn(false);
-        window.location.href = '/'; // Redirigir a la página principal después del logout
+        window.location.href = '/';
     };
+	const handleMenuItemClick = (path) => {
+        history.push(path);
+    };
+
 
     const start = (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={logo} alt="Logo" style={{ height: '40px' }} />
+            <img src={logo} alt="Logo" style={{ height: '40px' }}  />
             {isMobile && isLoggedIn && <Sidebar />}{' '}
             {/* Mostrar sidebar solo en pantallas pequeñas */}
         </div>
     );
 
-    // Mostrar los menuItems solo si el usuario está logueado
     const menuItems = isLoggedIn
         ? [
-              { label: 'Inicio', className: styles.menuItem },
+              { label: 'Inicio', className: styles.menuItem, command: () => handleMenuItemClick('/') },
               { label: 'Estatus', className: styles.menuItem },
               { label: 'Documentación', className: styles.menuItem },
               { label: 'Entrenamiento', className: styles.menuItem },
               { label: 'Permisos', className: styles.menuItem },
-              { label: 'Cuenta', className: styles.menuItem },
+              { label: 'Cuenta', className: styles.menuItem, command: () => handleMenuItemClick('/user-management') },
           ]
-        : []; // Si no está logueado, no mostrar ningún item
+        : [];
 
-    // Mostrar botón de logout si está logueado, y de login si no
     const end = isLoggedIn ? (
         <Button
             label="Logout"
