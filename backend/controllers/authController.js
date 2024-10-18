@@ -29,30 +29,35 @@ exports.login = async (req, res, next) => {
         }
 
         const token = jwt.sign(
-            { id: user._id, email: user.email, role: user.role },
+            {
+                id: user._id,
+                name: user.name,
+                last_name: user.last_name,
+                email: user.email,
+                role: user.role,
+                company_name: user.company_name,
+                phone: user.phone
+            },
             process.env.JWT_SECRET,
             { expiresIn: '10h' }
         );
 
         res.json({
             token,
-            user: { id: user._id, email: user.email, role: user.role }
+            user: {
+                id: user._id,
+                name: user.name,
+                last_name: user.last_name,
+                email: user.email,
+                role: user.role,
+                company_name: user.company_name,
+                phone: user.phone,
+                register_date: user.register_date,
+                status: user.status,
+                last_login: user.last_login
+            }
         });
 
-    } catch (error) {
-        next(error);
-    }
-};
-
-exports.getUserProfile = async (req, res, next) => {
-    try {
-        const user = await User.findById(req.user.id).select('-password');
-        if (!user) {
-            const error = new Error('Usuario no encontrado');
-            error.statusCode = 404;
-            return next(error);
-        }
-        res.json(user);
     } catch (error) {
         next(error);
     }

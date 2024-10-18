@@ -24,6 +24,8 @@ const UploadDocumentsPage = () => {
 
 	return (
 		<Panel header="Subir HES">
+			<h1>Nueva documentación</h1>
+			<></>
 			<div className="p-field">
 				<FileUpload
 					name="hes"

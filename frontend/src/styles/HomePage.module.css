@@ -16,6 +16,16 @@
 	align-items: center;
 	height: calc(100vh - 290px);
 }
+.buttonReverse{
+	background-color: white;
+	border-color: black;
+	color: black;
+	margin: 0 0 0 10px;
+	border-radius: 10px;
+	height: 43px;
+	width: 150px;
+	font-weight: bold;
+}
 
 .buttons {
 	background-color: black;
@@ -26,6 +36,12 @@
 }
 
 .homePageInfo {
+	text-align: left;
+	flex: 1;
+	padding-left: 179px; /*TODO: mejorar el responsive*/
+}
+
+.homePageInfoLog {
 	text-align: left;
 	flex: 1;
 	padding-left: 179px; /*TODO: mejorar el responsive*/
