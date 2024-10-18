@@ -1,7 +1,7 @@
 /*
     Description: Authentication logic for login and get user profile
     By: Fabiana Liria
-    version: 1.6
+    version: 1.7
 */
 
 const User = require('../models/User');
@@ -16,10 +16,10 @@ exports.createUser = [
     authMiddleware,
     isAdmin,
     async (req, res, next) => {
-        const { username, email, role } = req.body;
+        const { name, last_name, phone, company_name, email, role } = req.body;
 
         try {
-            const existingUser = await User.findOne({ username });
+            const existingUser = await User.findOne({ email });
 
             if (existingUser) {
                 const error = new Error('El usuario ya existe');
@@ -28,7 +28,10 @@ exports.createUser = [
             }
 
             const newUser = new User({
-                username,
+                name,
+                last_name,
+                phone,
+                company_name,
                 email,
                 role
             });
@@ -37,7 +40,10 @@ exports.createUser = [
 
             await sendPasswordCreationEmail(newUser);
             const userResponse = {
-                username: newUser.username,
+                name: newUser.name,
+                last_name: newUser.last_name,
+                phone: newUser.phone,
+                company_name: newUser.company_name,
                 email: newUser.email,
                 role: newUser.role,
             };
@@ -90,7 +96,7 @@ exports.updateUser = [
     isAdmin,
     async (req, res, next) => {
         const { id } = req.params;
-        const { username, email, role, status } = req.body;
+        const { phone, company_name, email, role, status } = req.body;
 
         try {
             const user = await User.findById(id);
@@ -100,8 +106,8 @@ exports.updateUser = [
                 error.statusCode = 404;
                 return next(error);
             }
-
-            user.username = username || user.username;
+            user.phone = phone || user.phone;
+            user.company_name = company_name || user.company_name;
             user.email = email || user.email;
             user.role = role || user.role;
             user.status = status || user.status;
@@ -183,3 +189,4 @@ exports.changePassword = [
         }
     }
 ];
+

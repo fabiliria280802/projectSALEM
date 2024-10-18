@@ -1,7 +1,7 @@
 /*
     Description: Authentication logic for login and get user profile.
     By: Fabiana Liria
-    version: 1.6
+    version: 1.7
 */
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
@@ -9,10 +9,10 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 exports.login = async (req, res, next) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
 
         if (!user) {
             const error = new Error('Usuario no encontrado');
@@ -21,6 +21,7 @@ exports.login = async (req, res, next) => {
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
+
         if (!isMatch) {
             const error = new Error('Contraseña incorrecta');
             error.statusCode = 401;
@@ -28,14 +29,14 @@ exports.login = async (req, res, next) => {
         }
 
         const token = jwt.sign(
-            { id: user._id, username: user.username, role: user.role },
+            { id: user._id, email: user.email, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: '10h' }
         );
 
         res.json({
             token,
-            user: { id: user._id, username: user.username, role: user.role }
+            user: { id: user._id, email: user.email, role: user.role }
         });
 
     } catch (error) {

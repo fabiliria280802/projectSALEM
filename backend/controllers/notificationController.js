@@ -14,7 +14,7 @@ exports.sendPasswordCreationEmail = async (user) => {
       from: process.env.EMAIL_USER,
       to: user.email,
       subject: 'Crea tu contraseña',
-      text: `Hola ${user.username}, por favor crea tu contraseña en el siguiente enlace: ${resetLink}`,
+      text: `Hola ${user.name}, por favor crea tu contraseña en el siguiente enlace: ${resetLink}`,
     };
 
     await transporter.sendMail(mailOptions);
