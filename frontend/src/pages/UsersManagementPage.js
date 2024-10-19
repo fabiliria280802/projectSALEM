@@ -11,7 +11,7 @@ const UsersManagementPage = () => {
 			<Panel header="Gestión de usuarios">
 				<p>Aquí puedes agregar la lógica para gestionar usuarios.</p>
                     <Button
-                        label="Revisión"
+                        label="Nuevo usuario"
                         onClick={() => history.push('/create-user')}
                     />
 			</Panel>
