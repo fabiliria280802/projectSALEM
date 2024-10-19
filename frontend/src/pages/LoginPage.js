@@ -1,6 +1,8 @@
+import { Button } from 'primereact/button';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useAuth from '../hooks/useAuth'; // Hook para autenticación
+import styles from '../styles/LoginPage.module.css'
 
 const LoginPage = () => {
     const { login } = useAuth();
@@ -11,8 +13,8 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login(email, password); // Realiza el login
-            history.push('/'); // Redirige al dashboard
+            await login(email, password);
+            history.push('/');
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
             alert('Credenciales incorrectas');
@@ -20,18 +22,30 @@ const LoginPage = () => {
     };
 
     return (
-        <div>
-            <h1>Iniciar sesión</h1>
+        <div className={styles.loginPage}>
+            <h1 className={styles.contentTitle}>Inicia Sesión</h1>
+			<p className={styles.contentText}>
+				Tu cuenta, tu espacio. <br /> Conéctate para comtinuar
+			</p>
+			<Button
+				label="Continuar con Microsoft"
+				icon="pi pi-microsoft"
+				className={styles.microsoftButton}
+			/>
+			<p className={styles.contentInfo}>
+				Inicio de seion con Micorsoft 365 unicamente disponible para <br />{' '}
+				colaboradores de ENAP.
+			</p>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Email</label>
+                    <label>Correo electronico</label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div>
                     <label>Contraseña</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
-                <button type="submit">Iniciar sesión</button>
+                <Button type="submit" className={styles.buttons} label="Continuar" />
             </form>
         </div>
     );
