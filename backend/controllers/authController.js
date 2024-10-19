@@ -1,7 +1,7 @@
 /*
     Description: Authentication logic for login and get user profile.
     By: Fabiana Liria
-    version: 1.7
+    version: 1.8
 */
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
@@ -36,6 +36,7 @@ exports.login = async (req, res, next) => {
                 email: user.email,
                 role: user.role,
                 company_name: user.company_name,
+                ruc: user.ruc,
                 phone: user.phone
             },
             process.env.JWT_SECRET,
@@ -51,6 +52,7 @@ exports.login = async (req, res, next) => {
                 email: user.email,
                 role: user.role,
                 company_name: user.company_name,
+                ruc: user.ruc,
                 phone: user.phone,
                 register_date: user.register_date,
                 status: user.status,

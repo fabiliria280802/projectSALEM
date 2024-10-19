@@ -1,7 +1,7 @@
 /*
     Description: Authentication logic for login and get user profile
     By: Fabiana Liria
-    version: 1.7
+    version: 1.8
 */
 
 const User = require('../models/User');
@@ -16,7 +16,7 @@ exports.createUser = [
     authMiddleware,
     isAdmin,
     async (req, res, next) => {
-        const { name, last_name, phone, company_name, email, role } = req.body;
+        const { name, last_name, phone, company_name, ruc, email, role } = req.body;
 
         try {
             const existingUser = await User.findOne({ email });
@@ -32,6 +32,7 @@ exports.createUser = [
                 last_name,
                 phone,
                 company_name,
+                ruc,
                 email,
                 role
             });
@@ -44,6 +45,7 @@ exports.createUser = [
                 last_name: newUser.last_name,
                 phone: newUser.phone,
                 company_name: newUser.company_name,
+                ruc: newUser.ruc,
                 email: newUser.email,
                 role: newUser.role,
             };
@@ -96,7 +98,7 @@ exports.updateUser = [
     isAdmin,
     async (req, res, next) => {
         const { id } = req.params;
-        const { phone, company_name, email, role, status } = req.body;
+        const { phone, company_name, ruc, email, role, status } = req.body;
 
         try {
             const user = await User.findById(id);
@@ -108,6 +110,7 @@ exports.updateUser = [
             }
             user.phone = phone || user.phone;
             user.company_name = company_name || user.company_name;
+            user.ruc = ruc || user.ruc;
             user.email = email || user.email;
             user.role = role || user.role;
             user.status = status || user.status;
