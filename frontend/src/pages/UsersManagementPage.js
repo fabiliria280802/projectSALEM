@@ -1,13 +1,13 @@
 import { Panel } from 'primereact/panel';
 
-const UserManagementPage = () => {
+const UsersManagementPage = () => {
 	return (
 		<div className="p-container" style={{ padding: '2em' }}>
-			<Panel header="Gestión de Usuarios">
+			<Panel header="Gestión de usuarios">
 				<p>Aquí puedes agregar la lógica para gestionar usuarios.</p>
 			</Panel>
 		</div>
 	);
 };
 
-export default UserManagementPage;
+export default UsersManagementPage;

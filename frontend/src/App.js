@@ -8,9 +8,11 @@ import {
 import { AuthProvider } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
+import CreateUserPage from './pages/CreateUserPage';
 import DashboardPage from './pages/DashboardPage';
 import UploadDocumentsPage from './pages/UploadDocumentsPage';
-import UserManagementPage from './pages/UserManagementPage';
+import UserAcountPage from './pages/UserAcountPage';
+import UsersManagementPage from './pages/UsersManagementPage';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
@@ -33,13 +35,23 @@ const AppContent = () => {
 						roles={['Administrador', 'Gestor']}
 					/>
 					<PrivateRoute
+						path="/create-user"
+						component={CreateUserPage}
+						roles={['Administrador', ]}
+					/>
+					<PrivateRoute
 						path="/upload-documents"
 						component={UploadDocumentsPage}
 						roles={['Administrador', 'Gestor', 'Cliente final']}
 					/>
 					<PrivateRoute
-						path="/user-management"
-						component={UserManagementPage}
+						path="/users-management"
+						component={UsersManagementPage}
+						roles={['Administrador']}
+					/>
+					<PrivateRoute
+						path="/user-account"
+						component={UserAcountPage}
 						roles={['Administrador']}
 					/>
 

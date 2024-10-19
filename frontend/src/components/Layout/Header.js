@@ -52,7 +52,8 @@ const Header = () => {
               { label: 'Documentación', className: styles.menuItem },
               { label: 'Entrenamiento', className: styles.menuItem },
               { label: 'Permisos', className: styles.menuItem },
-              { label: 'Cuenta', className: styles.menuItem, command: () => handleMenuItemClick('/user-management') },
+			  { label: 'Gestion de usuarios', className: styles.menuItem, command: () => handleMenuItemClick('/users-management') },
+              { label: 'Cuenta', className: styles.menuItem, command: () => handleMenuItemClick('/user-account') },
           ]
         : [];
 
