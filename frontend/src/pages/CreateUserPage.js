@@ -3,13 +3,11 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { useHistory } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
-import userService from '../services/userService';  // Importar el servicio de usuario
+import userService from '../services/userService';
 import styles from '../styles/CreateUserPage.module.css';
 
 const CreateUserPage = () => {
     const history = useHistory();
-    const { auth } = useAuth();
     const [userData, setUserData] = useState({
         name: '',
         last_name: '',
@@ -37,11 +35,16 @@ const CreateUserPage = () => {
 
     const handleSubmit = async () => {
         try {
-            await userService.createUser(userData, auth.token);
-            console.log('Usuario creado:'); // Enviar el token con los datos del usuario
-            history.push('/user-management');  // Redireccionar después de crear el usuario
+            await userService.createUser(userData);
+            console.log('Usuario creado correctamente');
+            history.push('/users-management');  // Redireccionar después de crear el usuario
         } catch (error) {
-            console.error('Error al crear el usuario:', error);
+            if (error.response) {
+                console.error('Error al crear el usuario:', error.response.data.message);
+                console.error('Estado del error:', error.response.status);
+            } else {
+                console.error('Error al crear el usuario:', error.message);
+            }
         }
     };
 

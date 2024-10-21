@@ -14,6 +14,7 @@ import UploadDocumentsPage from './pages/UploadDocumentsPage';
 import UserAcountPage from './pages/UserAcountPage';
 import UsersManagementPage from './pages/UsersManagementPage';
 import PrivateRoute from './components/PrivateRoute';
+import CreatePasswordPage from './pages/CreatePasswordPage';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
 import './App.css';
@@ -56,6 +57,7 @@ const AppContent = () => {
 					/>
 
 					{/* Rutas públicas */}
+					<Route path="/create-password" component={CreatePasswordPage} />
 					<Route path="/" component={HomePage} />
 				</Switch>
 			</div>

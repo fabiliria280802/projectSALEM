@@ -8,7 +8,7 @@ const transporter = require('../helpers/mailerHelper');
 
 exports.sendPasswordCreationEmail = async (user) => {
   try {
-    const resetLink = `http://localhost:5000/api/create-password/${user._id}`;
+    const resetLink = `http://localhost:3000/create-password?userId=${user._id}`;
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -24,7 +24,6 @@ exports.sendPasswordCreationEmail = async (user) => {
     throw new Error('No se pudo enviar el correo de creación de contraseña');
   }
 };
-
 
 //TODO> CREAR ESTA FUNCIONALIDAD. Función para enviar correo cuando faltan campos en un documento
 /*exports.sendMissingFieldsEmail = async (analysisResult, fileName) => {

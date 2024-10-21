@@ -5,7 +5,7 @@ import useAuth from '../hooks/useAuth';
 import styles from '../styles/LoginPage.module.css';
 
 const LoginPage = () => {
-    const { login } = useAuth();
+    const { login, setIsAuthenticated } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +15,7 @@ const LoginPage = () => {
         e.preventDefault();
         try {
             await login(email, password);
+            setIsAuthenticated(true);
             history.push('/');
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
