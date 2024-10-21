@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/documents/';
+const API_URL = 'http://localhost:8080/api/documents/';
 
 const uploadInvoice = file => {
 	const formData = new FormData();
