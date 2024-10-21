@@ -1,99 +1,140 @@
 import React, { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { useHistory } from 'react-router-dom';
-import userService from '../services/userService';
-import styles from '../styles/CreateUserPage.module.css';
+import styles from '../styles/EditUserPage.module.css';
 
 const CreateUserPage = () => {
-    const history = useHistory();
-    const [userData, setUserData] = useState({
-        name: '',
-        last_name: '',
-        phone: '',
-        company_name: '',
-        ruc: '',
-        email: '',
-        role: ''
+  const [formData, setFormData] = useState({
+    nombre: '',
+    apellido: '',
+    correo: '',
+    ruc: '',
+    telefono: '',
+    empresa: '',
+    permisos: 'Usuario'
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
     });
+  };
 
-    const roleOptions = [
-        { label: 'Usuario final', value: 'Usuario final' },
-        { label: 'Gestor', value: 'Gestor' },
-        { label: 'Administrador', value: 'Administrador' }
-    ];
+  const handleSave = () => {
+    console.log('Nuevo usuario creado:', formData);
+    // Aquí puedes agregar la lógica para enviar los datos al backend
+  };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
-    };
+  const handleCancel = () => {
+    console.log('Operación cancelada');
+    // Lógica para cancelar la creación
+  };
 
-    const handleDropdownChange = (e) => {
-        setUserData({ ...userData, role: e.value });
-    };
+  return (
+    <div className={styles.editUserPage}>
+      <header className={styles.header}>
+        <img src="/logo.png" alt="ENAP Logo" className={styles.logo} />
+        <span className={styles.pageTitle}>Crear usuario</span>
+        <img src="/franja.png" alt="Franja Header" className={styles.headerFranja} />
+      </header>
 
-    const handleSubmit = async () => {
-        try {
-            await userService.createUser(userData);
-            console.log('Usuario creado correctamente');
-            history.push('/users-management');  // Redireccionar después de crear el usuario
-        } catch (error) {
-            if (error.response) {
-                console.error('Error al crear el usuario:', error.response.data.message);
-                console.error('Estado del error:', error.response.status);
-            } else {
-                console.error('Error al crear el usuario:', error.message);
-            }
-        }
-    };
-
-    return (
+      <div className={styles.container}>
         <div className={styles.formContainer}>
-            <h1>Nuevo usuario</h1>
-            <div className={styles.formGrid}>
-                <div className={styles.formGroup}>
-                    <label htmlFor="name">Nombre:</label>
-                    <InputText id="name" name="name" value={userData.name} onChange={handleInputChange} />
-                </div>
+          <h1 className={styles.formTitle}>Crear usuario</h1>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="last_name">Apellido:</label>
-                    <InputText id="last_name" name="last_name" value={userData.last_name} onChange={handleInputChange} />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="email">Correo:</label>
-                    <InputText id="email" name="email" value={userData.email} onChange={handleInputChange} />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="phone">Teléfono:</label>
-                    <InputText id="phone" name="phone" value={userData.phone} onChange={handleInputChange} />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="ruc">RUC:</label>
-                    <InputText id="ruc" name="ruc" value={userData.ruc} onChange={handleInputChange} />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="company_name">Empresa:</label>
-                    <InputText id="company_name" name="company_name" value={userData.company_name} onChange={handleInputChange} />
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="role">Permisos:</label>
-                    <Dropdown id="role" value={userData.role} options={roleOptions} onChange={handleDropdownChange} placeholder="Seleccionar permiso" />
-                </div>
+          <div className={styles.formGrid}>
+            <div className={styles.formGroup}>
+              <label>Nombre:</label>
+              <input
+                type="text"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleInputChange}
+                placeholder="Ingresa el nombre"
+              />
             </div>
 
-            <div className={styles.buttonGroup}>
-                <Button label="Guardar" icon="pi pi-check" className="p-button-success" onClick={handleSubmit} />
-                <Button label="Cancelar" icon="pi pi-times" className="p-button-secondary" />
+            <div className={styles.formGroup}>
+              <label>Apellido:</label>
+              <input
+                type="text"
+                name="apellido"
+                value={formData.apellido}
+                onChange={handleInputChange}
+                placeholder="Ingresa el apellido"
+              />
             </div>
+
+            <div className={styles.formGroup}>
+              <label>Correo:</label>
+              <input
+                type="email"
+                name="correo"
+                value={formData.correo}
+                onChange={handleInputChange}
+                placeholder="Ingresa el correo"
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Teléfono:</label>
+              <input
+                type="text"
+                name="telefono"
+                value={formData.telefono}
+                onChange={handleInputChange}
+                placeholder="Ingresa el teléfono"
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>RUC:</label>
+              <input
+                type="text"
+                name="ruc"
+                value={formData.ruc}
+                onChange={handleInputChange}
+                placeholder="Ingresa el RUC"
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Empresa:</label>
+              <input
+                type="text"
+                name="empresa"
+                value={formData.empresa}
+                onChange={handleInputChange}
+                placeholder="Ingresa la empresa"
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Permisos:</label>
+              <select
+                name="permisos"
+                value={formData.permisos}
+                onChange={handleInputChange}
+              >
+                <option value="Usuario">Usuario</option>
+                <option value="Administrador">Administrador</option>
+                <option value="Gestor">Gestor</option>
+              </select>
+            </div>
+          </div>
+
+          <div className={styles.buttonContainer}>
+            <button onClick={handleSave} className={styles.saveButton}>
+              Guardar
+            </button>
+            <button onClick={handleCancel} className={styles.cancelButton}>
+              Cancelar
+            </button>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default CreateUserPage;
