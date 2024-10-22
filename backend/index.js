@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 //app.use(helmet());
 app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
-app.use('/api/users', /*authMiddleware,*/ userRoutes);
+app.use('/api/users', authMiddleware, userRoutes);
 app.use('/api/new-user', createPasswordRoutes);
 app.use('/api/report/report',authMiddleware, reportRoutes);
 app.use('/api/process-document', documentRoutes)

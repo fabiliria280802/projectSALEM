@@ -64,33 +64,6 @@
   height: 100vh;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  position: relative;
-}
-
-.logo {
-  width: 100px;
-}
-
-.pageTitle {
-  color: grey;
-  flex-grow: 1;
-  text-align: right;
-  margin-right: 10px;
-}
-
-.headerFranja {
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100vw;
-  height: 8px;
-  /* Eliminamos la referencia background-image */
-}
 
 .container {
   flex-grow: 1;

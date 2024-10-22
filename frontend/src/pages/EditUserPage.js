@@ -1,139 +1,133 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
+import React, { useState } from 'react';
 import styles from '../styles/EditUserPage.module.css';
+import userService from '../services/userService';
+import { useHistory } from 'react-router-dom';
 
 const EditUserPage = () => {
-  const location = useLocation();
-  const user = location.state?.user || {}; // Obtener el usuario de la ruta
-
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    correo: '',
+  const history = useHistory();
+  const [userData, setUserData] = useState({
+    name: '',
+    last_name: '',
+    phone: '',
+    company_name: '',
     ruc: '',
-    telefono: '',
-    empresa: '',
-    permisos: 'Usuario',
-  });
+    email: '',
+    role: ''
+});
 
-  useEffect(() => {
-    if (user) {
-      setFormData(user); // Rellenar los campos con los datos del usuario
-    }
-  }, [user]);
+const roleOptions = [
+    { label: 'Usuario final', value: 'Usuario final' },
+    { label: 'Gestor', value: 'Gestor' },
+    { label: 'Administrador', value: 'Administrador' }
+];
 
-  const handleInputChange = (e) => {
+const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+    setUserData({ ...userData, [name]: value });
+};
 
-  const handleSave = () => {
-    console.log('Datos guardados:', formData);
-  };
+const handleDropdownChange = (e) => {
+    setUserData({ ...userData, role: e.value });
+};
+
+const handleSubmit = async () => {
+  try {
+      await userService.createUser(userData);
+      console.log('Usuario creado correctamente');
+      history.push('/users-management');
+  } catch (error) {
+      console.error('Error al crear el usuario:', error);
+      if (error.response) {
+          console.error('Error al crear el usuario:', error.response.data.message);
+          console.error('Estado del error:', error.response.status);
+      } else {
+          console.error('Error al crear el usuario:', error.message);
+      }
+  }
+};
 
   const handleCancel = () => {
-    console.log('Operación cancelada');
+    history.push('/users-management');
   };
 
   return (
     <div className={styles.editUserPage}>
-      <header className={styles.header}>
-        <img src="/logo.png" alt="ENAP Logo" className={styles.logo} />
-        <span className={styles.pageTitle}>Editar usuario</span>
-        <img src="/franja.png" alt="Franja Header" className={styles.headerFranja} />
-      </header>
-
       <div className={styles.container}>
         <div className={styles.formContainer}>
           <h1 className={styles.formTitle}>Editar usuario</h1>
 
           <div className={styles.formGrid}>
             <div className={styles.formGroup}>
-              <label>Nombre:</label>
-              <input
-                type="text"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleInputChange}
-                placeholder="Ingresa el nombre"
-              />
+              <label htmlFor="name">Nombre:</label>
+              <InputText
+                id="name"
+                name="name"
+                value={userData.name}
+                onChange={handleInputChange} />
             </div>
 
             <div className={styles.formGroup}>
-              <label>Apellido:</label>
-              <input
-                type="text"
-                name="apellido"
-                value={formData.apellido}
-                onChange={handleInputChange}
-                placeholder="Ingresa el apellido"
-              />
+              <label htmlFor="last_name">Apellido:</label>
+              <InputText
+                id="last_name"
+                name="last_name"
+                value={userData.last_name}
+                onChange={handleInputChange} />
             </div>
 
             <div className={styles.formGroup}>
-              <label>Correo:</label>
-              <input
-                type="email"
-                name="correo"
-                value={formData.correo}
-                onChange={handleInputChange}
-                placeholder="Ingresa el correo"
-              />
+              <label htmlFor="email">Correo:</label>
+              <InputText
+                id="email"
+                name="email"
+                value={userData.email}
+                onChange={handleInputChange} />
             </div>
 
             <div className={styles.formGroup}>
-              <label>Teléfono:</label>
-              <input
-                type="text"
-                name="telefono"
-                value={formData.telefono}
-                onChange={handleInputChange}
-                placeholder="Ingresa el teléfono"
-              />
+              <label htmlFor="phone">Teléfono:</label>
+              <InputText
+                id="phone"
+                name="phone"
+                value={userData.phone}
+                onChange={handleInputChange} />
             </div>
 
             <div className={styles.formGroup}>
-              <label>RUC:</label>
-              <input
-                type="text"
+              <label htmlFor="ruc">RUC:</label>
+              <InputText
+                id="ruc"
                 name="ruc"
-                value={formData.ruc}
-                onChange={handleInputChange}
-                placeholder="Ingresa el RUC"
-              />
+                value={userData.ruc}
+                onChange={handleInputChange} />
             </div>
 
             <div className={styles.formGroup}>
-              <label>Empresa:</label>
-              <input
-                type="text"
-                name="empresa"
-                value={formData.empresa}
-                onChange={handleInputChange}
-                placeholder="Ingresa la empresa"
-              />
+              <label htmlFor="company_name">Empresa:</label>
+              <InputText
+                id="company_name"
+                name="company_name"
+                value={userData.company_name}
+                onChange={handleInputChange} />
             </div>
 
             <div className={styles.formGroup}>
-              <label>Permisos:</label>
-              <select
-                name="permisos"
-                value={formData.permisos}
-                onChange={handleInputChange}
-              >
-                <option value="Usuario">Usuario</option>
-                <option value="Gestor">Gestor</option>
-                <option value="Administrador">Administrador</option>
-              </select>
+              <label htmlFor="role">Permisos:</label>
+              <Dropdown
+                id="role"
+                value={userData.role}
+                options={roleOptions}
+                onChange={handleDropdownChange}
+                placeholder="Seleccionar permiso" />
             </div>
           </div>
 
           <div className={styles.buttonContainer}>
-            <button className={styles.saveButton} onClick={handleSave}>Guardar</button>
-            <button className={styles.cancelButton} onClick={handleCancel}>Cancelar</button>
+            <Button label="Guardar" className={styles.saveButton} onClick={handleSubmit}/>
+            <Button label="Cancelar" className={styles.cancelButton} onClick={handleCancel}/>
           </div>
         </div>
       </div>

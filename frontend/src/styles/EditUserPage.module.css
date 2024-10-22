@@ -1,52 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body, html {
-  height: 100%;
-  font-family: 'Roboto', sans-serif;
-}
-
 .editUserPage {
   display: flex;
   flex-direction: column;
-  height: 100vh;
 }
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  position: relative;
-}
-
-.logo {
-  width: 100px;
-}
-
-.pageTitle {
-  color: grey;
-  flex-grow: 1;
-  text-align: right;
-  margin-right: 10px;
-}
-
-.headerFranja {
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 100vw;
-    height: 8px;
-    /* Eliminamos la propiedad background-image */
-}  
 
 .container {
-  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -126,6 +83,5 @@ body, html {
 }
 
 
-  
-  
-  
+
+

@@ -13,6 +13,7 @@ import DashboardPage from './pages/DashboardPage';
 import UploadDocumentsPage from './pages/UploadDocumentsPage';
 import UserAcountPage from './pages/UserAcountPage';
 import UsersManagementPage from './pages/UsersManagementPage';
+import EditUserPage from './pages/EditUserPage';
 import PrivateRoute from './components/PrivateRoute';
 import CreatePasswordPage from './pages/CreatePasswordPage';
 import Header from './components/Layout/Header';
@@ -38,7 +39,7 @@ const AppContent = () => {
 					<PrivateRoute
 						path="/create-user"
 						component={CreateUserPage}
-						roles={['Administrador', ]}
+						roles={['Administrador' ]}
 					/>
 					<PrivateRoute
 						path="/upload-documents"
@@ -48,6 +49,11 @@ const AppContent = () => {
 					<PrivateRoute
 						path="/users-management"
 						component={UsersManagementPage}
+						roles={['Administrador']}
+					/>
+					<PrivateRoute
+						path="/edit-user"
+						component={EditUserPage}
 						roles={['Administrador']}
 					/>
 					<PrivateRoute
@@ -77,23 +83,3 @@ const App = () => {
 };
 
 export default App;
-
-/*
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import EditUserPage from './pages/EditUserPage';
-import CreateUserPage from './pages/CreateUserPage';
-import UsersManagementPage from './pages/UsersManagementPage';
-
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/create-user" element={<CreateUserPage />} />
-        <Route path="/edit-user" element={<EditUserPage />} />
-        <Route path="/users-management" element={<UsersManagementPage />} />
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;*/

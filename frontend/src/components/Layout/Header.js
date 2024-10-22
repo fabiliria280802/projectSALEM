@@ -33,7 +33,7 @@ const Header = () => {
     };
 
     // Definir las rutas en las que no quieres mostrar los menuItems
-    const hideMenuItemsIn = ['/upload-documents', '/create-user', '/users-management', '/user-account', '/dashboard'];
+    const hideMenuItemsIn = ['/upload-documents', '/create-user', '/users-management', '/user-account', '/dashboard', '/edit-user'];
     const shouldShowMenuItems = !hideMenuItemsIn.includes(location.pathname);
 
     // Definir un objeto de mapeo de rutas a nombres de pestañas
@@ -43,10 +43,9 @@ const Header = () => {
         '/upload-documents': 'Carga de Documentos',
         '/users-management': 'Gestión de Usuarios',
         '/user-account': 'Cuenta de Usuario',
-        '/another-path': 'Otra Página',
+        '/edit-user': 'Editar usuario',
     };
 
-    // Obtener el nombre de la pestaña actual basado en la ruta
     const pageTitle = pageTitles[location.pathname] || 'Nombre de la pestaña';
 
     const start = (

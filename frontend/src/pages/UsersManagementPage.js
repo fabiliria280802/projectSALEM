@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importamos useNavigate
+import { useHistory } from 'react-router-dom';
 import styles from '../styles/UsersManagementPage.module.css';
 
 const UsersManagementPage = () => {
+  const history = useHistory();
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -49,7 +50,7 @@ const UsersManagementPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-  const navigate = useNavigate(); // Usamos el hook para navegar entre rutas
+  //const navigate = useNavigate(); // Usamos el hook para navegar entre rutas
 
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
@@ -66,23 +67,17 @@ const UsersManagementPage = () => {
   };
 
   const handleEditClick = (user) => {
-    // Redirige a la pantalla de editar con el ID del usuario
-    navigate(`/edit-user/${user.id}`, { state: { user } });
+
   };
 
   const handleCreateClick = () => {
+    history.push('/create-user')
     // Redirige a la pantalla de crear usuario
-    navigate('/create-user');
+    //navigate('/create-user');
   };
 
   return (
     <div className={styles.usersManagementPage}>
-      <header className={styles.header}>
-        <img src="/logo.png" alt="ENAP Logo" className={styles.logo} />
-        <span className={styles.pageTitle}>Gestión de usuarios</span>
-        <img src="/franja.png" alt="Franja Header" className={styles.headerFranja} />
-      </header>
-
       <div className={styles.container}>
         <h1 className={styles.formTitle}>Gestión de usuarios</h1>
 

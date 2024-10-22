@@ -112,7 +112,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String
     },
-    role: {
+    role: {//TODO: quitar el sin asignar
         type: String,
         enum: ['Administrador', 'Gestor', 'Cliente final', 'Sin Asignar'],
         default: 'Sin Asignar'
