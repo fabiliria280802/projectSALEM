@@ -15,38 +15,44 @@ const createUser = async (userData) => {
     return response.data;
 };
 
-const getAllUsers = async (userData) => {
+const getAllUsers = async () => {
 	const token = authService.getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
     };
-	const response = await axios.get(API_URL, userData, config);
+	const response = await axios.get(API_URL, config);
 	return response.data;
 };
 
-const getAUser = async (userData, userId) => {
-	const token = authService.getToken();
+const getAUser = async (userId) => {
+    const token = authService.getToken();
     const config = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     };
-	const response = await axios.get(`${API_URL}${userId}`, userData, config);
-	return response.data;
-};
+    
+    // Hacer la solicitud GET a la URL correcta con el userId
+    const response = await axios.get(`${API_URL}${userId}`, config);
+    
+    // Devolver los datos del usuario
+    return response.data;
+  };  
 
-const deleteUser = async (userData, userId) => {
-	const token = authService.getToken();
+  const deleteUser = async (userId) => {
+    const token = authService.getToken();
     const config = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     };
-	const response = await axios.delete(`${API_URL}${userId}`, userData, config);
-	return response.data;
-};
+    
+    const response = await axios.delete(`${API_URL}${userId}`, config);
+    return response.data;
+  };
+  
 
 const updateUser = async (userId, userData) => {
 	const token = authService.getToken();
@@ -68,3 +74,5 @@ const userService = {
 };
 
 export default userService;
+
+

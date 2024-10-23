@@ -4,7 +4,7 @@ import { Dropdown } from 'primereact/dropdown';
 import React, { useState } from 'react';
 import styles from '../styles/EditUserPage.module.css';
 import userService from '../services/userService';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const CreateUserPage = () => {
   const history = useHistory();
@@ -16,29 +16,29 @@ const CreateUserPage = () => {
     ruc: '',
     email: '',
     role: ''
-});
+  });
+  const [showPopup, setShowPopup] = useState(false); // Estado para mostrar el pop-up
 
-const roleOptions = [
+  const roleOptions = [
     { label: 'Usuario final', value: 'Usuario final' },
     { label: 'Gestor', value: 'Gestor' },
     { label: 'Administrador', value: 'Administrador' }
-];
+  ];
 
-const handleInputChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
-};
+  };
 
-const handleDropdownChange = (e) => {
+  const handleDropdownChange = (e) => {
     setUserData({ ...userData, role: e.value });
-};
+  };
 
-const handleSubmit = async () => {
-  try {
+  const handleSubmit = async () => {
+    try {
       await userService.createUser(userData);
-      console.log('Usuario creado correctamente');
-      history.push('/users-management');
-  } catch (error) {
+      setShowPopup(true); // Muestra el pop-up tras la creación del usuario
+    } catch (error) {
       console.error('Error al crear el usuario:', error);
       if (error.response) {
           console.error('Error al crear el usuario:', error.response.data.message);
@@ -46,8 +46,13 @@ const handleSubmit = async () => {
       } else {
           console.error('Error al crear el usuario:', error.message);
       }
-  }
-};
+    }
+  };
+
+  const handlePopupClose = () => {
+    setShowPopup(false);
+    history.push('/users-management'); // Redirige a la página de gestión de usuarios
+  };
 
   const handleCancel = () => {
     history.push('/users-management');
@@ -79,7 +84,7 @@ const handleSubmit = async () => {
             </div>
 
             <div className={styles.formGroup}>
-            <label htmlFor="email">Correo:</label>
+              <label htmlFor="email">Correo:</label>
               <InputText
                 id="email"
                 name="email"
@@ -129,6 +134,16 @@ const handleSubmit = async () => {
             <Button label="Guardar" className={styles.saveButton} onClick={handleSubmit}/>
             <Button label="Cancelar" className={styles.cancelButton} onClick={handleCancel}/>
           </div>
+
+          {showPopup && (
+            <div className={styles.popup}>
+              <div className={styles.popupContent}>
+                <h2>Usuario creado</h2>
+                <p>El usuario ha sido creado correctamente y se ha enviado un correo para crear la contraseña.</p>
+                <Button label="Aceptar" onClick={handlePopupClose} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
