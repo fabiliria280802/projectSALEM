@@ -43,27 +43,31 @@ const getAUser = async (userId) => {
     return response.data;
 };
 
-const deleteUser = async (userData, userId) => {
+const deleteUser = async (userId) => {
 	const token = authService.getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
     };
-	const response = await axios.delete(`${API_URL}${userId}`, userData, config);
+	const response = await axios.delete(`${API_URL}${userId}`, config);
 	return response.data;
 };
 
 const updateUser = async (userId, userData) => {
-	const token = authService.getToken();
+    const token = authService.getToken();
     const config = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json', // Asegura que el contenido sea JSON
+      },
     };
-	const response = await axios.put(`${API_URL}${userId}`, userData, config);
-	return response.data;
-};
+
+    // Aquí debes enviar el `userData` como el cuerpo de la solicitud
+    const response = await axios.put(`${API_URL}${userId}`, userData, config);
+    return response.data;
+  };
+
 
 const userService = {
 	createUser,

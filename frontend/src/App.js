@@ -52,7 +52,7 @@ const AppContent = () => {
 						roles={['Administrador']}
 					/>
 					<PrivateRoute
-						path="/edit-user"
+						path="/edit-user/:id"
 						component={EditUserPage}
 						roles={['Administrador']}
 					/>

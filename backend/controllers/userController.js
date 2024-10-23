@@ -99,7 +99,7 @@ exports.updateUser = [
     async (req, res, next) => {
         const { id } = req.params;
         const { phone, company_name, ruc, email, role, status } = req.body;
-
+        console.log('Datos recibidos en el cuerpo:', req.body);
         try {
             const user = await User.findById(id);
 
