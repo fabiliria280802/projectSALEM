@@ -15,26 +15,32 @@ const createUser = async (userData) => {
     return response.data;
 };
 
-const getAllUsers = async (userData) => {
+const getAllUsers = async () => {
 	const token = authService.getToken();
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
         }
     };
-	const response = await axios.get(API_URL, userData, config);
+	const response = await axios.get(API_URL, config);
 	return response.data;
 };
 
-const getAUser = async (userData, userId) => {
-	const token = authService.getToken();
+const getAUser = async (userId) => {
+    const token = authService.getToken();
+
+    if (!token) {
+        throw new Error('Token no disponible');
+    }
+
     const config = {
         headers: {
-            Authorization: `Bearer ${token}`
-        }
+            Authorization: `Bearer ${token}`,
+        },
     };
-	const response = await axios.get(`${API_URL}${userId}`, userData, config);
-	return response.data;
+
+    const response = await axios.get(`${API_URL}${userId}`, config);
+    return response.data;
 };
 
 const deleteUser = async (userData, userId) => {

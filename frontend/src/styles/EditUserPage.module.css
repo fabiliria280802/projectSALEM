@@ -1,13 +1,8 @@
-.editUserPage {
-  display: flex;
-  flex-direction: column;
-}
-
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 90px;
 }
 
 .formContainer {
@@ -66,6 +61,20 @@
 }
 
 .saveButton:hover {
+  background-color: #333;
+}
+
+.goBackButton{
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px 0 0 0;
+}
+
+.goBackButton:hover {
   background-color: #333;
 }
 

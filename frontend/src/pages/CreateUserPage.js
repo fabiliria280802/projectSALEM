@@ -54,10 +54,9 @@ const handleSubmit = async () => {
   };
 
   return (
-    <div className={styles.editUserPage}>
-      <div className={styles.container}>
+    <div className={styles.container}>
         <div className={styles.formContainer}>
-          <h1 className={styles.formTitle}>Crear usuario</h1>
+          <h1 className={styles.formTitle}>Editar usuario</h1>
 
           <div className={styles.formGrid}>
             <div className={styles.formGroup}>
@@ -79,7 +78,7 @@ const handleSubmit = async () => {
             </div>
 
             <div className={styles.formGroup}>
-            <label htmlFor="email">Correo:</label>
+              <label htmlFor="email">Correo:</label>
               <InputText
                 id="email"
                 name="email"
@@ -131,7 +130,6 @@ const handleSubmit = async () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

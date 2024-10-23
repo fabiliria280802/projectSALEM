@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {jwtDecode} from 'jwt-decode';
 
 const API_URL = 'http://localhost:5000/api/auth/';
 
@@ -24,8 +25,13 @@ const getToken = () => {
     return localStorage.getItem('token');
 };
 
+const decodeToken = (token) => {
+    return jwtDecode(token); // Decodifica el token JWT
+};
+
 export default {
     login,
     logout,
     getToken,
+    decodeToken,
 };

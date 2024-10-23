@@ -50,8 +50,6 @@ const UsersManagementPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-  //const navigate = useNavigate(); // Usamos el hook para navegar entre rutas
-
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
     setShowPopup(true);
@@ -72,8 +70,6 @@ const UsersManagementPage = () => {
 
   const handleCreateClick = () => {
     history.push('/create-user')
-    // Redirige a la pantalla de crear usuario
-    //navigate('/create-user');
   };
 
   return (

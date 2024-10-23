@@ -54,8 +54,7 @@ const handleSubmit = async () => {
   };
 
   return (
-    <div className={styles.editUserPage}>
-      <div className={styles.container}>
+    <div className={styles.container}>
         <div className={styles.formContainer}>
           <h1 className={styles.formTitle}>Editar usuario</h1>
 
@@ -124,14 +123,12 @@ const handleSubmit = async () => {
                 placeholder="Seleccionar permiso" />
             </div>
           </div>
-
           <div className={styles.buttonContainer}>
             <Button label="Guardar" className={styles.saveButton} onClick={handleSubmit}/>
             <Button label="Cancelar" className={styles.cancelButton} onClick={handleCancel}/>
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

@@ -192,4 +192,8 @@ exports.changePassword = [
         }
     }
 ];
+//TODO: PASAR EL CREATE PASSWORD A USERCONTROLLER.JS
+exports.createPassword = [
+
+];
 

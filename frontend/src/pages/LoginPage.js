@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import styles from '../styles/LoginPage.module.css';
+import authService from '../services/authService';
 
 const LoginPage = () => {
     const { login, setIsAuthenticated } = useAuth();
