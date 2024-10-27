@@ -6,6 +6,7 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import styles from '../styles/EditUserPage.module.css';
 import { useHistory } from 'react-router-dom';
+import { Toast } from 'primereact/toast';
 
 const UserAccountPage = () => {
   const history = useHistory();
@@ -21,9 +22,8 @@ const UserAccountPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Opciones para el Dropdown de permisos
   const roleOptions = [
-    { label: 'Usuario final', value: 'Usuario final' },
+    { label: 'Proveedor', value: 'Proveedor' },
     { label: 'Gestor', value: 'Gestor' },
     { label: 'Administrador', value: 'Administrador' }
   ];
@@ -36,7 +36,7 @@ const UserAccountPage = () => {
         const decodedToken = authService.decodeToken(token);
         const userId = decodedToken.id;
         const userData = await userService.getAUser(userId);
-        setUserData(userData); // Llena el estado con los datos del usuario
+        setUserData(userData);
       } catch (err) {
         setError('Error al cargar los datos del usuario');
       } finally {

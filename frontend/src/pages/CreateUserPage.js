@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import styles from '../styles/EditUserPage.module.css';
 import userService from '../services/userService';
 import {useHistory} from 'react-router-dom';
+import { Toast } from 'primereact/toast';
 
 const CreateUserPage = () => {
   const history = useHistory();
@@ -19,7 +20,7 @@ const CreateUserPage = () => {
 });
 
 const roleOptions = [
-    { label: 'Usuario final', value: 'Usuario final' },
+    { label: 'Proveedor', value: 'Proveedor' },
     { label: 'Gestor', value: 'Gestor' },
     { label: 'Administrador', value: 'Administrador' }
 ];
@@ -60,7 +61,7 @@ const handleSubmit = async () => {
 
           <div className={styles.formGrid}>
             <div className={styles.formGroup}>
-              <label htmlFor="name">Nombre:</label>
+              <label htmlFor="name">Nombres:</label>
               <InputText
                 id="name"
                 name="name"
@@ -69,7 +70,7 @@ const handleSubmit = async () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="last_name">Apellido:</label>
+              <label htmlFor="last_name">Apellidos:</label>
               <InputText
                 id="last_name"
                 name="last_name"

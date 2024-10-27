@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import styles from '../styles/LoginPage.module.css';
 import authService from '../services/authService';
+import { Toast } from 'primereact/toast';
 
 const LoginPage = () => {
     const { login, setIsAuthenticated } = useAuth();

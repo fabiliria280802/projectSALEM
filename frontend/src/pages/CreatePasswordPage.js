@@ -4,6 +4,7 @@ import axios from 'axios';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import styles from '../styles/CreatePasswordPage.module.css';
+import { Toast } from 'primereact/toast';
 
 const CreatePasswordPage = () => {
   const location = useLocation();

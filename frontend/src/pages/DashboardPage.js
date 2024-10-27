@@ -1,7 +1,4 @@
-import 'primereact/resources/themes/saga-blue/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-
+import { Toast } from 'primereact/toast';
 import { Card } from 'primereact';
 
 const DashboardPage = () => {

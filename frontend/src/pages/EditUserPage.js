@@ -6,10 +6,11 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import styles from '../styles/EditUserPage.module.css';
 import { useHistory, useParams } from 'react-router-dom';
+import { Toast } from 'primereact/toast';
 
 const EditUserPage = () => {
   const history = useHistory();
-  const { id } = useParams();  // Obtener el ID del usuario de la URL
+  const { id } = useParams();
   const [userData, setUserData] = useState({
     name: '',
     last_name: '',
@@ -22,23 +23,22 @@ const EditUserPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Opciones para el Dropdown de permisos
   const roleOptions = [
-    { label: 'Usuario final', value: 'Usuario final' },
+    { label: 'Proveedor', value: 'Proveedor' },
     { label: 'Gestor', value: 'Gestor' },
     { label: 'Administrador', value: 'Administrador' }
   ];
 
   useEffect(() => {
-    console.log('ID del usuario:', id);  // Verificar si el `id` es válido
+    console.log('ID del usuario:', id);
     const fetchUser = async () => {
       try {
         const token = authService.getToken();
         if (!token) throw new Error('Token no disponible');
         const decodedToken = authService.decodeToken(token);
-        const userId = id || decodedToken.id; // Usar ID de la URL o del token
+        const userId = id || decodedToken.id;
         const userData = await userService.getAUser(userId);
-        setUserData(userData); // Llena el estado con los datos del usuario
+        setUserData(userData);
       } catch (err) {
         setError('Error al cargar los datos del usuario');
       } finally {
@@ -58,19 +58,18 @@ const EditUserPage = () => {
     setUserData({ ...userData, role: e.value });
   };
 
-  // Llamar a updateUser al hacer click en Guardar
   const handleSubmit = async () => {
     try {
-      await userService.updateUser(id, userData); // Llamar al servicio para actualizar los datos
+      await userService.updateUser(id, userData);
       console.log('Usuario actualizado correctamente');
-      history.push('/users-management'); // Redirigir a la página de gestión de usuarios
+      history.push('/users-management');
     } catch (error) {
       console.error('Error al actualizar el usuario:', error);
     }
   };
 
   const handleCancel = () => {
-    history.push('/users-management'); // Redirigir al cancelar
+    history.push('/users-management');
   };
 
   if (loading) {
@@ -87,7 +86,7 @@ const EditUserPage = () => {
         <h1 className={styles.formTitle}>Editar usuario</h1>
         <div className={styles.formGrid}>
           <div className={styles.formGroup}>
-            <label htmlFor="name">Nombre:</label>
+            <label htmlFor="name">Nombres:</label>
             <InputText
               id="name"
               name="name"
@@ -97,7 +96,7 @@ const EditUserPage = () => {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="last_name">Apellido:</label>
+            <label htmlFor="last_name">Apellidos:</label>
             <InputText
               id="last_name"
               name="last_name"

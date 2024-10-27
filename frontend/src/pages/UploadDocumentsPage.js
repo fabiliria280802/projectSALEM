@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Panel } from 'primereact/panel';
 import { FileUpload } from 'primereact';
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
 
 const UploadDocumentsPage = () => {
 	const [file, setFile] = useState(null);

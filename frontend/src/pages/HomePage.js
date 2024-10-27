@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import styles from '../styles/HomePage.module.css';
 import homePageImage from '../assets/homePage.png';
+import { Toast } from 'primereact/toast';
 
 const HomePage = () => {
     const { user } = useAuth();

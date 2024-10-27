@@ -3,6 +3,8 @@ import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
+
 // /:currentUserId/:userIdToModify
 const EditPasswordPage = () => {
     const location = useLocation();

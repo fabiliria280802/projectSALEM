@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 
-//validacion cedula ecuatoriana
 const validateEcuadorianCedula = (cedula) => {
     if (cedula.length !== 10) return false;
 
@@ -29,7 +28,6 @@ const validateEcuadorianCedula = (cedula) => {
     return verifierDigit === parseInt(cedula[9], 10);
 };
 
-// Validación para RUC (Sociedades Privadas, Públicas y Extranjeros)
 const validateRUC = (ruc) => {
     if (ruc.length !== 13) return false;
 
@@ -112,10 +110,10 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String
     },
-    role: {//TODO: quitar el sin asignar
+    role: {
         type: String,
-        enum: ['Administrador', 'Gestor', 'Cliente final', 'Sin Asignar'],
-        default: 'Sin Asignar'
+        enum: ['Administrador', 'Gestor', 'Proveedor'],
+        default: 'Proveedor'
     },
     register_date: {
         type: Date,

@@ -13,7 +13,7 @@ const isManager = (req, res, next) => {
 };
 
 const isClient = (req, res, next) => {
-    if (req.user.role !== 'Cliente final') {
+    if (req.user.role !== 'Proveedor') {
         return res.status(403).json({ message: 'No autorizado, debes ser Cliente' });
     }
     next();

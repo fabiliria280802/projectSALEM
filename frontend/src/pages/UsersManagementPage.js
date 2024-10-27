@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from '../styles/UsersManagementPage.module.css';
 import userService from '../services/userService';
+import { Toast } from 'primereact/toast';
 
 const UsersManagementPage = () => {
   const history = useHistory();
@@ -9,20 +10,19 @@ const UsersManagementPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-  // Usar useEffect para cargar los usuarios al montar el componente
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const data = await userService.getAllUsers();
-        console.log(data); // Verificar la estructura de los datos
-        setUsers(data); // Actualiza el estado con los datos desde el backend
+        console.log(data);
+        setUsers(data);
       } catch (error) {
         console.error('Error al cargar usuarios:', error);
       }
     };
 
     fetchUsers();
-  }, []); // Ejecuta una sola vez al montar el componente
+  }, []);
 
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
@@ -31,8 +31,8 @@ const UsersManagementPage = () => {
 
   const confirmDelete = async () => {
     try {
-      await userService.deleteUser(userToDelete._id); // Cambiar a _id
-      setUsers(users.filter(user => user._id !== userToDelete._id)); // Cambiar a _id
+      await userService.deleteUser(userToDelete._id);
+      setUsers(users.filter(user => user._id !== userToDelete._id));
       setShowPopup(false);
     } catch (error) {
       console.error('Error al eliminar usuario:', error);
@@ -43,9 +43,8 @@ const UsersManagementPage = () => {
     setShowPopup(false);
   };
 
-  // Redirigir a la página de edición de usuario, pasando el user._id en la URL
   const handleEditClick = (user) => {
-    history.push(`/edit-user/${user._id}`); // Cambiar a _id
+    history.push(`/edit-user/${user._id}`);
   };
 
   const handleCreateClick = () => {
@@ -76,6 +75,7 @@ const UsersManagementPage = () => {
               <th>RUC</th>
               <th>Empresa</th>
               <th>Permisos</th>
+              <th>Estado</th>
               <th>Control</th>
             </tr>
           </thead>
@@ -89,10 +89,11 @@ const UsersManagementPage = () => {
                 <td>{user.ruc}</td>
                 <td>{user.company_name}</td>
                 <td>{user.role}</td>
+                <td>{user.status}</td>
                 <td>
                   <button
                     className={styles.editButton}
-                    onClick={() => handleEditClick(user)} // Redirigir con _id
+                    onClick={() => handleEditClick(user)}
                   >
                     Editar
                   </button>
@@ -111,8 +112,8 @@ const UsersManagementPage = () => {
         {showPopup && (
           <div className={styles.popup}>
             <div className={styles.popupContent}>
-              <h2>Confirmar eliminación</h2>
-              <p>¿Estás seguro de que deseas eliminar a {userToDelete?.name} {userToDelete?.last_name}?</p>
+              <h2>Confirmar desactivación de usuario</h2>
+              <p>¿Estás seguro de que deseas desactivar a {userToDelete?.name} {userToDelete?.last_name}? <br/>* Al confirmar esta acción el usuario no podra acceder al sistema.</p>
               <div className={styles.popupActions}>
                 <button onClick={confirmDelete} className={styles.confirmButton}>Eliminar</button>
                 <button onClick={cancelDelete} className={styles.cancelButton}>Cancelar</button>

@@ -44,7 +44,7 @@ const AppContent = () => {
 					<PrivateRoute
 						path="/upload-documents"
 						component={UploadDocumentsPage}
-						roles={['Administrador', 'Gestor', 'Cliente final']}
+						roles={['Administrador', 'Gestor', 'Proveedor']}
 					/>
 					<PrivateRoute
 						path="/users-management"
