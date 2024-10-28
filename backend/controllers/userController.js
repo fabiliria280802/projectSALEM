@@ -1,7 +1,7 @@
 /*
     Description: Authentication logic for login and get user profile
     By: Fabiana Liria
-    version: 1.8
+    version: 2.0
 */
 
 const User = require('../models/User');
@@ -55,7 +55,11 @@ exports.createUser = [
                 user: userResponse
             });
         } catch (error) {
-            next(error);
+            if (error.name === 'ValidationError') {
+                const errors = Object.values(error.errors).map(err => err.message);
+                return res.status(400).json({ message: 'Errores de validación', errors });
+            }
+            res.status(500).json({ message: 'Error al crear el usuario', errors: ['Error desconocido al crear el usuario'] });
         }
     }
 ];
@@ -98,7 +102,7 @@ exports.updateUser = [
     isAdmin,
     async (req, res, next) => {
         const { id } = req.params;
-        const { phone, company_name, ruc, email, role, status } = req.body;
+        const { phone, company_name, ruc, email, role, status, name, last_name } = req.body;
         console.log('Datos recibidos en el cuerpo:', req.body);
         try {
             const user = await User.findById(id);
@@ -114,24 +118,29 @@ exports.updateUser = [
             user.email = email || user.email;
             user.role = role || user.role;
             user.status = status || user.status;
+            user.name = name || user.name;
+            user.last_name = last_name || user.last_name;
 
             await user.save();
-
             res.json({ message: 'Usuario actualizado exitosamente', user });
         } catch (error) {
-            next(error);
+            if (error.name === 'ValidationError') {
+                const errors = Object.values(error.errors).map(err => err.message);
+                return res.status(400).json({ message: 'Errores de validación', errors });
+            }
+            res.status(500).json({ message: 'Error al crear el usuario', errors: ['Error desconocido al crear el usuario'] });
         }
     }
 ];
 
-exports.deleteUser = [
+exports.suspendUser = [
     authMiddleware,
     isAdmin,
     async (req, res, next) => {
         const { id } = req.params;
 
         try {
-            const user = await User.findByIdAndDelete(id);
+            const user = await User.findById(id);
 
             if (!user) {
                 const error = new Error('Usuario no encontrado');
@@ -139,7 +148,10 @@ exports.deleteUser = [
                 return next(error);
             }
 
-            res.json({ message: 'Usuario eliminado exitosamente' });
+            user.status = 'Inactivo';
+            await user.save();
+
+            res.json({ message: 'Usuario desactivado exitosamente' });
         } catch (error) {
             next(error);
         }
@@ -187,8 +199,11 @@ exports.changePassword = [
             return res.status(403).json({ message: 'No autorizado' });
 
         } catch (error) {
-            console.error("Error en changePassword:", error);
-            next(error);
+            if (error.name === 'ValidationError') {
+                const errors = Object.values(error.errors).map(err => err.message);
+                return res.status(400).json({ message: 'Errores de validación', errors });
+            }
+            res.status(500).json({ message: 'Error al crear el usuario', errors: ['Error desconocido al crear el usuario'] });
         }
     }
 ];

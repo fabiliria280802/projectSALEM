@@ -16,7 +16,7 @@
 	align-items: center;
 	height: calc(100vh - 290px);
 }
-.buttonReverse{
+.buttonReverse {
 	background-color: white;
 	border-color: black;
 	color: black;

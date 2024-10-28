@@ -39,7 +39,7 @@ const AppContent = () => {
 					<PrivateRoute
 						path="/create-user"
 						component={CreateUserPage}
-						roles={['Administrador' ]}
+						roles={['Administrador']}
 					/>
 					<PrivateRoute
 						path="/upload-documents"

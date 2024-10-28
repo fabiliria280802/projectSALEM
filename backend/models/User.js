@@ -54,7 +54,7 @@ const validateRUC = (ruc) => {
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true, 'El campo "Nombres" es obligatorio.'],
         validate: {
             validator: (value) => validator.isAlpha(value, 'es-ES', { ignore: ' ' }),
             message: 'El nombre solo debe contener letras y espacios.'
@@ -63,7 +63,7 @@ const userSchema = new mongoose.Schema({
     },
     last_name: {
         type: String,
-        required: true,
+        required: [true, 'El campo "Apellidos" es obligatorio.'],
         validate: {
             validator: (value) => validator.isAlpha(value, 'es-ES', { ignore: ' ' }),
             message: 'El nombre solo debe contener letras y espacios.'
@@ -72,7 +72,7 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: true,
+        required: [true, 'El campo "Telefono" es obligatorio.'],
         validate: {
             validator: (value) => validator.isNumeric(value) && validator.isLength(value, { min: 10, max: 10 }),
             message: 'El número de teléfono debe tener exactamente 10 dígitos.'
@@ -81,7 +81,7 @@ const userSchema = new mongoose.Schema({
     },
     company_name: {
         type: String,
-        required: true,
+        required: [true, 'El campo "Empresa" es obligatorio.'],
         validate: {
             validator: (value) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value),
             message: 'El nombre de la empresa no puede contener caracteres especiales ni números.'
@@ -90,7 +90,7 @@ const userSchema = new mongoose.Schema({
     },
     ruc: {
         type: String,
-        required: true,
+        required: [true, 'El campo "Ruc" es obligatorio.'],
         validate: {
             validator: validateRUC,
             message: 'El RUC ingresado no es válido.'
@@ -99,7 +99,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
+        required: [true, 'El campo "Correo" es obligatorio.'],
         unique: true,
         validate: {
             validator: (value) => validator.isEmail(value),
@@ -112,6 +112,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
+        required: [true, 'El campo "Rol" es obligatorio.'],
         enum: ['Administrador', 'Gestor', 'Proveedor'],
         default: 'Proveedor'
     },

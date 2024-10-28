@@ -17,6 +17,13 @@ router.post('/create-password/:userId', async (req, res) => {
       return res.status(400).json({ message: 'La contraseña debe tener al menos 6 caracteres' });
     }
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message: 'La contraseña debe tener al menos una letra mayúscula, una letra minúscula y un número'
+      });
+    }
+
     user.password = password;
     await user.save();
 

@@ -1,13 +1,13 @@
-.pageTitle{
+.pageTitle {
 	margin: 0 10px 0 10px;
 }
 
-.pageContainerTitle{
+.pageContainerTitle {
 	display: flex;
 	align-items: center;
 	background-color: #ffffff;
-    border: none;
-    position: relative;
+	border: none;
+	position: relative;
 	box-shadow: -2px 0 0 0 #cccccc;
 }
 .buttons {
@@ -19,21 +19,21 @@
 }
 
 .header {
-    background-color: #ffffff;
-    border: none;
-    position: relative;
-    height: 72px;
+	background-color: #ffffff;
+	border: none;
+	position: relative;
+	height: 72px;
 }
 
 .headerShadow {
-    box-shadow: 0 0 0 2px #cccccc;
+	box-shadow: 0 0 0 2px #cccccc;
 }
 
 .headerWithImage {
-    background-image: url('../assets/margin.png');
-    background-repeat: no-repeat;
-    background-position: bottom;
-    background-size: contain;
+	background-image: url('../assets/margin.png');
+	background-repeat: no-repeat;
+	background-position: bottom;
+	background-size: contain;
 }
 
 .menuItem {

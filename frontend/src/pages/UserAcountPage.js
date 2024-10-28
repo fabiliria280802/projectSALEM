@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import userService from '../services/userService';
 import authService from '../services/authService';
 import { Button } from 'primereact/button';
@@ -9,140 +9,178 @@ import { useHistory } from 'react-router-dom';
 import { Toast } from 'primereact/toast';
 
 const UserAccountPage = () => {
-  const history = useHistory();
-  const [userData, setUserData] = useState({
-    name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-    ruc: '',
-    company_name: '',
-    role: ''
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+	const history = useHistory();
+	const toast = useRef(null);
+	const [userId, setUserId] = useState(null);
+	const [userData, setUserData] = useState({
+		name: '',
+		last_name: '',
+		email: '',
+		phone: '',
+		ruc: '',
+		company_name: '',
+		role: '',
+		password: '',
+	});
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 
-  const roleOptions = [
-    { label: 'Proveedor', value: 'Proveedor' },
-    { label: 'Gestor', value: 'Gestor' },
-    { label: 'Administrador', value: 'Administrador' }
-  ];
+	const roleOptions = [
+		{ label: 'Proveedor', value: 'Proveedor' },
+		{ label: 'Gestor', value: 'Gestor' },
+		{ label: 'Administrador', value: 'Administrador' },
+	];
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = authService.getToken();
-        if (!token) throw new Error('Token no disponible');
-        const decodedToken = authService.decodeToken(token);
-        const userId = decodedToken.id;
-        const userData = await userService.getAUser(userId);
-        setUserData(userData);
-      } catch (err) {
-        setError('Error al cargar los datos del usuario');
-      } finally {
-        setLoading(false);
-      }
-    };
+	useEffect(() => {
+		const fetchUser = async () => {
+			try {
+				const token = authService.getToken();
+				if (!token) throw new Error('Token no disponible');
+				const decodedToken = authService.decodeToken(token);
+				setUserId(decodedToken.id); // Guarda el userId extraído del token
+				const userData = await userService.getAUser(decodedToken.id);
+				setUserData(userData);
+			} catch (err) {
+				setError('Error al cargar los datos del usuario');
+			} finally {
+				setLoading(false);
+			}
+		};
 
-    fetchUser();
-  }, []);
+		fetchUser();
+	}, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
+	const handleInputChange = e => {
+		const { name, value } = e.target;
+		setUserData({ ...userData, [name]: value });
+	};
 
-  const handleDropdownChange = (e) => {
-    setUserData({ ...userData, role: e.value });
-  };
+	const handleDropdownChange = e => {
+		setUserData({ ...userData, role: e.value });
+	};
 
-  const handleCancel = () => {
-    history.goBack();
-  };
+	const handleSave = async () => {
+		try {
+			await userService.updateUser(userId, userData); // Pasa el userId y userData correctamente
+			toast.current.show({
+				severity: 'success',
+				summary: 'Actualización exitosa',
+				detail: 'La información se actualizó correctamente',
+				life: 3000,
+			});
+		} catch (err) {
+			toast.current.show({
+				severity: 'error',
+				summary: 'Error',
+				detail: 'No se pudo actualizar la información',
+				life: 3000,
+			});
+		}
+	};
 
-  if (loading) {
-    return <div>Cargando...</div>;
-  }
+	const handleCancel = () => {
+		history.goBack();
+	};
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+	if (loading) {
+		return <div>Cargando...</div>;
+	}
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.formContainer}>
-        <h1 className={styles.formTitle}>Mi cuenta</h1>
-        <p>Empresa: {userData.company_name}</p>
-        <div className={styles.formGrid}>
-          <div className={styles.formGroup}>
-            <label htmlFor="name">Nombre:</label>
-            <InputText
-              id="name"
-              name="name"
-              value={userData.name}
-              onChange={handleInputChange}
-              disabled />
-          </div>
+	if (error) {
+		return <div>{error}</div>;
+	}
 
-          <div className={styles.formGroup}>
-            <label htmlFor="last_name">Apellido:</label>
-            <InputText
-              id="last_name"
-              name="last_name"
-              value={userData.last_name}
-              onChange={handleInputChange}
-              disabled />
-          </div>
+	return (
+		<div className={styles.container}>
+			<Toast ref={toast} />
+			<div className={styles.formContainer}>
+				<h1 className={styles.formTitle}>Mi cuenta</h1>
+				<p>Empresa: {userData.company_name}</p>
+				<div className={styles.formGrid}>
+					<div className={styles.formGroup}>
+						<label htmlFor="name">Nombre:</label>
+						<InputText
+							id="name"
+							name="name"
+							value={userData.name}
+							onChange={handleInputChange}
+						/>
+					</div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="email">Correo:</label>
-            <InputText
-              id="email"
-              name="email"
-              value={userData.email}
-              onChange={handleInputChange}
-              disabled />
-          </div>
+					<div className={styles.formGroup}>
+						<label htmlFor="last_name">Apellido:</label>
+						<InputText
+							id="last_name"
+							name="last_name"
+							value={userData.last_name}
+							onChange={handleInputChange}
+						/>
+					</div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="phone">Teléfono:</label>
-            <InputText
-              id="phone"
-              name="phone"
-              value={userData.phone}
-              onChange={handleInputChange}
-              disabled />
-          </div>
+					<div className={styles.formGroup}>
+						<label htmlFor="email">Correo:</label>
+						<InputText
+							id="email"
+							name="email"
+							value={userData.email}
+							onChange={handleInputChange}
+							disabled
+						/>
+					</div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="ruc">RUC:</label>
-            <InputText
-              id="ruc"
-              name="ruc"
-              value={userData.ruc}
-              onChange={handleInputChange}
-              disabled />
-          </div>
+					<div className={styles.formGroup}>
+						<label htmlFor="phone">Teléfono:</label>
+						<InputText
+							id="phone"
+							name="phone"
+							value={userData.phone}
+							onChange={handleInputChange}
+							disabled
+						/>
+					</div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="role">Permisos:</label>
-            <Dropdown
-                id="role"
-                value={userData.role}
-                options={roleOptions}
-                onChange={handleDropdownChange}
-                placeholder="Seleccionar permiso"
-                disabled/>
-          </div>
-        </div>
-        <p> * Si deseas actualizar la información de tu perfil, comunícate con el <a href="mailto:mateo.avila@udla.edu.ec">administrador</a>.</p>
-        <Button
-          label="Regresar"
-          className={styles.goBackButton}
-          onClick={handleCancel}/>
-      </div>
-    </div>
-  );
+					<div className={styles.formGroup}>
+						<label htmlFor="ruc">RUC:</label>
+						<InputText
+							id="ruc"
+							name="ruc"
+							value={userData.ruc}
+							onChange={handleInputChange}
+							disabled
+						/>
+					</div>
+
+					<div className={styles.formGroup}>
+						<label htmlFor="role">Permisos:</label>
+						<Dropdown
+							id="role"
+							value={userData.role}
+							options={roleOptions}
+							onChange={handleDropdownChange}
+							placeholder="Seleccionar permiso"
+							disabled
+						/>
+					</div>
+				</div>
+				<p>
+					{' '}
+					* Si deseas actualizar la información de tu perfil, especificamente
+					correo y/o telefono, comunícate con el{' '}
+					<a href="mailto:mateo.avila@udla.edu.ec">administrador</a>.
+				</p>
+				<Button
+					label="Guardar"
+					className={styles.saveButton}
+					onClick={handleSave}
+				/>
+				<Button
+					label="Regresar"
+					className={styles.cancelButton}
+					onClick={handleCancel}
+				/>
+			</div>
+		</div>
+	);
 };
 
 export default UserAccountPage;
