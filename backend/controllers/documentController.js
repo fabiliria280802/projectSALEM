@@ -5,11 +5,9 @@ const AiMetrics = require('../models/AI_metrics');
 const fs = require('fs');
 const path = require('path');
 
-// Cargar el archivo JSON con los esquemas de documentos
 const documentSchemasPath = path.join(__dirname, 'document_schemas.json');
 const documentSchemas = JSON.parse(fs.readFileSync(documentSchemasPath, 'utf-8'));
 
-// Función para extraer los valores del texto usando los campos del JSON
 function extractValuesFromText(text, fields) {
     let extractedValues = {};
     for (const [key, keyword] of Object.entries(fields)) {
@@ -22,12 +20,13 @@ function extractValuesFromText(text, fields) {
 
 exports.addingDocuments = async (req, res) => {
     const { documentType, text, metrics } = req.body;
-
     try {
+        let document;
         let extractedValues = {};
+
         if (documentType === 'Invoice') {
             extractedValues = extractValuesFromText(text, documentSchemas.Invoice.fields);
-            const newInvoice = new Invoice({
+            document = new Invoice({
                 user_id: req.body.user_id,
                 invoice_number: extractedValues.invoice_number,
                 provider_ruc: extractedValues.provider_ruc,
@@ -35,43 +34,81 @@ exports.addingDocuments = async (req, res) => {
                 issue_date: new Date(extractedValues.issue_date),
                 total: parseFloat(extractedValues.total)
             });
-            await newInvoice.save();
         } else if (documentType === 'HES') {
             extractedValues = extractValuesFromText(text, documentSchemas.HES.fields);
-            const newHES = new HES({
+            document = new HES({
                 user_id: req.body.user_id,
                 service_code: extractedValues.service_code,
                 service_description: extractedValues.service_description,
                 total: parseFloat(extractedValues.total)
             });
-            await newHES.save();
         } else if (documentType === 'MIGO') {
             extractedValues = extractValuesFromText(text, documentSchemas.MIGO.fields);
-            const newMIGO = new MIGO({
+            document = new MIGO({
                 user_id: req.body.user_id,
                 movement_number: extractedValues.movement_number,
                 material_code: extractedValues.material_code,
                 total: parseFloat(extractedValues.total)
             });
-            await newMIGO.save();
         }
 
-        // Guardar las métricas AI en AiMetrics
-        const newAiMetrics = new AiMetrics({
-            validationID: req.body.validationID,
-            ai_model_version: metrics.ai_model_version,
-            ai_accuracy: metrics.ai_accuracy,
-            ai_confidence_score: metrics.ai_confidence_score,
-            false_positives: metrics.false_positives,
-            false_negatives: metrics.false_negatives,
-            execution_time: metrics.execution_time,
-            ai_decision_explanation: metrics.ai_decision_explanation,
-            human_review_needed: metrics.human_review_needed
-        });
+        await document.save();
+
+        const newAiMetrics = new AiMetrics({ ...metrics, validationID: req.body.validationID });
         await newAiMetrics.save();
 
         res.status(200).json({ message: 'Documento procesado correctamente' });
     } catch (error) {
         res.status(500).json({ message: 'Error procesando el documento', error });
+    }
+};
+
+exports.getDocumentById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const document = await Invoice.findById(id) || await HES.findById(id) || await MIGO.findById(id);
+        if (!document) return res.status(404).json({ message: 'Documento no encontrado' });
+        res.status(200).json(document);
+    } catch (error) {
+        res.status(500).json({ message: 'Error obteniendo el documento', error });
+    }
+};
+
+exports.updateDocument = async (req, res) => {
+    const { id } = req.params;
+    const { documentType, text } = req.body;
+    let updatedData = {};
+    if (documentType === 'Invoice') {
+        updatedData = extractValuesFromText(text, documentSchemas.Invoice.fields);
+    } else if (documentType === 'HES') {
+        updatedData = extractValuesFromText(text, documentSchemas.HES.fields);
+    } else if (documentType === 'MIGO') {
+        updatedData = extractValuesFromText(text, documentSchemas.MIGO.fields);
+    }
+    try {
+        let document;
+        if (documentType === 'Invoice') {
+            document = await Invoice.findByIdAndUpdate(id, updatedData, { new: true });
+        } else if (documentType === 'HES') {
+            document = await HES.findByIdAndUpdate(id, updatedData, { new: true });
+        } else if (documentType === 'MIGO') {
+            document = await MIGO.findByIdAndUpdate(id, updatedData, { new: true });
+        }
+        if (!document) return res.status(404).json({ message: 'Documento no encontrado' });
+        res.status(200).json(document);
+    } catch (error) {
+        res.status(500).json({ message: 'Error actualizando el documento', error });
+    }
+};
+
+exports.getDocumentsList = async (req, res) => {
+    try {
+        const invoices = await Invoice.find();
+        const hes = await HES.find();
+        const migos = await MIGO.find();
+        const allDocuments = [...invoices, ...hes, ...migos];
+        res.status(200).json(allDocuments);
+    } catch (error) {
+        res.status(500).json({ message: 'Error obteniendo la lista de documentos', error });
     }
 };
