@@ -12,7 +12,10 @@ const login = async (email, password) => {
 		}
 		return response.data;
 	} catch (error) {
-		throw new Error('Error al iniciar sesión');
+		if (error.response && error.response.data.errors) {
+			throw error.response.data.errors;
+		}
+		throw error;
 	}
 };
 

@@ -21,13 +21,9 @@ exports.login = async (req, res, next) => {
 		}
 
 		if (user.status === 'Inactivo') {
-			const error = new Error(
-				'El usuario está desactivado y no puede acceder al sistema',
-			);
-			console.log(error);
-			error.statusCode = 403;
-			return next(error);
-		}
+			console.log('El usuario está desactivado y no puede acceder al sistema');
+			return res.status(403).json({ message: 'El usuario está desactivado y no puede acceder al sistema' });
+		  }
 
 		const isMatch = await bcrypt.compare(password, user.password);
 

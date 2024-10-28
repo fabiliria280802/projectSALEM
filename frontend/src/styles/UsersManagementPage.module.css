@@ -1,11 +1,10 @@
-/* Estilos para la ventana emergente (pop-up) */
 .popup {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+	background: rgba(0, 0, 0, 0.5);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -56,8 +55,6 @@
 .cancelButton:hover {
 	background-color: #95a5a6;
 }
-
-/* Estilos existentes (añadidos antes) */
 
 .usersManagementPage {
 	display: flex;

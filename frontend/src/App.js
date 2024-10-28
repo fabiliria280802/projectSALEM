@@ -8,6 +8,7 @@ import {
 import { AuthProvider } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
+import ResetPasswordPage from './pages/ResetPassawordPage';
 import CreateUserPage from './pages/CreateUserPage';
 import DashboardPage from './pages/DashboardPage';
 import UploadDocumentsPage from './pages/UploadDocumentsPage';
@@ -54,16 +55,17 @@ const AppContent = () => {
 					<PrivateRoute
 						path="/edit-user/:id"
 						component={EditUserPage}
-						roles={['Administrador']}
+						roles={['Administrador', 'Gestor', 'Proveedor']}
 					/>
 					<PrivateRoute
 						path="/user-account"
 						component={UserAcountPage}
-						roles={['Administrador']}
+						roles={['Administrador', 'Gestor', 'Proveedor']}
 					/>
 
 					{/* Rutas públicas */}
 					<Route path="/create-password" component={CreatePasswordPage} />
+					<Route path="/reset-password" component={ResetPasswordPage} />
 					<Route path="/" component={HomePage} />
 				</Switch>
 			</div>

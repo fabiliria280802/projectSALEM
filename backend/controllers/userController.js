@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/authMiddleware');
 const {
 	sendPasswordCreationEmail,
+	sendPasswordResetEmail
 } = require('../controllers/notificationController');
 const mongoose = require('mongoose');
 const { isAdmin } = require('../helpers/roleHelper');
@@ -104,6 +105,20 @@ exports.getAUser = [
 		}
 	},
 ];
+
+exports.getUserByEmail = async (req, res) => {
+	try {
+	  const user = await User.findOne({ email: req.params.email });
+	  if (!user) {
+		return res.status(404).json({ message: 'Usuario no encontrado' });
+	  }
+	  await sendPasswordResetEmail(user);
+	  res.status(200).json({ message: 'Correo enviado correctamente' });
+	} catch (error) {
+	  console.error('Error al buscar usuario por correo:', error);
+	  res.status(500).json({ message: 'Error al procesar la solicitud', error: error.message });
+	}
+  };
 
 exports.updateUser = [
 	authMiddleware,
@@ -243,5 +258,30 @@ exports.changePassword = [
 		}
 	},
 ];
+
+exports.verifyResetCode = async (req, res) => {
+	const { email, code } = req.body;
+
+	if (!email || !code) {
+	  return res.status(400).json({ message: 'Faltan datos requeridos: email o código.' });
+	}
+
+	try {
+	  const user = await User.findOne({ email });
+	  if (!user || user.resetCode !== code) {
+		return res.status(400).json({ message: 'Código incorrecto o no encontrado' });
+	  }
+
+	  // Verifica que el `userId` esté siendo enviado en la respuesta
+	  console.log("userId:", user._id);
+	  res.status(200).json({ message: 'Código verificado correctamente', userId: user._id });
+	} catch (error) {
+	  res.status(500).json({ message: 'Error al verificar el código', error });
+	}
+  };
+
+
+
+
 //TODO: PASAR EL CREATE PASSWORD A USERCONTROLLER.JS
 exports.createPassword = [];

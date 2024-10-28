@@ -92,3 +92,17 @@
 .cancelButton:hover {
 	background-color: #f0f0f0;
 }
+
+.resetButton {
+	background-color: #f07a0b;
+	margin: 0 0 0 10px;
+	color: black;
+	padding: 10px 20px;
+	border: 1px solid #f07a0b;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.resetButton:hover {
+	background-color: #f07a0b;
+}

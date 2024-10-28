@@ -82,6 +82,11 @@ const UserAccountPage = () => {
 		history.goBack();
 	};
 
+
+	const handleResetPassword = () => {
+		history.push(`/create-password?userId=${userId}`);
+	};
+
 	if (loading) {
 		return <div>Cargando...</div>;
 	}
@@ -177,6 +182,11 @@ const UserAccountPage = () => {
 					label="Regresar"
 					className={styles.cancelButton}
 					onClick={handleCancel}
+				/>
+				<Button
+					label="Restablecer Contraseña"
+					className={styles.resetButton}
+					onClick={handleResetPassword}
 				/>
 			</div>
 		</div>

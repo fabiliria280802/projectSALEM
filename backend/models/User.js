@@ -8,13 +8,10 @@ const validateEcuadorianCedula = cedula => {
 	const provinceCode = parseInt(cedula.slice(0, 2), 10);
 	const thirdDigit = parseInt(cedula[2], 10);
 
-	// Verificar que el código de provincia sea válido
 	if (provinceCode < 1 || provinceCode > 24) return false;
 
-	// Verificar que el tercer dígito sea menor a 6
 	if (thirdDigit >= 6) return false;
 
-	// Aplicar Módulo 10 para verificar el décimo dígito
 	const coefficients = [2, 1, 2, 1, 2, 1, 2, 1, 2];
 	let total = 0;
 
@@ -128,6 +125,10 @@ const userSchema = new mongoose.Schema({
 		enum: ['Activo', 'Inactivo'],
 		default: 'Activo',
 	},
+	resetCode: {
+		type: String,
+		default: null,
+	  },
 	last_login: {
 		type: Date,
 		default: Date.now,
