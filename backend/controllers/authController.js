@@ -9,65 +9,66 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 exports.login = async (req, res, next) => {
-    const { email, password } = req.body;
+	const { email, password } = req.body;
 
-    try {
-        const user = await User.findOne({ email });
+	try {
+		const user = await User.findOne({ email });
 
-        if (!user) {
-            const error = new Error('Usuario no encontrado');
-            error.statusCode = 401;
-            return next(error);
-        }
+		if (!user) {
+			const error = new Error('Usuario no encontrado');
+			error.statusCode = 401;
+			return next(error);
+		}
 
-        if (user.status === 'Inactivo') {
-            const error = new Error('El usuario está desactivado y no puede acceder al sistema');
-            console.log(error);
-            error.statusCode = 403;
-            return next(error);
-        }
+		if (user.status === 'Inactivo') {
+			const error = new Error(
+				'El usuario está desactivado y no puede acceder al sistema',
+			);
+			console.log(error);
+			error.statusCode = 403;
+			return next(error);
+		}
 
-        const isMatch = await bcrypt.compare(password, user.password);
+		const isMatch = await bcrypt.compare(password, user.password);
 
-        if (!isMatch) {
-            const error = new Error('Contraseña incorrecta');
-            error.statusCode = 401;
-            return next(error);
-        }
+		if (!isMatch) {
+			const error = new Error('Contraseña incorrecta');
+			error.statusCode = 401;
+			return next(error);
+		}
 
-        const token = jwt.sign(
-            {
-                id: user._id,
-                name: user.name,
-                last_name: user.last_name,
-                email: user.email,
-                role: user.role,
-                company_name: user.company_name,
-                ruc: user.ruc,
-                phone: user.phone
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '10h' }
-        );
+		const token = jwt.sign(
+			{
+				id: user._id,
+				name: user.name,
+				last_name: user.last_name,
+				email: user.email,
+				role: user.role,
+				company_name: user.company_name,
+				ruc: user.ruc,
+				phone: user.phone,
+			},
+			process.env.JWT_SECRET,
+			{ expiresIn: '10h' },
+		);
 
-        res.json({
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                last_name: user.last_name,
-                email: user.email,
-                role: user.role,
-                company_name: user.company_name,
-                ruc: user.ruc,
-                phone: user.phone,
-                register_date: user.register_date,
-                status: user.status,
-                last_login: user.last_login
-            }
-        });
-
-    } catch (error) {
-        next(error);
-    }
+		res.json({
+			token,
+			user: {
+				id: user._id,
+				name: user.name,
+				last_name: user.last_name,
+				email: user.email,
+				role: user.role,
+				company_name: user.company_name,
+				ruc: user.ruc,
+				phone: user.phone,
+				register_date: user.register_date,
+				status: user.status,
+				last_login: user.last_login,
+			},
+		});
+	} catch (error) {
+		next(error);
+	}
 };

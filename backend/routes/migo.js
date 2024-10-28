@@ -1,11 +1,11 @@
 const express = require('express');
 const {
-    createMigo,
-    getAllMigos,
-    getMigoById,
-    updateMigo,
-    deleteMigo,
-    getMigosByType
+	createMigo,
+	getAllMigos,
+	getMigoById,
+	updateMigo,
+	deleteMigo,
+	getMigosByType,
 } = require('../controllers/migoController');
 
 const { isAdmin } = require('../helpers/roleHelper');

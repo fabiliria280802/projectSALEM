@@ -1,11 +1,11 @@
 const express = require('express');
 const {
-    createHes,
-    getAllHes,
-    getHesById,
-    updateHes,
-    deleteHes,
-    getHesByProviderRuc
+	createHes,
+	getAllHes,
+	getHesById,
+	updateHes,
+	deleteHes,
+	getHesByProviderRuc,
 } = require('../controllers/hesController');
 
 const { isAdmin } = require('../helpers/roleHelper');

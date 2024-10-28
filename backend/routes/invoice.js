@@ -1,11 +1,11 @@
 const express = require('express');
 const {
-    createInvoice,
-    getAllInvoices,
-    getInvoiceById,
-    updateInvoice,
-    deleteInvoice,
-    getInvoiceByNumber
+	createInvoice,
+	getAllInvoices,
+	getInvoiceById,
+	updateInvoice,
+	deleteInvoice,
+	getInvoiceByNumber,
 } = require('../controllers/invoiceController');
 
 const { isAdmin } = require('../helpers/roleHelper');

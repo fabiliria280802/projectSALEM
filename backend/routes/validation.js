@@ -4,7 +4,7 @@ const {
 	getAllValidations,
 	createValidation,
 	updateValidation,
-	deleteValidation
+	deleteValidation,
 } = require('../controllers/validationController');
 const { isAdmin } = require('../helpers/roleHelper');
 const router = express.Router();

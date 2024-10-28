@@ -6,23 +6,23 @@
 const jwt = require('jsonwebtoken');
 const transporter = require('../helpers/mailerHelper');
 
-exports.sendPasswordCreationEmail = async (user) => {
-  try {
-    const resetLink = `http://localhost:3000/create-password?userId=${user._id}`;
+exports.sendPasswordCreationEmail = async user => {
+	try {
+		const resetLink = `http://localhost:3000/create-password?userId=${user._id}`;
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: user.email,
-      subject: 'Crea tu contraseña',
-      text: `Hola ${user.name}, por favor crea tu contraseña en el siguiente enlace: ${resetLink}`,
-    };
+		const mailOptions = {
+			from: process.env.EMAIL_USER,
+			to: user.email,
+			subject: 'Crea tu contraseña',
+			text: `Hola ${user.name}, por favor crea tu contraseña en el siguiente enlace: ${resetLink}`,
+		};
 
-    await transporter.sendMail(mailOptions);
-    console.log('Correo enviado con éxito.');
-  } catch (error) {
-    console.error('Error al enviar el correo:', error);
-    throw new Error('No se pudo enviar el correo de creación de contraseña');
-  }
+		await transporter.sendMail(mailOptions);
+		console.log('Correo enviado con éxito.');
+	} catch (error) {
+		console.error('Error al enviar el correo:', error);
+		throw new Error('No se pudo enviar el correo de creación de contraseña');
+	}
 };
 
 //TODO> CREAR ESTA FUNCIONALIDAD. Función para enviar correo cuando faltan campos en un documento

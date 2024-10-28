@@ -1,9 +1,9 @@
 const express = require('express');
 const {
-    addingDocuments,
-    getDocumentById,
-    updateDocument,
-    getDocumentsList
+	addingDocuments,
+	getDocumentById,
+	updateDocument,
+	getDocumentsList,
 } = require('../controllers/documentController');
 const router = express.Router();
 router.post('/', addingDocuments);
