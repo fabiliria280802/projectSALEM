@@ -25,11 +25,9 @@ exports.createInvoice = async (req, res) => {
 			0,
 		);
 		if (calculatedTotal !== total) {
-			return res
-				.status(400)
-				.json({
-					error: 'El total calculado no coincide con el total proporcionado',
-				});
+			return res.status(400).json({
+				error: 'El total calculado no coincide con el total proporcionado',
+			});
 		}
 
 		const invoice = new Invoice({
@@ -107,11 +105,9 @@ exports.updateInvoice = async (req, res) => {
 			0,
 		);
 		if (calculatedTotal !== total) {
-			return res
-				.status(400)
-				.json({
-					error: 'El total calculado no coincide con el total proporcionado',
-				});
+			return res.status(400).json({
+				error: 'El total calculado no coincide con el total proporcionado',
+			});
 		}
 
 		const updatedInvoice = await Invoice.findByIdAndUpdate(

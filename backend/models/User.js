@@ -128,7 +128,7 @@ const userSchema = new mongoose.Schema({
 	resetCode: {
 		type: String,
 		default: null,
-	  },
+	},
 	last_login: {
 		type: Date,
 		default: Date.now,

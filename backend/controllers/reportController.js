@@ -22,12 +22,10 @@ exports.createReport = async (req, res) => {
 		}
 
 		if (document_count !== approved_documents + rejected_documents) {
-			return res
-				.status(400)
-				.json({
-					error:
-						'La suma de documentos aprobados y rechazados debe ser igual al total de documentos',
-				});
+			return res.status(400).json({
+				error:
+					'La suma de documentos aprobados y rechazados debe ser igual al total de documentos',
+			});
 		}
 
 		const report = new Report({
@@ -95,12 +93,10 @@ exports.updateReport = async (req, res) => {
 		}
 
 		if (document_count !== approved_documents + rejected_documents) {
-			return res
-				.status(400)
-				.json({
-					error:
-						'La suma de documentos aprobados y rechazados debe ser igual al total de documentos',
-				});
+			return res.status(400).json({
+				error:
+					'La suma de documentos aprobados y rechazados debe ser igual al total de documentos',
+			});
 		}
 
 		const updatedReport = await Report.findByIdAndUpdate(

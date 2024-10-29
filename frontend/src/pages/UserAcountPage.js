@@ -82,7 +82,6 @@ const UserAccountPage = () => {
 		history.goBack();
 	};
 
-
 	const handleResetPassword = () => {
 		history.push(`/create-password?userId=${userId}`);
 	};

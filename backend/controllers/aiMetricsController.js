@@ -144,11 +144,9 @@ exports.getAiMetricsByModelVersion = async (req, res) => {
 			'document_type validation_status',
 		);
 		if (!aiMetrics.length) {
-			return res
-				.status(404)
-				.json({
-					error: 'No se encontraron métricas para esta versión de modelo AI',
-				});
+			return res.status(404).json({
+				error: 'No se encontraron métricas para esta versión de modelo AI',
+			});
 		}
 
 		res.status(200).json(aiMetrics);
@@ -157,10 +155,8 @@ exports.getAiMetricsByModelVersion = async (req, res) => {
 			'Error al obtener las métricas AI por versión de modelo:',
 			error,
 		);
-		res
-			.status(500)
-			.json({
-				error: 'Error al obtener las métricas AI por versión de modelo',
-			});
+		res.status(500).json({
+			error: 'Error al obtener las métricas AI por versión de modelo',
+		});
 	}
 };

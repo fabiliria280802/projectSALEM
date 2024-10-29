@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middleware/authMiddleware');
 const {
 	sendPasswordCreationEmail,
-	sendPasswordResetEmail
+	sendPasswordResetEmail,
 } = require('../controllers/notificationController');
 const mongoose = require('mongoose');
 const { isAdmin } = require('../helpers/roleHelper');
@@ -65,12 +65,10 @@ exports.createUser = [
 					.status(400)
 					.json({ message: 'Errores de validación', errors });
 			}
-			res
-				.status(500)
-				.json({
-					message: 'Error al crear el usuario',
-					errors: ['Error desconocido al crear el usuario'],
-				});
+			res.status(500).json({
+				message: 'Error al crear el usuario',
+				errors: ['Error desconocido al crear el usuario'],
+			});
 		}
 	},
 ];
@@ -108,17 +106,22 @@ exports.getAUser = [
 
 exports.getUserByEmail = async (req, res) => {
 	try {
-	  const user = await User.findOne({ email: req.params.email });
-	  if (!user) {
-		return res.status(404).json({ message: 'Usuario no encontrado' });
-	  }
-	  await sendPasswordResetEmail(user);
-	  res.status(200).json({ message: 'Correo enviado correctamente' });
+		const user = await User.findOne({ email: req.params.email });
+		if (!user) {
+			return res.status(404).json({ message: 'Usuario no encontrado' });
+		}
+		await sendPasswordResetEmail(user);
+		res.status(200).json({ message: 'Correo enviado correctamente' });
 	} catch (error) {
-	  console.error('Error al buscar usuario por correo:', error);
-	  res.status(500).json({ message: 'Error al procesar la solicitud', error: error.message });
+		console.error('Error al buscar usuario por correo:', error);
+		res
+			.status(500)
+			.json({
+				message: 'Error al procesar la solicitud',
+				error: error.message,
+			});
 	}
-  };
+};
 
 exports.updateUser = [
 	authMiddleware,
@@ -154,12 +157,10 @@ exports.updateUser = [
 					.status(400)
 					.json({ message: 'Errores de validación', errors });
 			}
-			res
-				.status(500)
-				.json({
-					message: 'Error al crear el usuario',
-					errors: ['Error desconocido al crear el usuario'],
-				});
+			res.status(500).json({
+				message: 'Error al crear el usuario',
+				errors: ['Error desconocido al crear el usuario'],
+			});
 		}
 	},
 ];
@@ -249,12 +250,10 @@ exports.changePassword = [
 					.status(400)
 					.json({ message: 'Errores de validación', errors });
 			}
-			res
-				.status(500)
-				.json({
-					message: 'Error al crear el usuario',
-					errors: ['Error desconocido al crear el usuario'],
-				});
+			res.status(500).json({
+				message: 'Error al crear el usuario',
+				errors: ['Error desconocido al crear el usuario'],
+			});
 		}
 	},
 ];
@@ -263,25 +262,28 @@ exports.verifyResetCode = async (req, res) => {
 	const { email, code } = req.body;
 
 	if (!email || !code) {
-	  return res.status(400).json({ message: 'Faltan datos requeridos: email o código.' });
+		return res
+			.status(400)
+			.json({ message: 'Faltan datos requeridos: email o código.' });
 	}
 
 	try {
-	  const user = await User.findOne({ email });
-	  if (!user || user.resetCode !== code) {
-		return res.status(400).json({ message: 'Código incorrecto o no encontrado' });
-	  }
+		const user = await User.findOne({ email });
+		if (!user || user.resetCode !== code) {
+			return res
+				.status(400)
+				.json({ message: 'Código incorrecto o no encontrado' });
+		}
 
-	  // Verifica que el `userId` esté siendo enviado en la respuesta
-	  console.log("userId:", user._id);
-	  res.status(200).json({ message: 'Código verificado correctamente', userId: user._id });
+		// Verifica que el `userId` esté siendo enviado en la respuesta
+		console.log('userId:', user._id);
+		res
+			.status(200)
+			.json({ message: 'Código verificado correctamente', userId: user._id });
 	} catch (error) {
-	  res.status(500).json({ message: 'Error al verificar el código', error });
+		res.status(500).json({ message: 'Error al verificar el código', error });
 	}
-  };
-
-
-
+};
 
 //TODO: PASAR EL CREATE PASSWORD A USERCONTROLLER.JS
 exports.createPassword = [];

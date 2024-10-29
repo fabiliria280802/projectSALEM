@@ -29,6 +29,7 @@ const AppContent = () => {
 			<Header />
 			<div className="content">
 				<Switch>
+					{/* Rutas públicas */}
 					<Route path="/login" component={LoginPage} />
 
 					{/* Rutas protegidas con los roles correspondientes */}

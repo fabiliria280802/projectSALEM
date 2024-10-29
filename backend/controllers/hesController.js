@@ -24,12 +24,10 @@ exports.createHes = async (req, res) => {
 			service_end_date &&
 			new Date(service_end_date) < new Date(service_start_date)
 		) {
-			return res
-				.status(400)
-				.json({
-					error:
-						'La fecha de finalización no puede ser anterior a la fecha de inicio',
-				});
+			return res.status(400).json({
+				error:
+					'La fecha de finalización no puede ser anterior a la fecha de inicio',
+			});
 		}
 
 		const hes = new Hes({
@@ -102,12 +100,10 @@ exports.updateHes = async (req, res) => {
 			service_end_date &&
 			new Date(service_end_date) < new Date(service_start_date)
 		) {
-			return res
-				.status(400)
-				.json({
-					error:
-						'La fecha de finalización no puede ser anterior a la fecha de inicio',
-				});
+			return res.status(400).json({
+				error:
+					'La fecha de finalización no puede ser anterior a la fecha de inicio',
+			});
 		}
 
 		const updatedHes = await Hes.findByIdAndUpdate(
@@ -164,11 +160,9 @@ exports.getHesByProviderRuc = async (req, res) => {
 			'name email',
 		);
 		if (!hesRecords.length) {
-			return res
-				.status(404)
-				.json({
-					error: 'No se encontraron registros HES para este proveedor RUC',
-				});
+			return res.status(404).json({
+				error: 'No se encontraron registros HES para este proveedor RUC',
+			});
 		}
 
 		res.status(200).json(hesRecords);
@@ -177,10 +171,8 @@ exports.getHesByProviderRuc = async (req, res) => {
 			'Error al obtener los registros HES por RUC de proveedor:',
 			error,
 		);
-		res
-			.status(500)
-			.json({
-				error: 'Error al obtener los registros HES por RUC de proveedor',
-			});
+		res.status(500).json({
+			error: 'Error al obtener los registros HES por RUC de proveedor',
+		});
 	}
 };

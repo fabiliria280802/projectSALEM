@@ -51,7 +51,9 @@ const getAUser = async userId => {
 
 const getUserByEmail = async email => {
 	try {
-		const response = await axios.get(`http://localhost:5000/api/users-mail/email/${email}`);
+		const response = await axios.get(
+			`http://localhost:5000/api/users-mail/email/${email}`,
+		);
 		return response.data;
 	} catch (error) {
 		if (error.response && error.response.data.errors) {
@@ -121,7 +123,7 @@ const userService = {
 	suspendUser,
 	resumeUser,
 	updateUser,
-	getUserByEmail
+	getUserByEmail,
 };
 
 export default userService;
