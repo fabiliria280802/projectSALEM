@@ -1,15 +1,26 @@
-describe('Login E2E', () => {
-	//Render Home Page (logout)
-	it('1. Debe mostrar la página de inicio(Home Page) para usuarios no loggeados y permitir hacer clic en el botón de iniciar sesión', () => {
-		cy.visit('http://localhost:3000');
-		cy.contains('¡Te esperamos!').should('be.visible');
-		cy.contains(
-			'Automatización inteligente para la gestión de documentos',
-		).should('be.visible');
-		cy.get('button').contains('Iniciar sesión').click();
-		cy.url().should('include', '/login');
+describe('CRUD DOCUMENTS E2E', () => {
+	//Render Home Page lwhen user is login
+	it('1. Debo poder loggearme y crear un nuevo usuario', () => {
+		cy.visit('http://localhost:3000/login');
+		cy.get('input[name="email"]').type('fabiliria@gmail.com');
+		cy.get('input[name="password"]').type('business123D');
+		cy.get('[data-testid="submit-button-main-form"]').click();
+
+		cy.get('.p-toast', { timeout: 5000 }).should('be.visible');
+		cy.get('.p-toast-message-content').within(() => {
+			cy.contains('Éxito').should('be.visible');
+			cy.contains('Sesión iniciada correctamente').should('be.visible');
+		});
+		cy.url().should('include', '/');
+		cy.contains('ENAP Ecuador - Administrador').should('be.visible');
+		cy.contains('¡Hola').should('be.visible');
+		cy.contains('Mantén tus procesos bajo control fácilmente.').should(
+			'be.visible',
+		);
+		cy.get('button').contains('Revisión').should('be.visible');
+		cy.get('button').contains('Nuevo').should('be.visible').click();
 	});
-	//Happy path login - Administrador
+	//Happy path see user
 	//TODO: Validar header
 	it('1.1. login exitoso del usuario(Administrador) y renderizado del Home Page', () => {
 		cy.visit('http://localhost:3000/login');
@@ -34,7 +45,7 @@ describe('Login E2E', () => {
 	//TODO: Happy path login - Gestor & Validar header
 	it('1.1.1. login exitoso del usuario(Gestor) y renderizado del Home Page', () => {
 		cy.visit('http://localhost:3000/login');
-		cy.get('input[name="email"]').type('fabiana.liria@udla.edu.ec');
+		cy.get('input[name="email"]').type('@gmail.com');
 		cy.get('input[name="password"]').type('business123A');
 		cy.get('[data-testid="submit-button-main-form"]').click();
 
@@ -65,7 +76,7 @@ describe('Login E2E', () => {
 			cy.contains('Sesión iniciada correctamente').should('be.visible');
 		});
 		cy.url().should('include', '/');
-		cy.contains('Beta Group SA - Proveedor').should('be.visible');
+		cy.contains('ENAP Ecuador - Proveedor').should('be.visible');
 		cy.contains('¡Hola').should('be.visible');
 		cy.contains('Mantén tus procesos bajo control fácilmente.').should(
 			'be.visible',
@@ -94,8 +105,6 @@ describe('Login E2E', () => {
 		}
 
 		cy.get('[data-testid="submit-button-main-form"]').should('be.disabled');
-
-		cy.wait(1000);
 
 		cy.get('.p-dialog').should('be.visible');
 		cy.contains(
@@ -126,28 +135,31 @@ describe('Login E2E', () => {
 	//Sad path login(not user register)
 	it('1.2.2. Muestra error al mandar un email no registrado', () => {
 		cy.visit('http://localhost:3000/login');
-		cy.get('input[name="email"]').type('fabixxxx@gmail.com');
+		cy.get('input[name="email"]').type('fabiliria@g');
 		cy.get('input[name="password"]').clear().type('contraseñaIncorrecta');
 		cy.get('[data-testid="submit-button-main-form"]').click();
-		cy.get('.p-toast', { timeout: 5000 }).should('be.visible');
-		cy.get('.p-toast-message-content').within(() => {
-			cy.contains(
-				'El correo electrónico ingresado no esta registrado en el sistema',
-			).should('be.visible');
-		});
+		cy.get('.p-toast-message-content')
+			.first()
+			.within(() => {
+				cy.contains('Error').should('be.visible');
+				cy.contains(
+					`El correo electrónico ingresado no esta registrado en el sistema`,
+				).should('be.visible');
+			});
 	});
 	//Sad path login(bad email)
 	it('1.2.3. Muestra error al mandar un email con formato erroneo', () => {
 		cy.visit('http://localhost:3000/login');
-		cy.get('input[name="email"]').type('charlesXavier@g');
+		cy.get('input[name="email"]').type('charlesXavier@gmail.com');
 		cy.get('input[name="password"]').clear().type('contraseñaIncorrecta');
 		cy.get('[data-testid="submit-button-main-form"]').click();
-		cy.get('.p-toast', { timeout: 5000 }).should('be.visible');
-		cy.get('.p-toast-message-content').within(() => {
-			cy.contains('Error').should('be.visible');
-			cy.contains('El correo electrónico ingresado no es válido').should(
-				'be.visible',
-			);
-		});
+		cy.get('.p-toast-message-content')
+			.first()
+			.within(() => {
+				cy.contains('Error').should('be.visible');
+				cy.contains(`El correo electrónico ingresado no es válido`).should(
+					'be.visible',
+				);
+			});
 	});
 });

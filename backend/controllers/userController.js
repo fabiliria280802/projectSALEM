@@ -98,7 +98,6 @@ exports.getAUser = [
 			}
 			return res.status(200).json(user);
 		} catch (error) {
-			console.error(error);
 			return res.status(500).json({ message: 'Error al obtener el usuario' });
 		}
 	},
@@ -108,18 +107,12 @@ exports.getUserByEmail = async (req, res) => {
 	try {
 		const user = await User.findOne({ email: req.params.email });
 		if (!user) {
-			return res.status(404).json({ message: 'Usuario no encontrado' });
+			return res.status(404).json({message: 'El correo electrónico ingresado no esta registrado en el sistema',error: error.message});
 		}
 		await sendPasswordResetEmail(user);
 		res.status(200).json({ message: 'Correo enviado correctamente' });
 	} catch (error) {
-		console.error('Error al buscar usuario por correo:', error);
-		res
-			.status(500)
-			.json({
-				message: 'Error al procesar la solicitud',
-				error: error.message,
-			});
+		res.status(500).json({message: 'Error al procesar la solicitud',error: error.message});
 	}
 };
 
@@ -130,7 +123,6 @@ exports.updateUser = [
 		const { id } = req.params;
 		const { phone, company_name, ruc, email, role, status, name, last_name } =
 			req.body;
-		console.log('Datos recibidos en el cuerpo:', req.body);
 		try {
 			const user = await User.findById(id);
 
@@ -210,8 +202,6 @@ exports.changePassword = [
 				return res.status(404).json({ message: 'Usuario no encontrado' });
 			}
 
-			console.log('Usuario encontrado:', userToModify);
-
 			if (currentUserId === userIdToModify) {
 				const isMatch = await bcrypt.compare(
 					currentPassword,
@@ -274,9 +264,6 @@ exports.verifyResetCode = async (req, res) => {
 				.status(400)
 				.json({ message: 'Código incorrecto o no encontrado' });
 		}
-
-		// Verifica que el `userId` esté siendo enviado en la respuesta
-		console.log('userId:', user._id);
 		res
 			.status(200)
 			.json({ message: 'Código verificado correctamente', userId: user._id });

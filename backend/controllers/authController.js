@@ -12,21 +12,24 @@ exports.login = async (req, res, next) => {
 	const { email, password } = req.body;
 
 	try {
-		const user = await User.findOne({ email });
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(email)) {
+			const error = new Error('El correo electrónico ingresado no es válido');
+			error.statusCode = 406;
+			return next(error);
+		}
 
+		const user = await User.findOne({ email });
 		if (!user) {
-			const error = new Error('Usuario no encontrado');
-			error.statusCode = 401;
+			const error = new Error('El correo electrónico ingresado no esta registrado en el sistema');
+			error.statusCode = 404;
 			return next(error);
 		}
 
 		if (user.status === 'Inactivo') {
-			console.log('El usuario está desactivado y no puede acceder al sistema');
-			return res
-				.status(403)
-				.json({
-					message: 'El usuario está desactivado y no puede acceder al sistema',
-				});
+			const error = new Error('El usuario está desactivado y no puede acceder al sistema');
+			error.statusCode = 403;
+			return next(error);
 		}
 
 		const isMatch = await bcrypt.compare(password, user.password);

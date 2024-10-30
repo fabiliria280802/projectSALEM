@@ -39,6 +39,7 @@ const LoginPage = () => {
 				detail: 'Sesión iniciada correctamente',
 				life: 3000,
 			});
+			setFailedAttempts(0); // Reinicia los intentos fallidos al inicio de sesión exitoso
 
 			setTimeout(() => {
 				history.push('/');
@@ -47,44 +48,43 @@ const LoginPage = () => {
 			const errorMessage = error.response?.data?.message;
 			const statusCode = error.response?.status;
 
-			// Verificar si el error es por usuario inactivo
-			if (statusCode === 403) {
+			if (statusCode === 403 || statusCode === 406 || statusCode === 404) {
 				toast.current.show({
 					severity: 'error',
-					summary: 'Acceso denegado',
+					summary: 'Error',
 					detail: errorMessage,
+					life: 5000,
+				});
+				return;
+			} else {
+				// Incrementar intentos fallidos
+				const currentAttempts = failedAttempts + 1;
+				setFailedAttempts(currentAttempts);
+
+				toast.current.show({
+					severity: 'error',
+					summary: 'Error',
+					detail: `Credenciales incorrectas. Intentos restantes: ${3 - currentAttempts}`,
 					life: 3000,
 				});
-				return; // No incrementa el contador de intentos
-			}
 
-			// Incremento y control de intentos para otros errores
-			const currentAttempts = failedAttempts + 1;
-			setFailedAttempts(currentAttempts);
-
-			// Mensaje de error para credenciales incorrectas
-			toast.current.show({
-				severity: 'error',
-				summary: 'Error',
-				detail: `Credenciales incorrectas. Intentos restantes: ${3 - currentAttempts}`,
-				life: 3000,
-			});
-
-			// Verificación de intentos para enviar el correo
-			if (currentAttempts === 3) {
-				try {
-					const user = await userService.getUserByEmail(email);
-					if (user) {
-						console.log('Usuario encontrado para reset:', user);
-						setShowPopup(true);
+				// Activar el flujo de restablecimiento de contraseña después de 3 intentos fallidos
+				if (currentAttempts === 3) {
+					try {
+						const user = await userService.getUserByEmail(email);
+						if (user) {
+							console.log('Usuario encontrado para reset:', user);
+							setShowPopup(true); // Muestra el popup para restablecimiento de contraseña
+						}
+					} catch (err) {
+						toast.current.show({
+							severity: 'error',
+							summary: 'Error',
+							detail:
+								err.message || 'Error al enviar correo de restablecimiento',
+							life: 3000,
+						});
 					}
-				} catch (err) {
-					toast.current.show({
-						severity: 'error',
-						summary: 'Error',
-						detail: err.message || 'Error al enviar correo de restablecimiento',
-						life: 3000,
-					});
 				}
 			}
 		}
