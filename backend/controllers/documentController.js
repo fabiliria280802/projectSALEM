@@ -1,3 +1,4 @@
+const Document = require('../models/Document');
 const Invoice = require('../models/Invoice');
 const HES = require('../models/Hes');
 const MIGO = require('../models/Migo');
@@ -20,7 +21,7 @@ function extractValuesFromText(text, fields) {
 	return extractedValues;
 }
 
-exports.addingDocuments = async (req, res) => {
+/*addingDocuments = async (req, res) => {
 	const { documentType, text, metrics } = req.body;
 	try {
 		let document;
@@ -72,7 +73,33 @@ exports.addingDocuments = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ message: 'Error procesando el documento', error });
 	}
-};
+};*/
+
+exports.addingDocuments = async (req, res) => {
+	try {
+	  const { ruc, contract, documentType } = req.body;
+	  const file = req.file;
+
+	  if (!file) {
+		return res.status(400).json({ error: 'No se ha proporcionado un archivo' });
+	  }
+
+	  // Guardar la ruta del archivo en la base de datos
+	  const newDocument = new Document({
+		ruc,
+		contrato: contract,
+		tipoDocumento: documentType,
+		file_path: path.join('data', file.filename),  // Ruta relativa de donde se guarda el archivo
+	  });
+
+	  await newDocument.save();
+
+	  res.status(201).json({ message: 'Documento cargado correctamente' });
+	} catch (error) {
+	  console.error('Error al cargar el documento:', error);
+	  res.status(500).json({ error: 'Error interno del servidor al cargar el documento' });
+	}
+  };
 
 exports.getDocumentById = async (req, res) => {
 	const { id } = req.params;

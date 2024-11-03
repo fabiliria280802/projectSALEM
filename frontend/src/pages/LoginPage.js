@@ -19,7 +19,6 @@ const LoginPage = () => {
 
 	const handleSubmit = async e => {
 		e.preventDefault();
-
 		if (!email || !password) {
 			toast.current.show({
 				severity: 'warn',
@@ -39,7 +38,7 @@ const LoginPage = () => {
 				detail: 'Sesión iniciada correctamente',
 				life: 3000,
 			});
-			setFailedAttempts(0); // Reinicia los intentos fallidos al inicio de sesión exitoso
+			setFailedAttempts(0);
 
 			setTimeout(() => {
 				history.push('/');
@@ -125,7 +124,7 @@ const LoginPage = () => {
 				<div className={styles.emailInput}>
 					<label>Correo electrónico</label>
 					<input
-						type="email"
+						type="text"
 						name="email"
 						value={email}
 						onChange={e => setEmail(e.target.value)}
