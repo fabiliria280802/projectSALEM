@@ -10,32 +10,36 @@ import { useHistory } from 'react-router-dom';
 const UploadDocumentsPage = () => {
 	const history = useHistory();
 	const toast = useRef(null);
-
 	const [documentData, setDocumentData] = useState({
 		ruc: '',
 		contract: '',
 		documentType: '',
-		file: null
+		file: null,
 	});
 
 	const documentTypeOptions = [
 		{ label: 'Factura', value: 'Invoice' },
 		{ label: 'HES', value: 'HES' },
-		{ label: 'MIGO', value: 'MIGO' }
+		{ label: 'MIGO', value: 'MIGO' },
 	];
 
-	const handleInputChange = (e) => {
+	const handleInputChange = e => {
 		const { name, value } = e.target;
 		setDocumentData({ ...documentData, [name]: value });
 	};
 
-	const handleFileChange = (e) => {
+	const handleFileChange = e => {
 		const file = e.target.files[0];
 		if (file) {
 			const fileSizeMB = file.size / (1024 * 1024);
 			const fileExtension = file.name.split('.').pop().toLowerCase();
 
-			if ((fileExtension === 'pdf' || fileExtension === 'png' || fileExtension === 'jpg') && fileSizeMB <= 50) {
+			if (
+				(fileExtension === 'pdf' ||
+					fileExtension === 'png' ||
+					fileExtension === 'jpg') &&
+				fileSizeMB <= 50
+			) {
 				setDocumentData({ ...documentData, file });
 			} else {
 				toast.current.show({
@@ -48,7 +52,20 @@ const UploadDocumentsPage = () => {
 		}
 	};
 
-	const handleSubmit = async () => {
+	const handleSubmit = async e => {
+		e.preventDefault();
+		const { ruc, contract, documentType, file } = documentData;
+
+		if (!ruc || !contract || !documentType || !file) {
+			toast.current.show({
+				severity: 'warn',
+				summary: 'Advertencia',
+				detail: 'Debe llenar todos los campos del formulario',
+				life: 3000,
+			});
+			return;
+		}
+
 		try {
 			await documentService.addingDocuments(documentData);
 			toast.current.show({
@@ -108,7 +125,9 @@ const UploadDocumentsPage = () => {
 							id="documentType"
 							value={documentData.documentType}
 							options={documentTypeOptions}
-							onChange={(e) => setDocumentData({ ...documentData, documentType: e.value })}
+							onChange={e =>
+								setDocumentData({ ...documentData, documentType: e.value })
+							}
 							placeholder="Seleccionar tipo de documento"
 						/>
 					</div>

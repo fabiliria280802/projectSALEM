@@ -19,7 +19,7 @@ const LoginPage = () => {
 
 	const handleSubmit = async e => {
 		e.preventDefault();
-		if (!email || !password) {
+		if (!email.trim() || !password.trim()) {
 			toast.current.show({
 				severity: 'warn',
 				summary: 'Advertencia',
@@ -31,7 +31,6 @@ const LoginPage = () => {
 
 		try {
 			await login(email, password);
-			setIsAuthenticated(true);
 			toast.current.show({
 				severity: 'success',
 				summary: 'Éxito',
@@ -47,6 +46,7 @@ const LoginPage = () => {
 			const errorMessage = error.response?.data?.message;
 			const statusCode = error.response?.status;
 
+			// Muestra mensaje de error específico o general según el código de error
 			if (statusCode === 403 || statusCode === 406 || statusCode === 404) {
 				toast.current.show({
 					severity: 'error',
@@ -55,35 +55,33 @@ const LoginPage = () => {
 					life: 5000,
 				});
 				return;
-			} else {
-				// Incrementar intentos fallidos
-				const currentAttempts = failedAttempts + 1;
-				setFailedAttempts(currentAttempts);
+			}
 
-				toast.current.show({
-					severity: 'error',
-					summary: 'Error',
-					detail: `Credenciales incorrectas. Intentos restantes: ${3 - currentAttempts}`,
-					life: 3000,
-				});
+			// Incrementar intentos fallidos en caso de otro error
+			const currentAttempts = failedAttempts + 1;
+			setFailedAttempts(currentAttempts);
 
-				// Activar el flujo de restablecimiento de contraseña después de 3 intentos fallidos
-				if (currentAttempts === 3) {
-					try {
-						const user = await userService.getUserByEmail(email);
-						if (user) {
-							console.log('Usuario encontrado para reset:', user);
-							setShowPopup(true); // Muestra el popup para restablecimiento de contraseña
-						}
-					} catch (err) {
-						toast.current.show({
-							severity: 'error',
-							summary: 'Error',
-							detail:
-								err.message || 'Error al enviar correo de restablecimiento',
-							life: 3000,
-						});
+			toast.current.show({
+				severity: 'error',
+				summary: 'Error',
+				detail: `Credenciales incorrectas. Intentos restantes: ${3 - currentAttempts}`,
+				life: 3000,
+			});
+
+			if (currentAttempts === 3) {
+				try {
+					const user = await userService.getUserByEmail(email);
+					if (user) {
+						console.log('Usuario encontrado para reset:', user);
+						setShowPopup(true);
 					}
+				} catch (err) {
+					toast.current.show({
+						severity: 'error',
+						summary: 'Error',
+						detail: err.message || 'Error al enviar correo de restablecimiento',
+						life: 3000,
+					});
 				}
 			}
 		}

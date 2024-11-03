@@ -2,13 +2,13 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/process-document/';
 
-const addingDocuments = (formData) => {
+const addingDocuments = formData => {
 	return axios.post(API_URL, formData, {
-	  headers: {
-		'Content-Type': 'multipart/form-data',
-	  },
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
 	});
-  };
+};
 
 const getDocumentById = (id, documentType) => {
 	return axios.get(`${API_URL}${id}`, {

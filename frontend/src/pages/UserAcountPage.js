@@ -37,7 +37,7 @@ const UserAccountPage = () => {
 				const token = authService.getToken();
 				if (!token) throw new Error('Token no disponible');
 				const decodedToken = authService.decodeToken(token);
-				setUserId(decodedToken.id); // Guarda el userId extraído del token
+				setUserId(decodedToken.id);
 				const userData = await userService.getAUser(decodedToken.id);
 				setUserData(userData);
 			} catch (err) {
@@ -173,7 +173,7 @@ const UserAccountPage = () => {
 					<a href="mailto:mateo.avila@udla.edu.ec">administrador</a>.
 				</p>
 				<Button
-					label="Guardar"
+					label="Actualizar"
 					className={styles.saveButton}
 					onClick={handleSave}
 				/>

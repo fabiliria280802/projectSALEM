@@ -3,14 +3,16 @@ import { Route, Redirect } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 
 const PrivateRoute = ({ component: Component, roles, ...rest }) => {
-	const { user } = useAuth(); // Usa el contexto de autenticación para obtener el usuario
+	const { isAuthenticated, user, loading } = useAuth();
+
+	if (loading) return null;
 
 	return (
 		<Route
 			{...rest}
 			render={props => {
 				// Si no hay usuario autenticado, redirige al login
-				if (!user) {
+				if (!isAuthenticated) {
 					return (
 						<Redirect
 							to={{ pathname: '/login', state: { from: props.location } }}
@@ -18,8 +20,8 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => {
 					);
 				}
 
-				// Si el rol del usuario no está en los roles permitidos, redirige
-				if (roles && roles.indexOf(user.role) === -1) {
+				// Si el rol del usuario no está en los roles permitidos, redirige a una página de no autorizado
+				if (isAuthenticated && user && roles && !roles.includes(user.role)) {
 					return <Redirect to="/unauthorized" />;
 				}
 

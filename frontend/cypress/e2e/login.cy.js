@@ -136,10 +136,14 @@ describe('Login E2E', () => {
 			).should('be.visible');
 		});
 	});
-	//Sad path login(bad email)
+	// Sad path login (bad email)
 	it('1.2.3. Muestra error al mandar un email con formato erroneo', () => {
+		const invalidEmails = ['test@.com', '@.com', '@m.com', 'charlesXavier@g'];
+		const randomEmail =
+			invalidEmails[Math.floor(Math.random() * invalidEmails.length)];
+
 		cy.visit('http://localhost:3000/login');
-		cy.get('input[name="email"]').type('charlesXavier@g');
+		cy.get('input[name="email"]').type(randomEmail);
 		cy.get('input[name="password"]').clear().type('contraseñaIncorrecta');
 		cy.get('[data-testid="submit-button-main-form"]').click();
 		cy.get('.p-toast', { timeout: 5000 }).should('be.visible');

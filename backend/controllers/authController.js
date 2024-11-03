@@ -9,25 +9,29 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
 exports.login = async (req, res, next) => {
-    const { email, password } = req.body;
+	const { email, password } = req.body;
 
 	try {
 		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(email)) {
-            const error = new Error('El correo electrónico ingresado no es válido');
-            error.statusCode = 406;
-            return next(error);
+		if (!emailRegex.test(email)) {
+			const error = new Error('El correo electrónico ingresado no es válido');
+			error.statusCode = 406;
+			return next(error);
 		}
 
 		const user = await User.findOne({ email });
 		if (!user) {
-			const error = new Error('El correo electrónico ingresado no esta registrado en el sistema');
+			const error = new Error(
+				'El correo electrónico ingresado no esta registrado en el sistema',
+			);
 			error.statusCode = 404;
 			return next(error);
 		}
 
 		if (user.status === 'Inactivo') {
-			const error = new Error('El usuario está desactivado y no puede acceder al sistema');
+			const error = new Error(
+				'El usuario está desactivado y no puede acceder al sistema',
+			);
 			error.statusCode = 403;
 			return next(error);
 		}

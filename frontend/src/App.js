@@ -19,6 +19,7 @@ import PrivateRoute from './components/PrivateRoute';
 import CreatePasswordPage from './pages/CreatePasswordPage';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 import './App.css';
 
 const AppContent = () => {
@@ -32,12 +33,15 @@ const AppContent = () => {
 					{/* Rutas públicas */}
 					<Route path="/login" component={LoginPage} />
 
-					{/* Rutas protegidas con los roles correspondientes */}
+					{/**/}
+
+					{/* Rutas protegidas con los roles*/}
 					<PrivateRoute
 						path="/dashboard"
 						component={DashboardPage}
 						roles={['Administrador', 'Gestor']}
 					/>
+
 					<PrivateRoute
 						path="/create-user"
 						component={CreateUserPage}
@@ -63,10 +67,10 @@ const AppContent = () => {
 						component={UserAcountPage}
 						roles={['Administrador', 'Gestor', 'Proveedor']}
 					/>
-
 					{/* Rutas públicas */}
 					<Route path="/create-password" component={CreatePasswordPage} />
 					<Route path="/reset-password" component={ResetPasswordPage} />
+					<Route path="/unauthorized" component={UnauthorizedPage} />
 					<Route path="/" component={HomePage} />
 				</Switch>
 			</div>

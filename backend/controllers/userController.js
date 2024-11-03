@@ -107,12 +107,23 @@ exports.getUserByEmail = async (req, res) => {
 	try {
 		const user = await User.findOne({ email: req.params.email });
 		if (!user) {
-			return res.status(404).json({message: 'El correo electrónico ingresado no esta registrado en el sistema',error: error.message});
+			return res
+				.status(404)
+				.json({
+					message:
+						'El correo electrónico ingresado no esta registrado en el sistema',
+					error: error.message,
+				});
 		}
 		await sendPasswordResetEmail(user);
 		res.status(200).json({ message: 'Correo enviado correctamente' });
 	} catch (error) {
-		res.status(500).json({message: 'Error al procesar la solicitud',error: error.message});
+		res
+			.status(500)
+			.json({
+				message: 'Error al procesar la solicitud',
+				error: error.message,
+			});
 	}
 };
 

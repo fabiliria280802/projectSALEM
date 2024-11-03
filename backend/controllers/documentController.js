@@ -77,29 +77,32 @@ function extractValuesFromText(text, fields) {
 
 exports.addingDocuments = async (req, res) => {
 	try {
-	  const { ruc, contract, documentType } = req.body;
-	  const file = req.file;
+		const { ruc, contract, documentType } = req.body;
+		const file = req.file;
 
-	  if (!file) {
-		return res.status(400).json({ error: 'No se ha proporcionado un archivo' });
-	  }
+		if (!file) {
+			return res
+				.status(400)
+				.json({ error: 'No se ha proporcionado un archivo' });
+		}
 
-	  // Guardar la ruta del archivo en la base de datos
-	  const newDocument = new Document({
-		ruc,
-		contrato: contract,
-		tipoDocumento: documentType,
-		file_path: path.join('data', file.filename),  // Ruta relativa de donde se guarda el archivo
-	  });
+		const newDocument = new Document({
+			ruc,
+			contrato: contract,
+			tipoDocumento: documentType,
+			file_path: path.join('data', file.filename),
+		});
 
-	  await newDocument.save();
+		await newDocument.save();
 
-	  res.status(201).json({ message: 'Documento cargado correctamente' });
+		res.status(201).json({ message: 'Documento cargado correctamente' });
 	} catch (error) {
-	  console.error('Error al cargar el documento:', error);
-	  res.status(500).json({ error: 'Error interno del servidor al cargar el documento' });
+		console.error('Error al cargar el documento:', error);
+		res
+			.status(500)
+			.json({ error: 'Error interno del servidor al cargar el documento' });
 	}
-  };
+};
 
 exports.getDocumentById = async (req, res) => {
 	const { id } = req.params;
