@@ -21,7 +21,6 @@ const invoiceSchema = new mongoose.Schema({
 		},
 	],
 	total: { type: Number },
-	upload_date: { type: Date, default: Date.now },
 	/* TODO:check if this is necessary
 	invoice_documents: {
 		service_invoice: { type: String },

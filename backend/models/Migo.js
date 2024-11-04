@@ -19,7 +19,6 @@ const migoSchema = new mongoose.Schema({
 	destination_warehouse: { type: String },
 	movement_date: { type: Date },
 	total: { type: Number },
-	upload_date: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('MIGO', migoSchema);

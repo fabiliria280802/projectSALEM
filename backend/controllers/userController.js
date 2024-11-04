@@ -30,6 +30,11 @@ exports.createUser = [
 				return next(error);
 			}
 
+			const adminName = req.user.name;
+			const adminLastName = req.user.last_name;
+			const createdBy = `${adminName} ${adminLastName}`;
+
+
 			const newUser = new User({
 				name,
 				last_name,
@@ -38,6 +43,7 @@ exports.createUser = [
 				ruc,
 				email,
 				role,
+				created_by: createdBy,
 			});
 
 			await newUser.save();
@@ -51,6 +57,7 @@ exports.createUser = [
 				ruc: newUser.ruc,
 				email: newUser.email,
 				role: newUser.role,
+				created_by: newUser.created_by,
 			};
 
 			res.status(201).json({

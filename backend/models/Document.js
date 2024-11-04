@@ -14,11 +14,15 @@ const documentSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		refPath: 'tipoDocumento',
 	},
-	created_by: {
-		type: String,
-		default: 'System',
-	},
 	created_at: { type: Date, default: Date.now },
+	status: {
+		type: String,
+		enum: ['Enviado','Analizando', 'Aceptado', 'Denegado', 'Revalidación','Transferido a contabilidad','Transferido a control interno' ],
+		default: 'Enviado',
+	},
+	revalidation_manager_name:{
+		type: String,
+	}
 });
 
 module.exports = mongoose.model('Document', documentSchema);

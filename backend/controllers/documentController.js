@@ -1,9 +1,11 @@
 const Document = require('../models/Document');
+const User = require('../models/User');
 const Invoice = require('../models/Invoice');
 const HES = require('../models/Hes');
 const MIGO = require('../models/Migo');
 const AiMetrics = require('../models/AI_metrics');
 const fs = require('fs');
+const { spawn } = require('child_process');
 const path = require('path');
 
 const documentSchemasPath = path.join(__dirname, 'document_schemas.json');
@@ -75,7 +77,68 @@ function extractValuesFromText(text, fields) {
 	}
 };*/
 
-exports.addingDocuments = async (req, res) => {
+exports.addADocument = async (req, res) => {
+	try {
+	  const { ruc, contract, documentType } = req.body;
+	  const file = req.file;
+
+	  if (!file) {
+		return res.status(400).json({ error: 'No se ha proporcionado un archivo' });
+	  }
+
+	  // Crear y guardar el nuevo documento
+	  const newDocument = new Document({
+		ruc,
+		contrato: contract,
+		tipoDocumento: documentType,
+		file_path: path.join('data', file.filename),
+	  });
+
+	  await newDocument.save();
+
+	  // Ejecutar el script de Python para procesar el archivo
+	  const filePath = newDocument.file_path;
+	  const pythonProcess = spawn('python', ['controllers/IA/main.py', filePath, documentType]);
+
+	  let pythonOutput = '';
+
+	  pythonProcess.stdout.on('data', (data) => {
+		pythonOutput += data.toString();
+	  });
+
+	  pythonProcess.on('close', async (code) => {
+		if (code !== 0) {
+		  return res.status(500).json({ error: 'Error al procesar el documento con IA' });
+		}
+
+		const result = JSON.parse(pythonOutput);
+		result.document_id = newDocument._id; // Asigna el ID del nuevo documento al campo document_id
+
+		// Guardar en la colección correspondiente
+		let savedDocument;
+		if (documentType === 'Invoice') {
+		  savedDocument = new Invoice(result);
+		} else if (documentType === 'HES') {
+		  savedDocument = new HES(result);
+		} else if (documentType === 'MIGO') {
+		  savedDocument = new MIGO(result);
+		}
+
+		await savedDocument.save();
+
+		res.status(201).json({ message: 'Documento cargado y procesado correctamente' });
+	  });
+
+	  pythonProcess.stderr.on('data', (data) => {
+		console.error('Error en el script de Python:', data.toString());
+	  });
+	} catch (error) {
+	  console.error('Error al cargar el documento:', error);
+	  res.status(500).json({ error: 'Error interno del servidor al cargar el documento' });
+	}
+  };
+
+exports.addingTrainingDocuments = async (req, res) => {
 	try {
 		const { ruc, contract, documentType } = req.body;
 		const file = req.file;

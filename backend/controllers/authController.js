@@ -43,7 +43,7 @@ exports.login = async (req, res, next) => {
 			error.statusCode = 401;
 			return next(error);
 		}
-
+		await User.updateOne({ _id: user._id }, { last_login: Date.now() });
 		const token = jwt.sign(
 			{
 				id: user._id,
@@ -72,7 +72,7 @@ exports.login = async (req, res, next) => {
 				phone: user.phone,
 				register_date: user.register_date,
 				status: user.status,
-				last_login: user.last_login,
+				last_login: Date.now(),
 			},
 		});
 	} catch (error) {

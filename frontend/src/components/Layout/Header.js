@@ -6,7 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const Header = () => {
-	const { isAuthenticated, logout, user } = useAuth(); // user.role contiene el rol actual
+	const { isAuthenticated, logout, user } = useAuth();
 	const [isMobile, setIsMobile] = useState(false);
 	const history = useHistory();
 	const location = useLocation();
@@ -31,10 +31,21 @@ const Header = () => {
 		history.push(path);
 	};
 
+	const hideMenuItemsIn = [
+		'/upload-document',
+		'/create-user',
+		'/users-management',
+		'/user-account',
+		'/dashboard',
+		'/edit-user',
+		'/document-analizer',
+	];
+	const shouldShowMenuItems = !hideMenuItemsIn.includes(location.pathname);
+
 	const pageTitles = {
 		'/dashboard': 'Dashboard',
 		'/create-user': 'Crear Usuario',
-		'/upload-documents': 'Carga de Documentos',
+		'/upload-document': 'Carga de Documentos',
 		'/users-management': 'Gestión de Usuarios',
 		'/user-account': 'Cuenta de Usuario',
 		'/edit-user': 'Editar usuario',
@@ -53,13 +64,12 @@ const Header = () => {
 		</div>
 	);
 
-	// Opciones de menú por rol
 	const menuOptionsByRole = {
 		Administrador: [
 			{ label: 'Inicio', command: () => handleMenuItemClick('/') },
 			{ label: 'Estatus', command: () => handleMenuItemClick('/status') },
 			{
-				label: 'Documentación',
+				label: 'Documentos',
 				command: () => handleMenuItemClick('/documentation'),
 			},
 			{
@@ -77,8 +87,8 @@ const Header = () => {
 			{ label: 'Inicio', command: () => handleMenuItemClick('/') },
 			{ label: 'Estatus', command: () => handleMenuItemClick('/status') },
 			{
-				label: 'Documentación',
-				command: () => handleMenuItemClick('/documentation'),
+				label: 'Mis documentos',
+				command: () => handleMenuItemClick('/upload-document'),
 			},
 			{ label: 'Cuenta', command: () => handleMenuItemClick('/user-account') },
 		],
@@ -86,8 +96,8 @@ const Header = () => {
 			{ label: 'Inicio', command: () => handleMenuItemClick('/') },
 			{ label: 'Estatus', command: () => handleMenuItemClick('/status') },
 			{
-				label: 'Documentación',
-				command: () => handleMenuItemClick('/documentation'),
+				label: 'Mis dcumentos',
+				command: () => handleMenuItemClick('/upload-document'),
 			},
 			{
 				label: 'Entrenamiento',
@@ -98,10 +108,28 @@ const Header = () => {
 	};
 
 	const menuItems =
-		isAuthenticated && user ? menuOptionsByRole[user.role] || [] : [];
+		isAuthenticated && shouldShowMenuItems && user
+			? menuOptionsByRole[user.role] || []
+			: [];
 
 	const renderEndButton = () => {
 		if (isAuthenticated) {
+			if (shouldShowMenuItems) {
+				return (
+					<Button
+						label="Logout"
+						icon="pi pi-sign-out"
+						className="p-button-secondary"
+						onClick={handleLogout}
+					/>
+				);
+			} else {
+				return (
+					<div className={styles.pageContainerTitle}>
+						<span className={styles.pageTitle}>{pageTitle}</span>
+					</div>
+				);
+			}
 			return (
 				<Button
 					label="Logout"
@@ -121,7 +149,9 @@ const Header = () => {
 		}
 	};
 
-	const headerClass = styles.headerShadow;
+	const headerClass = shouldShowMenuItems
+		? styles.headerShadow
+		: styles.headerWithImage;
 
 	return (
 		<Menubar

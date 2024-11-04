@@ -67,14 +67,14 @@ const UploadDocumentsPage = () => {
 		}
 
 		try {
-			await documentService.addingDocuments(documentData);
+			await documentService.addADocument(documentData);
 			toast.current.show({
 				severity: 'success',
 				summary: 'Éxito',
 				detail: 'Documento cargado correctamente',
 				life: 5000,
 			});
-			setTimeout(() => history.push('/dashboard'), 2000);
+			setTimeout(() => history.push('/document-analizer'), 2000);
 		} catch (error) {
 			toast.current.show({
 				severity: 'error',
@@ -86,7 +86,7 @@ const UploadDocumentsPage = () => {
 	};
 
 	const handleCancel = () => {
-		history.push('/dashboard');
+		history.push('/');
 	};
 
 	return (

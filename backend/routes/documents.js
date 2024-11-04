@@ -2,7 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const {
-	addingDocuments,
+	addADocument,
+	addingTrainingDocuments,
 	getDocumentById,
 	updateDocument,
 	getDocumentsList,
@@ -20,7 +21,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 const router = express.Router();
 
-router.post('/', upload.single('file'), addingDocuments);
+router.post('/', upload.single('file'), addADocument);
+router.post('/trainnig/', upload.single('file'), addingTrainingDocuments);
 router.get('/:id', getDocumentById);
 router.put('/:id', updateDocument);
 router.get('/', getDocumentsList);

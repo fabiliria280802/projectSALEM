@@ -12,7 +12,6 @@ const hesSchema = new mongoose.Schema({
 	service_start_date: { type: Date},
 	service_end_date: { type: Date },
 	total: { type: Number },
-	upload_date: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('HES', hesSchema);

@@ -31,7 +31,7 @@ const HomePage = () => {
 						<Button
 							label="Nuevo"
 							className={styles.buttons}
-							onClick={() => history.push('/upload-documents')}
+							onClick={() => history.push('/upload-document')}
 						/>
 						<Button
 							label="Revisión"
