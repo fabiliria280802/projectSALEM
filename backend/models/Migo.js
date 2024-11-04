@@ -3,24 +3,22 @@ const mongoose = require('mongoose');
 const migoSchema = new mongoose.Schema({
 	document_id: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Document',
-		required: true,
+		ref: 'Document'
 	},
 	user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-	movement_number: { type: String, required: true, unique: true },
+	movement_number: { type: String, unique: true },
 	movement_type: {
 		type: String,
-		enum: ['Entry', 'Exit', 'Transfer'],
-		required: true,
+		enum: ['Entry', 'Exit', 'Transfer']
 	},
-	material_description: { type: String, required: true },
-	material_code: { type: String, required: true },
-	quantity: { type: Number, required: true },
-	provider_ruc: { type: String, required: true },
-	provider_name: { type: String, required: true },
-	destination_warehouse: { type: String, required: true },
-	movement_date: { type: Date, required: true },
-	total: { type: Number, required: true },
+	material_description: { type: String },
+	material_code: { type: String },
+	quantity: { type: Number },
+	provider_ruc: { type: String },
+	provider_name: { type: String },
+	destination_warehouse: { type: String },
+	movement_date: { type: Date },
+	total: { type: Number },
 	upload_date: { type: Date, default: Date.now },
 });
 

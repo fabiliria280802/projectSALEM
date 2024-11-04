@@ -18,7 +18,6 @@ const CreatePasswordPage = () => {
 	const query = new URLSearchParams(location.search);
 	const userId = query.get('userId');
 
-	// Validaciones de los requisitos
 	const meetsLengthRequirement = newPassword.length >= 6;
 	const meetsNumberRequirement = /\d/.test(newPassword);
 	const meetsUppercaseRequirement = /[A-Z]/.test(newPassword);
@@ -173,8 +172,16 @@ const CreatePasswordPage = () => {
 								<i
 									className={classNames(
 										'pi',
-										passwordsMatch ? 'pi-check' : 'pi-times',
-										passwordsMatch ? styles.checkIcon : styles.errorIcon,
+										passwordsMatch &&
+											newPassword !== '' &&
+											confirmPassword !== ''
+											? 'pi-check'
+											: 'pi-times',
+										passwordsMatch &&
+											newPassword !== '' &&
+											confirmPassword !== ''
+											? styles.checkIcon
+											: styles.errorIcon,
 									)}
 								/>
 							</span>

@@ -1,4 +1,4 @@
-describe('CRUD USERS E2E', () => {
+describe('CRUD Users E2E', () => {
 	//Render Home Page lwhen user is login
 	it('1. Debo poder loggearme y crear un nuevo usuario', () => {
 		cy.visit('http://localhost:3000/login');

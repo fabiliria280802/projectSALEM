@@ -267,19 +267,28 @@ exports.verifyResetCode = async (req, res) => {
 			.status(400)
 			.json({ message: 'Faltan datos requeridos: email o código.' });
 	}
+	const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+	if (!emailRegex.test(email)) {
+		return res
+			.status(406)
+			.json({ message: 'El correo electrónico ingresado no es válido'})
+	}
 
 	try {
 		const user = await User.findOne({ email });
 		if (!user || user.resetCode !== code) {
 			return res
-				.status(400)
+				.status(404)
 				.json({ message: 'Código incorrecto o no encontrado' });
 		}
 		res
 			.status(200)
 			.json({ message: 'Código verificado correctamente', userId: user._id });
 	} catch (error) {
-		res.status(500).json({ message: 'Error al verificar el código', error });
+		res
+			.status(500)
+			.json({ message: 'Error al verificar el código', error });
 	}
 };
 

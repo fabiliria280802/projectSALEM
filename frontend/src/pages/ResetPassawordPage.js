@@ -12,20 +12,16 @@ const ResetPasswordPage = () => {
 	const [encryptedCode, setEncryptedCode] = useState('');
 	const [userEmail, setUserEmail] = useState('');
 
-	// Actualización del estado del código de verificación
 	const handleCodeChange = e => {
 		setEncryptedCode(e.target.value);
 	};
 
-	// Actualización del estado del email
 	const handleEmailChange = e => {
 		setUserEmail(e.target.value);
 	};
 
-	// Lógica para enviar el código de verificación al backend
 	const handleSubmit = async () => {
-		// Verificar si ambos valores están presentes
-		if (!userEmail || !encryptedCode) {
+		if (!userEmail.trim() || !encryptedCode.trim()) {
 			toast.current.show({
 				severity: 'warn',
 				summary: 'Advertencia',
@@ -36,8 +32,8 @@ const ResetPasswordPage = () => {
 		}
 
 		try {
-			console.log('Email:', userEmail); // Verificar el email ingresado
-			console.log('Code:', encryptedCode); // Verificar el código ingresado
+			console.log('Email:', userEmail);
+			console.log('Code:', encryptedCode);
 
 			const response = await axios.post(
 				'http://localhost:5000/api/users-mail/verify-reset-code',
@@ -61,10 +57,11 @@ const ResetPasswordPage = () => {
 				);
 			}
 		} catch (error) {
+			const errorMessage = error.response?.data?.message || 'Error desconocido';
 			toast.current.show({
 				severity: 'error',
 				summary: 'Error',
-				detail: error.message,
+				detail: errorMessage,
 				life: 3000,
 			});
 		}

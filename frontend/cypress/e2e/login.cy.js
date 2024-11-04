@@ -1,6 +1,6 @@
 describe('Login E2E', () => {
 	//Render Home Page (logout)
-	it('1. Debe mostrar la página de inicio(Home Page) para usuarios no loggeados y permitir hacer clic en el botón de iniciar sesión', () => {
+	it('1. Debe mostrar la página de inicio (Home Page) para usuarios no loggeados y permitir hacer clic en el botón de iniciar sesión', () => {
 		cy.visit('http://localhost:3000');
 		cy.contains('¡Te esperamos!').should('be.visible');
 		cy.contains(
@@ -10,8 +10,7 @@ describe('Login E2E', () => {
 		cy.url().should('include', '/login');
 	});
 	//Happy path login - Administrador
-	//TODO: Validar header
-	it('1.1. login exitoso del usuario(Administrador) y renderizado del Home Page', () => {
+	it('1.1. login exitoso del usuario (Administrador) y renderizado del Home Page', () => {
 		cy.visit('http://localhost:3000/login');
 		cy.get('input[name="email"]').type('fabiliria@gmail.com');
 		cy.get('input[name="password"]').type('business123D');
@@ -23,6 +22,23 @@ describe('Login E2E', () => {
 			cy.contains('Sesión iniciada correctamente').should('be.visible');
 		});
 		cy.url().should('include', '/');
+
+		const adminMenuItems = [
+			'Inicio',
+			'Estatus',
+			'Documentación',
+			'Entrenamiento',
+			'Permisos',
+			'Gestión de usuarios',
+			'Cuenta',
+		];
+
+		adminMenuItems.forEach(item => {
+			cy.get('.p-menubar-root-list .p-menuitem')
+				.contains(item)
+				.should('be.visible');
+		});
+
 		cy.contains('ENAP Ecuador - Administrador').should('be.visible');
 		cy.contains('¡Hola').should('be.visible');
 		cy.contains('Mantén tus procesos bajo control fácilmente.').should(
@@ -31,8 +47,8 @@ describe('Login E2E', () => {
 		cy.get('button').contains('Nuevo').should('be.visible');
 		cy.get('button').contains('Revisión').should('be.visible');
 	});
-	//TODO: Happy path login - Gestor & Validar header
-	it('1.1.1. login exitoso del usuario(Gestor) y renderizado del Home Page', () => {
+	// Happy path login - Gestor & Validar header
+	it('1.1.1. login exitoso del usuario (Gestor) y renderizado del Home Page', () => {
 		cy.visit('http://localhost:3000/login');
 		cy.get('input[name="email"]').type('fabiana.liria@udla.edu.ec');
 		cy.get('input[name="password"]').type('business123A');
@@ -44,6 +60,15 @@ describe('Login E2E', () => {
 			cy.contains('Sesión iniciada correctamente').should('be.visible');
 		});
 		cy.url().should('include', '/');
+
+		const gestorMenuItems = ['Inicio', 'Estatus', 'Documentación', 'Cuenta'];
+
+		gestorMenuItems.forEach(item => {
+			cy.get('.p-menubar-root-list .p-menuitem')
+				.contains(item)
+				.should('be.visible');
+		});
+
 		cy.contains('ENAP Ecuador - Gestor').should('be.visible');
 		cy.contains('¡Hola').should('be.visible');
 		cy.contains('Mantén tus procesos bajo control fácilmente.').should(
@@ -52,8 +77,8 @@ describe('Login E2E', () => {
 		cy.get('button').contains('Nuevo').should('be.visible');
 		cy.get('button').contains('Revisión').should('be.visible');
 	});
-	//TODO: Happy path login - Proveedor & Validar header
-	it('1.1.2. login exitoso del usuario(Proveedor) y renderizado del Home Page', () => {
+	// Happy path login - Proveedor & Validar header
+	it('1.1.2. login exitoso del usuario (Proveedor) y renderizado del Home Page', () => {
 		cy.visit('http://localhost:3000/login');
 		cy.get('input[name="email"]').type('teran.ma@beta.test.com');
 		cy.get('input[name="password"]').type('business123A');
@@ -65,6 +90,15 @@ describe('Login E2E', () => {
 			cy.contains('Sesión iniciada correctamente').should('be.visible');
 		});
 		cy.url().should('include', '/');
+
+		const proveedorMenuItems = ['Inicio', 'Estatus', 'Documentación', 'Cuenta'];
+
+		proveedorMenuItems.forEach(item => {
+			cy.get('.p-menubar-root-list .p-menuitem')
+				.contains(item)
+				.should('be.visible');
+		});
+
 		cy.contains('Beta Group SA - Proveedor').should('be.visible');
 		cy.contains('¡Hola').should('be.visible');
 		cy.contains('Mantén tus procesos bajo control fácilmente.').should(
@@ -73,7 +107,7 @@ describe('Login E2E', () => {
 		cy.get('button').contains('Nuevo').should('be.visible');
 		cy.get('button').contains('Revisión').should('be.visible');
 	});
-	//Sad path login(forgot password)
+	// Sad path login(forgot password)
 	it('1.2. Muestra error y activa restablecimiento después de 3 intentos fallidos', () => {
 		cy.visit('http://localhost:3000/login');
 
@@ -108,7 +142,7 @@ describe('Login E2E', () => {
 
 		cy.url().should('include', '/reset-password');
 	});
-	//Sad path login(empty fields: email & passowrd)
+	// Sad path login(empty fields: email & passowrd)
 	it('1.2.1. Muestra error al mandar campos vacios', () => {
 		cy.visit('http://localhost:3000/login');
 		cy.get('input[name="email"]').type(' ');
@@ -123,7 +157,7 @@ describe('Login E2E', () => {
 			);
 		});
 	});
-	//Sad path login(not user register)
+	// Sad path login(not user register)
 	it('1.2.2. Muestra error al mandar un email no registrado', () => {
 		cy.visit('http://localhost:3000/login');
 		cy.get('input[name="email"]').type('fabixxxx@gmail.com');
